@@ -47,7 +47,38 @@ public class OscillatorTest {
 		try {
 			Thread.sleep(10000);
 		} catch(Exception ex) {}
-		oc.stop();
+		oc.stop();	
+	}
+	
+	@Test
+	public void testStopAndRun() {
+		this.diff = System.nanoTime();
+		final long time = 500;
+		final long timeinNano = time*1000000;
 		
+		System.out.println("== testStopAndRun ==");
+		Oscillator oc = new Oscillator((int)time, new Runnable() {
+						  @Override
+						  public void run() {
+							  long cc = System.nanoTime();
+							  
+							  System.out.println(" -- testStopAndRun "+(cc-OscillatorTest.this.diff-timeinNano));
+							  OscillatorTest.this.diff = cc;
+						  }
+					  });
+
+		oc.start();
+		try {
+			Thread.sleep(2000);
+		} catch(Exception ex) {}
+		oc.stop();	
+		try {
+			Thread.sleep(2000);
+		} catch(Exception ex) {}
+		oc.start();
+		try {
+			Thread.sleep(2000);
+		} catch(Exception ex) {}
+		oc.stop();
 	}
 }
