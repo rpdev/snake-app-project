@@ -5,7 +5,7 @@ package se.chalmers.snake.interfaces.util;
  */
 public class XYPoint {
 
-	protected  int x, y;
+	public final int x, y;
 
 	public XYPoint(int x, int y) {
 		this.x = x;

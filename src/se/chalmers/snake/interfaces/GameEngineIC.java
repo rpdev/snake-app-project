@@ -4,6 +4,7 @@ package se.chalmers.snake.interfaces;
 
 import se.chalmers.snake.interfaces.util.REPoint;
 import java.util.List;
+import se.chalmers.snake.interfaces.util.XYPoint;
 import se.chalmers.snake.util.EnumObservableInterface;
 import se.chalmers.snake.util.EnumObserver;
 
@@ -79,19 +80,11 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 	
 	
 	/**
-	 * Return total grid size in the X axis, the grid size is the 
-	 * reference of methods {@link GameEngineIC#getItems()},
-	 * {@link GameEngineIC#getPlayerBody()} and  {@link GameEngineIC#getStaticElement()}
-	 * @return 0 to {@link Integer#MAX_VALUE}
+	 * Return the Game Filed Size
+	 * @return 
 	 */
-	public int getGameFieldWidth();
-	/**
-	 * Return total grid size in the Y axis, the grid size is the 
-	 * reference of methods {@link GameEngineIC#getItems()},
-	 * {@link GameEngineIC#getPlayerBody()} and  {@link GameEngineIC#getStaticElement()}
-	 * @return 0 to {@link Integer#MAX_VALUE}
-	 */	
-	public int getGameFieldHeight();
+	public XYPoint getGameFieldSize();
+	
 	
 	
 	/**

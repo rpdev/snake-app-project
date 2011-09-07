@@ -47,6 +47,7 @@ public class PlayerBodyTest {
 		}
 	}
 	
+	/*
 @Test
 	public void testAddBodySeg() {
 		System.out.println("== testAddBodySeg ==");
@@ -54,6 +55,20 @@ public class PlayerBodyTest {
 		for (int i = 0; i < 5; i++) {
 			System.out.println(" -- STEP --");
 			pb.step(0.0,10);
+			for (REPoint rp : pb) {
+				System.out.println(rp);
+			}
+		}
+	}
+*/
+
+@Test
+	public void testAddBodySegFixStep() {
+		System.out.println("== testAddBodySegFixStep ==");
+		PlayerBody pb = new PlayerBody(new XYPoint(100, 100), new XYPoint(50, 50), 0, 5, 5, 4);
+		for (int i = 0; i < 5; i++) {
+			System.out.println(" -- STEP --");
+			pb.step(Math.PI/4.0);
 			for (REPoint rp : pb) {
 				System.out.println(rp);
 			}

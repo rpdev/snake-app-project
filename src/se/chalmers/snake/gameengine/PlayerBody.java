@@ -145,9 +145,9 @@ class PlayerBody implements List<REPoint> {
 			 */
 			//</editor-fold>
 			
-			if (currentPoint.getType() == REPoint.REType.TAILSEG) {
+			if (currentPoint.getType() == REPoint.REType.TAILSEG && this.bufferBodySegment>0) {
 				
-				
+				throw new UnsupportedOperationException("Not Support Yet");
 			}
 			
 			if (oldPoint != null) {
@@ -158,6 +158,23 @@ class PlayerBody implements List<REPoint> {
 			
 		}
 	}
+
+	/**
+	 * Move the player 1 fix step, each step has a length of BodySegmentRadius
+	 * @param angle 
+	 */
+	public synchronized void step(double angle) {
+		REPoint topSeg = this.bodySeg.pollFirst();
+		REPoint newSeg = new REPoint(REPoint.REType.BODYSEG, topSeg, this.bodySegmentRadius);
+		this.bodySeg.addFirst(newSeg);
+		this.bodySeg.addFirst(this.nextPoint(topSeg, angle, this.bodySegmentRadius));
+		if(this.bufferBodySegment>0) {
+			this.bufferBodySegment--;
+		} else {
+			this.bodySeg.pollLast();
+			this.bodySeg.addLast(new REPoint(REPoint.REType.TAILSEG,this.bodySeg.pollLast(), this.bodySegmentRadius));			
+		}
+	}	
 	
 	public synchronized boolean isSelfCollision() {
 		if (this.bodySeg.size() > 3) {
