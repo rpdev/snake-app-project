@@ -95,7 +95,9 @@ public class REPoint extends XYPoint implements Serializable, Cloneable {
 		}
 		int xx = Math.abs(this.x - gp.x);
 		int yy = Math.abs(this.y - gp.y);
-		return ((int) Math.sqrt(xx * xx + yy * yy)) > (this.radius + gp.radius);
+		int limit = (this.radius + gp.radius);
+		// Troligen fel?
+		return xx>limit && yy>limit && ((int) Math.sqrt(xx * xx + yy * yy)) > (limit);
 	}
 
 	@Override
