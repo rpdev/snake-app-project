@@ -70,24 +70,35 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 
 		// Config the Oscillator to make 10 fps
 		this.oscillator = new Oscillator(100, new Runnable() {
+
 			@Override
 			public void run() {
 				GameEngine.this.step();
 			}
 		});
-		
+
 		// Config the MotionDetector
 		this.motionDetector = new MotionDetectorIC() {
-				@Override
-				public void setReferenceSurface(ReferenceSurface rs) {}
-				@Override
-				public int getAngleByDegrees() { return 0; }
-				@Override
-				public double getAngleByRadians() { return 0.0; }
-				@Override
-				public void setSensitivity(int sensitivity) {}
-			};
-			
+
+			@Override
+			public void setReferenceSurface(ReferenceSurface rs) {
+			}
+
+			@Override
+			public int getAngleByDegrees() {
+				return 0;
+			}
+
+			@Override
+			public double getAngleByRadians() {
+				return 0.0;
+			}
+
+			@Override
+			public void setSensitivity(int sensitivity) {
+			}
+		};
+
 
 
 	}
@@ -99,19 +110,39 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	}
 
 	@Override
-	public void startGame() {
-		this.fireObserver(GameEngineEvent.START_GAME);
-		this.oscillator.start();
+	public synchronized boolean startGame() {
+		if (this.currentLevel != null) {
+			this.fireObserver(GameEngineEvent.START_GAME);
+			this.oscillator.start();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
-	public void pauseGame() {
-		this.oscillator.stop();
-		this.fireObserver(GameEngineEvent.PAUSE_GAME);
+	public synchronized boolean pauseGame() {
+		if (this.currentLevel != null) {
+			this.oscillator.stop();
+			this.fireObserver(GameEngineEvent.PAUSE_GAME);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
-	public boolean loadLevel(String name) {
+	public synchronized boolean restartGame() {
+		if (this.currentLevel != null) {
+			this.loadLevel(this.getLevelName());
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public synchronized boolean loadLevel(String name) {
 		this.fireObserver(GameEngineEvent.NEW_GAME);
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
@@ -165,5 +196,10 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	@Override
 	public XYPoint getGameFieldSize() {
 		return this.gameFieldSize;
+	}
+
+	@Override
+	public boolean levelLoad() {
+		return this.currentLevel != null;
 	}
 }

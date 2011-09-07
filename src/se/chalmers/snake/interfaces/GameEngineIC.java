@@ -34,18 +34,29 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 		UPDATE
 	}
 	
+
+
 	
 	/**
 	 * Call this method for start a pause game or
 	 * start a new game that has start but wait on redy.
+	 * @return True if this action are allow and a load level exist.
 	 */
-	public void startGame();
+	public boolean startGame();
 
 	/**
 	 * Call this method for pause a game.
+	 * @return True if this action are allow and a load level exist.
 	 */
-	public void pauseGame();
+	public boolean pauseGame();
 
+	/**
+	 * Call this method for restart a load game.
+	 * This will be sam as call GameEngineIC.loadLevel(GameEngineIC.getLevelName());
+	 * @return True if this action are allow and a load level exist.
+	 */
+	public boolean restartGame();
+	
 	/**
 	 * Load select level, this will reset the GameEngine to default state.
 	 * @param level The level to be load,
@@ -53,6 +64,12 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 	 */
 	public boolean loadLevel(String name);
 
+	/**
+	 * Test if a level has be load into the GameEngine
+	 */
+	public boolean levelLoad();
+	
+	
 	/**
 	 * Return the current state of points the use haves.
 	 * @return 
