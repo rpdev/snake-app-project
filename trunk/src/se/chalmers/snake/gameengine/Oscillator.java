@@ -5,26 +5,34 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Make a Oscillator for short times interval
+ * Make a Oscillator to repeatedly at regular intervals call a method.
  */
 class Oscillator {
 
-	private int interval;
-	private boolean run;
-	private final Timer timer;
+	private final int interval;
+	private Timer timer;
 	private final Runnable calls;
 
-	public Oscillator(int interval, Runnable call) {
+	/**
+	 * Make a new Oscillator for repeatedly at regular intervals call a method.
+	 * At start the Oscillator is off and can be start by call {@link Oscillator#start()} 
+	 * or {@link Oscillator#stop()} for stop a runing Oscillator.
+	 * The Oscillator will give a puse directly at start.
+	 * @param interval Intervall in ms
+	 * @param call Method to be call.
+	 */
+	public Oscillator(final int interval, final Runnable call) {
 		this.interval = interval;
-		this.timer = new Timer("Oscillator", false);
 		this.calls = call;
 	}
-
+	
+	/**
+	 * S
+	 */
 	public synchronized void start() {
-		if (this.run == false && this.calls!=null) {
-			this.run = true;
+		if (this.timer==null && this.calls!=null) {
+			this.timer = new Timer("Oscillator", false);
 			TimerTask tt = new TimerTask() {
-
 				@Override
 				public void run() {
 					Oscillator.this.calls.run();
@@ -35,9 +43,9 @@ class Oscillator {
 	}
 
 	public synchronized void stop() {
-		if (this.run == true) {
+		if(this.timer!=null) {
 			this.timer.cancel();
-			this.run = false;
+			this.timer=null;
 		}
 	}
 }

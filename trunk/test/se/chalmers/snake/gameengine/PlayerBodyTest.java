@@ -63,7 +63,7 @@ public class PlayerBodyTest {
 	@Test
 	public void testAddBodySeg() {
 		System.out.println("== testAddBodySeg ==");
-		PlayerBody pb = new PlayerBody(new XYPoint(100, 100), new XYPoint(50, 50), 0, 5, 5, 1);
+		PlayerBody pb = new PlayerBody(new XYPoint(100, 100), new XYPoint(50, 50), 0, 5, 5, 4);
 		for (int i = 0; i < 5; i++) {
 			System.out.println(" -- STEP --");
 			pb.step(0.0, 3);
