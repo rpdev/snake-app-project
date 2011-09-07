@@ -1,12 +1,13 @@
 package se.chalmers.snake.mastercontroller;
 
-import se.chalmers.snake.interfaces.ConnectionsIC;
+import se.chalmers.snake.interfaces.ControlResourcesIC;
 import se.chalmers.snake.interfaces.MotionDetectorIC;
+import se.chalmers.snake.interfaces.util.XYPoint;
 
 /**
  *
  */
-public class Connections implements ConnectionsIC {
+public class ControlResources implements ControlResourcesIC {
 
 	@Override
 	public Object getLevelDatabase() {
@@ -21,6 +22,11 @@ public class Connections implements ConnectionsIC {
 	@Override
 	public Object getSystemEventController() {
 		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public XYPoint getScreenSize() {
+		return new XYPoint(400,400);
 	}
 	
 }

@@ -3,9 +3,9 @@ package se.chalmers.snake.gameengine;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import se.chalmers.snake.interfaces.ControlResourcesIC;
 import se.chalmers.snake.interfaces.GameEngineIC;
 import se.chalmers.snake.interfaces.MotionDetectorIC;
-import se.chalmers.snake.interfaces.MotionDetectorIC.ReferenceSurface;
 import se.chalmers.snake.interfaces.util.REPoint;
 import se.chalmers.snake.interfaces.util.XYPoint;
 import se.chalmers.snake.util.EnumObservable;
@@ -15,10 +15,11 @@ import se.chalmers.snake.util.EnumObservable;
  */
 public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Void, Void> implements GameEngineIC {
 
-	private final XYPoint gameFieldSize;
-	private LevelStore currentLevel = null;
+	private final ControlResourcesIC controlResources;
 	private final Oscillator oscillator;
 	private final MotionDetectorIC motionDetector;
+	private final XYPoint gameFieldSize;
+	private LevelStore currentLevel = null;
 
 	private class LevelStore {
 
@@ -64,10 +65,13 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 		}
 	}
 
-	public GameEngine(Object levelStore, int gameFieldWidth, int gameFieldHeight) {
+	public GameEngine(ControlResourcesIC controlResources) {
 		super(GameEngineIC.GameEngineEvent.class);
-		this.gameFieldSize = new XYPoint(gameFieldWidth, gameFieldHeight);
 
+
+		this.controlResources = controlResources;
+		this.motionDetector = controlResources.getMotionDetector();
+		this.gameFieldSize = controlResources.getScreenSize();
 		// Config the Oscillator to make 10 fps
 		this.oscillator = new Oscillator(100, new Runnable() {
 
@@ -76,30 +80,6 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 				GameEngine.this.step();
 			}
 		});
-
-		// Config the MotionDetector
-		this.motionDetector = new MotionDetectorIC() {
-
-			@Override
-			public void setReferenceSurface(ReferenceSurface rs) {
-			}
-
-			@Override
-			public int getAngleByDegrees() {
-				return 0;
-			}
-
-			@Override
-			public double getAngleByRadians() {
-				return 0.0;
-			}
-
-			@Override
-			public void setSensitivity(int sensitivity) {
-			}
-		};
-
-
 
 	}
 
@@ -199,7 +179,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	}
 
 	@Override
-	public boolean levelLoad() {
+	public boolean isLevelLoad() {
 		return this.currentLevel != null;
 	}
 }
