@@ -36,8 +36,8 @@ public class REPoint extends XYPoint implements Serializable, Cloneable {
 		 */
 		TAILSEG
 	};
-	private REType type;
-	private int radius;
+	public final REType type;
+	public final int radius;
 
 	public REPoint(REType type, int xPoint, int yPoint, int radius) {
 		super(xPoint, yPoint);
