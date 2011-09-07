@@ -31,7 +31,15 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 		/**
 		 * A new update of the {@link GameEngineIC#getPlayerBody()} or/and {@link GameEngineIC#getItems()} exist.
 		 */
-		UPDATE
+		UPDATE,
+		/**
+		 * This will be send while the level is end, the player has get the goal of this level.
+		 */
+		LEVEL_END,
+		/**
+		 * This will be send while the player is lose the game.
+		 */
+		PLAYER_LOSE
 	}
 	
 
@@ -67,7 +75,7 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 	/**
 	 * Test if a level has be load into the GameEngine
 	 */
-	public boolean levelLoad();
+	public boolean isLevelLoad();
 	
 	
 	/**
