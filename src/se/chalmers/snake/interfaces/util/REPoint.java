@@ -25,12 +25,6 @@ public class REPoint extends XYPoint implements Serializable, Cloneable {
 		 * This say the REPoint is a body segments of the player. 
 		 */
 		BODYSEG,
-		
-		/**
-		 * This say the REPoint is a new body segments of the player. and will say the has more or less 
-		 * hidden by other segments.
-		 */
-		NEWSEG,
 		/**
 		 * This say the REPoint is a tail segments of the player.
 		 */

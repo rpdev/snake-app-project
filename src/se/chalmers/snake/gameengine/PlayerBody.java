@@ -1,24 +1,19 @@
 package se.chalmers.snake.gameengine;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
 import se.chalmers.snake.interfaces.util.REPoint;
 import se.chalmers.snake.interfaces.util.XYPoint;
 
 /**
  *
  */
-class PlayerBody implements List<REPoint> {
-	
+class PlayerBody extends LinkedList<REPoint> {
+
 	private final int bodySegmentRadius;
-	private LinkedList<REPoint> bodySeg = new LinkedList<REPoint>();
 	private final XYPoint gameSize;
 	private int bufferBodySegment;
-	private int bufferBodyLength;
-	
+
 	public PlayerBody(XYPoint gameSize, XYPoint startPosition, double startAngle, int bodySegmentRadius, int startSegNumber, int startBufferSegNumber) {
 		if (!(gameSize != null && gameSize.getX() > 0 && gameSize.getY() > 0)) {
 			throw new IllegalArgumentException("The condition 'gameSize != null && gameSize.getX() > 0 && gameSize.getY() > 0' is not true.");
@@ -35,20 +30,20 @@ class PlayerBody implements List<REPoint> {
 		this.gameSize = gameSize;
 		this.bodySegmentRadius = bodySegmentRadius;
 		this.bufferBodySegment = startBufferSegNumber;
-		this.bufferBodyLength = 0;
 		this.initBody(startPosition, startAngle, startSegNumber - 1);
 	}
-	
+
+
 	private void initBody(XYPoint point, double angle, int segCount) {
-		this.bodySeg.add(new REPoint(REPoint.REType.HEADSEG, point, this.bodySegmentRadius));
+		super.add(new REPoint(REPoint.REType.HEADSEG, point, this.bodySegmentRadius));
 		double mirrorAngle = angle > Math.PI ? angle - Math.PI : angle + Math.PI; // Get the Mirror angle.
 		for (int i = 0; i < segCount; i++) {
 			point = this.nextPoint(point, mirrorAngle, this.bodySegmentRadius);
-			this.bodySeg.add(new REPoint(
+			super.add(new REPoint(
 					  (i < segCount - 1) ? REPoint.REType.BODYSEG : REPoint.REType.TAILSEG,
 					  point,
 					  this.bodySegmentRadius));
-			
+
 		}
 	}
 
@@ -75,7 +70,7 @@ class PlayerBody implements List<REPoint> {
 		}
 		return new XYPoint(newX, newY);
 	}
-	
+
 	private REPoint nextPoint(REPoint oldPoint, double angle, int length) {
 		int newX = oldPoint.getX() + (int) (length * Math.cos(angle));
 		int newY = oldPoint.getY() + (int) (length * Math.sin(angle));
@@ -91,18 +86,18 @@ class PlayerBody implements List<REPoint> {
 		}
 		return new REPoint(oldPoint.getType(), newX, newY, oldPoint.getRadius());
 	}
-	
+
 	private double getAngle(REPoint p1, REPoint p2) {
 		int xVal = p1.getX() - p2.getX();
 		int yVal = p1.getY() - p2.getY();
 		return Math.atan2(yVal, xVal) + ((xVal < 0 ^ yVal < 0) ? Math.PI : 0.0);
-		
+
 	}
-	
+
 	public synchronized void step(double angle, int length) {
 		REPoint oldPoint = null;
-		for (int i = 0; i < this.bodySeg.size(); i++) {
-			REPoint currentPoint = this.bodySeg.get(i);
+		for (int i = 0; i < super.size(); i++) {
+			REPoint currentPoint = super.get(i);
 			//<editor-fold defaultstate="collapsed" desc="OldCode">
 			/*
 			 * if (currentPoint.getType() == REPoint.REType.TAILSEG) {
@@ -144,18 +139,18 @@ class PlayerBody implements List<REPoint> {
 			 * }
 			 */
 			//</editor-fold>
-			
-			if (currentPoint.getType() == REPoint.REType.TAILSEG && this.bufferBodySegment>0) {
-				
+
+			if (currentPoint.getType() == REPoint.REType.TAILSEG && this.bufferBodySegment > 0) {
+
 				throw new UnsupportedOperationException("Not Support Yet");
 			}
-			
+
 			if (oldPoint != null) {
 				angle = this.getAngle(oldPoint, currentPoint);
 			}
 			oldPoint = currentPoint;
-			this.bodySeg.set(i, this.nextPoint(currentPoint, angle, length));
-			
+			super.set(i, this.nextPoint(currentPoint, angle, length));
+
 		}
 	}
 
@@ -164,22 +159,22 @@ class PlayerBody implements List<REPoint> {
 	 * @param angle 
 	 */
 	public synchronized void step(double angle) {
-		REPoint topSeg = this.bodySeg.pollFirst();
+		REPoint topSeg = super.pollFirst();
 		REPoint newSeg = new REPoint(REPoint.REType.BODYSEG, topSeg, this.bodySegmentRadius);
-		this.bodySeg.addFirst(newSeg);
-		this.bodySeg.addFirst(this.nextPoint(topSeg, angle, this.bodySegmentRadius));
-		if(this.bufferBodySegment>0) {
+		super.addFirst(newSeg);
+		super.addFirst(this.nextPoint(topSeg, angle, this.bodySegmentRadius));
+		if (this.bufferBodySegment > 0) {
 			this.bufferBodySegment--;
 		} else {
-			this.bodySeg.pollLast();
-			this.bodySeg.addLast(new REPoint(REPoint.REType.TAILSEG,this.bodySeg.pollLast(), this.bodySegmentRadius));			
+			super.pollLast();
+			super.addLast(new REPoint(REPoint.REType.TAILSEG, super.pollLast(), this.bodySegmentRadius));
 		}
-	}	
-	
+	}
+
 	public synchronized boolean isSelfCollision() {
-		if (this.bodySeg.size() > 3) {
-			Iterator<REPoint> it = this.bodySeg.iterator();
-			REPoint head = this.bodySeg.get(0);
+		if (super.size() > 3) {
+			Iterator<REPoint> it = super.iterator();
+			REPoint head = super.get(0);
 			try {
 				it.next();
 				it.next();
@@ -195,124 +190,4 @@ class PlayerBody implements List<REPoint> {
 		}
 		return false;
 	}
-
-	//<editor-fold defaultstate="collapsed" desc="Support List Methods">
-	@Override
-	public int size() {
-		return this.bodySeg.size();
-	}
-	
-	@Override
-	public boolean isEmpty() {
-		return this.bodySeg.isEmpty();
-	}
-	
-	@Override
-	public boolean contains(Object o) {
-		return this.bodySeg.contains(o);
-	}
-	
-	@Override
-	public Iterator<REPoint> iterator() {
-		return this.bodySeg.iterator();
-	}
-	
-	@Override
-	public Object[] toArray() {
-		return this.bodySeg.toArray();
-	}
-	
-	@Override
-	public <T> T[] toArray(T[] a) {
-		return this.bodySeg.toArray(a);
-	}
-	
-	@Override
-	public REPoint get(int index) {
-		return this.bodySeg.get(index);
-	}
-	
-	@Override
-	public ListIterator<REPoint> listIterator() {
-		return this.bodySeg.listIterator();
-	}
-	//</editor-fold>
-	//<editor-fold defaultstate="collapsed" desc="Not supported in the PlayerBodyList">
-
-	@Override
-	public ListIterator<REPoint> listIterator(int index) {
-		throw new UnsupportedOperationException("Not supported in the PlayerBodyList");
-	}
-	
-	@Override
-	public boolean add(REPoint e) {
-		throw new UnsupportedOperationException("Not supported in the PlayerBodyList");
-	}
-	
-	@Override
-	public boolean remove(Object o) {
-		throw new UnsupportedOperationException("Not supported in the PlayerBodyList");
-	}
-	
-	@Override
-	public boolean containsAll(Collection<?> c) {
-		throw new UnsupportedOperationException("Not supported in the PlayerBodyList");
-	}
-	
-	@Override
-	public boolean addAll(Collection<? extends REPoint> c) {
-		throw new UnsupportedOperationException("Not supported in the PlayerBodyList");
-	}
-	
-	@Override
-	public boolean addAll(int index, Collection<? extends REPoint> c) {
-		throw new UnsupportedOperationException("Not supported in the PlayerBodyList");
-	}
-	
-	@Override
-	public boolean removeAll(Collection<?> c) {
-		throw new UnsupportedOperationException("Not supported in the PlayerBodyList");
-	}
-	
-	@Override
-	public boolean retainAll(Collection<?> c) {
-		throw new UnsupportedOperationException("Not supported in the PlayerBodyList");
-	}
-	
-	@Override
-	public void clear() {
-		throw new UnsupportedOperationException("Not supported in the PlayerBodyList");
-	}
-	
-	@Override
-	public REPoint set(int index, REPoint element) {
-		throw new UnsupportedOperationException("Not supported in the PlayerBodyList");
-	}
-	
-	@Override
-	public void add(int index, REPoint element) {
-		throw new UnsupportedOperationException("Not supported in the PlayerBodyList");
-	}
-	
-	@Override
-	public REPoint remove(int index) {
-		throw new UnsupportedOperationException("Not supported in the PlayerBodyList");
-	}
-	
-	@Override
-	public int indexOf(Object o) {
-		throw new UnsupportedOperationException("Not supported in the PlayerBodyList");
-	}
-	
-	@Override
-	public int lastIndexOf(Object o) {
-		throw new UnsupportedOperationException("Not supported in the PlayerBodyList");
-	}
-	
-	@Override
-	public List<REPoint> subList(int fromIndex,
-			  int toIndex) {
-		throw new UnsupportedOperationException("Not supported in the PlayerBodyList");
-	}
-	//</editor-fold>
 }
