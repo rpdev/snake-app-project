@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="SnakeApp" default="help">
+
+    <property file="local.properties" />
+    <property file="default.properties" />
+    <import file="${sdk.dir}/tools/ant/pre_setup.xml" />
+    <setup />
+
+</project>
