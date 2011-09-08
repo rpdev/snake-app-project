@@ -11,8 +11,8 @@ public interface LevelIC {
 	public int getSpeed(int collectNumber);
 	public int getSpeed(List<Integer> collectTime);
 	
-	public int hasRachGoal(int collectNumber);
-	public int hasRachGoal(List<Integer> collectTime);
+	public boolean  hasRachGoal(int collectNumber);
+	public boolean  hasRachGoal(List<Integer> collectTime);
 	
 	public int getItemsCount(int collectNumber);
 	public int getItemsCount(List<Integer> collectTime);
