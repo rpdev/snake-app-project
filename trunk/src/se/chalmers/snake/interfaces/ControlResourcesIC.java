@@ -7,7 +7,7 @@ import se.chalmers.snake.interfaces.util.XYPoint;
  */
 public interface ControlResourcesIC {
 	
-	public Object getLevelDatabase();
+	public LevelDatabaseIC getLevelDatabase();
 	
 	public MotionDetectorIC getMotionDetector();
 

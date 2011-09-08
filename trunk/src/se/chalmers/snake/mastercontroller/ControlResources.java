@@ -1,6 +1,7 @@
 package se.chalmers.snake.mastercontroller;
 
 import se.chalmers.snake.interfaces.ControlResourcesIC;
+import se.chalmers.snake.interfaces.LevelDatabaseIC;
 import se.chalmers.snake.interfaces.MotionDetectorIC;
 import se.chalmers.snake.interfaces.util.XYPoint;
 
@@ -10,7 +11,7 @@ import se.chalmers.snake.interfaces.util.XYPoint;
 public class ControlResources implements ControlResourcesIC {
 
 	@Override
-	public Object getLevelDatabase() {
+	public LevelDatabaseIC getLevelDatabase() {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
