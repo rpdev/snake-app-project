@@ -155,26 +155,6 @@ class PlayerBody extends LinkedList<REPoint> {
 		}
 	}
 
-	public synchronized boolean isSelfCollision() {
-		if (super.size() > 3) {
-			Iterator<REPoint> it = super.iterator();
-			REPoint head = super.get(0);
-			try {
-				it.next();
-				it.next();
-				it.next();
-				while (it.hasNext()) {
-					REPoint re = it.next();
-					if (re.isCollideWith(head)) {
-						return true;
-					}
-				}
-			} catch (Exception ex) {
-			}
-		}
-		return false;
-	}
-
 	@Override
 	public String toString() {
 		

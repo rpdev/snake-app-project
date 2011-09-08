@@ -18,6 +18,17 @@ public interface MotionDetectorIC {
 		FLAT_TOP
 	}
 	
+	
+	/**
+	 * Start the service to listen to the MotionsDetector.
+	 */
+	public void start();
+	
+	/**
+	 * Stop the service to listen to the MotionDetector.
+	 */
+	public void stop();
+	
 	/**
 	 * Set the Reference Surface to be use
 	 * @param rs 
