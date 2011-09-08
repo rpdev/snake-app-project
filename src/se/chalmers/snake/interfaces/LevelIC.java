@@ -50,6 +50,18 @@ public interface LevelIC {
 	 */
 	public List<REPoint> getObstacles();
 	
+	/**
+	 * Return how width the player body will be.
+	 * @return 
+	 */
+	public int getPlayerBodyWidth();
+	
+	/**
+	 * Return how big each item will be.
+	 * @return 
+	 */
+	public int getItemsRadius();
+	
 	/*
 	 * BELOW METHODS IS CALLED REPETEDLY
 	 */

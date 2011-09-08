@@ -18,10 +18,16 @@ class LevelData {
 	private final ArrayList<REPoint> items;
 	private final List<REPoint> staticElement;
 	private double xScal,yScal,fixScal;
+	private int itemsRadius;
+	private int playerBodyWidth;
+	
 
 	LevelData(LevelIC level, XYPoint gameFiledSize) {
 		this.level = level;
 		this.calcScal(gameFiledSize);
+		this.itemsRadius = (int)(this.fixScal*level.getItemsRadius());
+		this.playerBodyWidth = (int)(this.fixScal*level.getPlayerBodyWidth());
+		
 		this.items = new ArrayList<REPoint>(5);
 		this.playerBody = new PlayerBody(null, null, 0.0, 5, 5, 0);
 		this.staticElement = Collections.unmodifiableList(this.listStaticElement());
