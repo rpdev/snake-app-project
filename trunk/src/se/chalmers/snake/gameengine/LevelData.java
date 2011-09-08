@@ -15,12 +15,14 @@ class LevelData {
 	private int score;
 	private final LevelIC level;
 	private final PlayerBody playerBody;
-	
-	private final ArrayList<REPoint> items;
+	private final List<ItemPoint> items;
+	private final List<Integer> itemsCollect;
 	private final List<REPoint> staticElement;
 	private double xScal,yScal,fixScal;
 	private int itemsRadius;
 	private int playerBodyWidth;
+	
+	
 	
 
 	LevelData(LevelIC level, XYPoint gameFiledSize) {
@@ -29,10 +31,20 @@ class LevelData {
 		this.itemsRadius = (int)(this.fixScal*level.getItemsRadius());
 		this.playerBodyWidth = (int)(this.fixScal*level.getPlayerBodyWidth());
 		
-		this.items = new ArrayList<REPoint>(5);
-		this.playerBody = new PlayerBody(null, null, 0.0, 5, 5, 0);
+		this.items = new ArrayList<ItemPoint>();
+		this.itemsCollect = new ArrayList<Integer>();
+		
+		XYPoint startPoint = new XYPoint((int)(this.xScal*level.getSnakeHeadStartLocation().x), (int)(this.yScal*level.getSnakeHeadStartLocation().y));
+		this.playerBody = new PlayerBody(gameFiledSize, startPoint , this.level.getStartAngle(), this.playerBodyWidth, level.getSnakeStartLength(), 0);
 		this.staticElement = Collections.unmodifiableList(this.listStaticElement());
 		this.score = 0;
+	}
+	
+	void step(double stepAngle,int stepLength) {
+		for (ItemPoint object : this.items) { 
+			object.incTime();
+		}
+		this.playerBody.step(stepAngle,(int)(this.fixScal*stepLength));
 	}
 
 	private void calcScal(XYPoint gameFiledSize) {
