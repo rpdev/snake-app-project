@@ -20,6 +20,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	private final MotionDetectorIC motionDetector;
 	private final XYPoint gameFieldSize;
 	private LevelData currentLevel = null;
+	private int currentSpeed;
 
 	public GameEngine(ControlResourcesIC controlResources) {
 		super(GameEngineIC.GameEngineEvent.class);
@@ -28,7 +29,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 		this.controlResources = controlResources;
 		this.motionDetector = controlResources.getMotionDetector();
 		this.gameFieldSize = controlResources.getScreenSize();
-
+		
 
 		// Config the Oscillator to make 10 fps
 		this.oscillator = new Oscillator(100, new Runnable() {
@@ -42,6 +43,12 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	}
 
 	private void step() {
+		if(this.currentLevel!=null) {
+			this.currentLevel.step(this.motionDetector.getAngleByRadians(), this.currentSpeed);
+			/** Include **/
+			
+			
+		}
 	}
 
 	@Override
@@ -83,6 +90,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 			this.pauseGame();
 			try {
 				this.currentLevel = new LevelData(level,this.gameFieldSize);
+				this.currentSpeed = this.currentLevel.getPlayerSpeed();
 			} catch (Exception ex) {
 				return false;
 			}
@@ -133,7 +141,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	@Override
 	public Object getLevelMetaData() {
 		if (this.currentLevel != null) {
-			return this.currentLevel.getLevelMetaData();
+			return this.currentLevel.getLevelData();
 		} else {
 			return null;
 		}

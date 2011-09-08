@@ -18,59 +18,65 @@ class LevelData {
 	private final List<ItemPoint> items;
 	private final List<Integer> itemsCollect;
 	private final List<REPoint> staticElement;
-	private double xScal,yScal,fixScal;
+	private double xScal, yScal, fixScal;
 	private int itemsRadius;
 	private int playerBodyWidth;
-	
-	
-	
 
 	LevelData(LevelIC level, XYPoint gameFiledSize) {
 		this.level = level;
 		this.calcScal(gameFiledSize);
-		this.itemsRadius = (int)(this.fixScal*level.getItemsRadius());
-		this.playerBodyWidth = (int)(this.fixScal*level.getPlayerBodyWidth());
-		
+		this.itemsRadius = (int) (this.fixScal * level.getItemsRadius());
+		this.playerBodyWidth = (int) (this.fixScal * level.getPlayerBodyWidth());
+
 		this.items = new ArrayList<ItemPoint>();
 		this.itemsCollect = new ArrayList<Integer>();
-		
-		XYPoint startPoint = new XYPoint((int)(this.xScal*level.getSnakeHeadStartLocation().x), (int)(this.yScal*level.getSnakeHeadStartLocation().y));
-		this.playerBody = new PlayerBody(gameFiledSize, startPoint , this.level.getStartAngle(), this.playerBodyWidth, level.getSnakeStartLength(), 0);
+
+		XYPoint startPoint = new XYPoint((int) (this.xScal * level.getSnakeHeadStartLocation().x), (int) (this.yScal * level.getSnakeHeadStartLocation().y));
+		this.playerBody = new PlayerBody(gameFiledSize, startPoint, this.level.getStartAngle(), this.playerBodyWidth, level.getSnakeStartLength(), 0);
 		this.staticElement = Collections.unmodifiableList(this.listStaticElement());
 		this.score = 0;
 	}
+
 	
-	void step(double stepAngle,int stepLength) {
-		for (ItemPoint object : this.items) { 
+	/**
+	 * Get a list of all items on the game filed.
+	 * @return 
+	 */
+	List<ItemPoint> getItem() {
+		return this.items;
+	}
+
+	
+	int getItemsRadius() {
+		return this.itemsRadius;
+	}
+
+	/**
+	 * Step the time 1 step, 
+	 * Each step will inca the timer count of each Item on the filed.
+	 * and after this move player body a step.
+	 * @param stepAngle
+	 * @param stepLength 
+	 */
+	void step(double stepAngle, int stepLength) {
+		for (ItemPoint object : this.items) {
 			object.incTime();
 		}
-		this.playerBody.step(stepAngle,(int)(this.fixScal*stepLength));
+		this.playerBody.step(stepAngle, (int) (this.fixScal * stepLength));
 	}
 
-	private void calcScal(XYPoint gameFiledSize) {
-				int outScal = (gameFiledSize.x+gameFiledSize.y)/2;
-		XYPoint inScalPoint = new XYPoint(this.level.getMapSize().x,this.level.getMapSize().y);
-		int inScal = (inScalPoint.x+inScalPoint.y)/2;
-		this.xScal = (double)gameFiledSize.x/(double)inScalPoint.x;
-		this.yScal = (double)gameFiledSize.y/(double)inScalPoint.y;
-		this.fixScal = (double)outScal/(double)inScal;
-	}
-	
-	
-	private List<REPoint> listStaticElement() {
-		ArrayList<REPoint> alRE = new ArrayList<REPoint>();
-		for(REPoint rsp: this.level.getObstacles()) {
-			if(rsp.type==REPoint.REType.WALL) {
-				alRE.add(new REPoint(REPoint.REType.WALL, (int)(this.xScal*rsp.x), (int)(this.yScal*rsp.y), (int)this.fixScal*rsp.radius));
-			}
-		}
-		return alRE;
-	}
-
-	public List<REPoint> getStaticElement() {
+	/**
+	 * Get this game filed the walls and static Elements.
+	 * @return 
+	 */
+	List<REPoint> getStaticElement() {
 		return this.staticElement;
 	}
 
+	/**
+	 * Get the player body, this is clone of the orginal.
+	 * @return 
+	 */
 	List<REPoint> clonePlayerBody() {
 		ArrayList al = null;
 		synchronized (this.playerBody) {
@@ -93,7 +99,31 @@ class LevelData {
 		return this.score;
 	}
 
-	LevelIC getLevelMetaData() {
+	LevelIC getLevelData() {
 		return this.level;
+	}
+	
+	int getPlayerSpeed() {
+		return this.level.getSpeed(this.itemsCollect);
+	}
+	
+
+	private void calcScal(XYPoint gameFiledSize) {
+		int outScal = (gameFiledSize.x + gameFiledSize.y) / 2;
+		XYPoint inScalPoint = new XYPoint(this.level.getMapSize().x, this.level.getMapSize().y);
+		int inScal = (inScalPoint.x + inScalPoint.y) / 2;
+		this.xScal = (double) gameFiledSize.x / (double) inScalPoint.x;
+		this.yScal = (double) gameFiledSize.y / (double) inScalPoint.y;
+		this.fixScal = (double) outScal / (double) inScal;
+	}
+
+	private List<REPoint> listStaticElement() {
+		ArrayList<REPoint> alRE = new ArrayList<REPoint>();
+		for (REPoint rsp : this.level.getObstacles()) {
+			if (rsp.type == REPoint.REType.WALL) {
+				alRE.add(new REPoint(REPoint.REType.WALL, (int) (this.xScal * rsp.x), (int) (this.yScal * rsp.y), (int) this.fixScal * rsp.radius));
+			}
+		}
+		return alRE;
 	}
 }
