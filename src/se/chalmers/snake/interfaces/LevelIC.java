@@ -9,6 +9,8 @@ import se.chalmers.snake.interfaces.util.REPoint;
  *
  */
 public interface LevelIC {
+	final static int snakeBodyWidth = 2;
+	final static int itemsRadius = 2;
 	
 	public String getLevelName();
 	
