@@ -15,11 +15,12 @@ import se.chalmers.snake.util.EnumObservable;
  */
 public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Void, Void> implements GameEngineIC {
 
+	public static final int UPDATE_FREQUENCY = 100;
 	private final ControlResourcesIC controlResources;
 	private final Oscillator oscillator;
 	private final MotionDetectorIC motionDetector;
 	private final XYPoint gameFieldSize;
-	private LevelData currentLevel = null;
+	private LevelEngine currentLevel = null;
 	private int currentSpeed;
 
 	public GameEngine(ControlResourcesIC controlResources) {
@@ -32,8 +33,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 		
 
 		// Config the Oscillator to make 10 fps
-		this.oscillator = new Oscillator(100, new Runnable() {
-
+		this.oscillator = new Oscillator(GameEngine.UPDATE_FREQUENCY, new Runnable() {
 			@Override
 			public void run() {
 				GameEngine.this.step();
@@ -42,10 +42,14 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 
 	}
 
+	/**
+	 * Driv the game 1 step further on.
+	 */
 	private void step() {
 		if(this.currentLevel!=null) {
 			this.currentLevel.step(this.motionDetector.getAngleByRadians(), this.currentSpeed);
 			/** Include **/
+			
 			
 			
 		}
@@ -89,7 +93,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 		if (level != null) {
 			this.pauseGame();
 			try {
-				this.currentLevel = new LevelData(level,this.gameFieldSize);
+				this.currentLevel = new LevelEngine(level,this.gameFieldSize);
 				this.currentSpeed = this.currentLevel.getPlayerSpeed();
 			} catch (Exception ex) {
 				return false;
@@ -100,17 +104,22 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 			return false;
 		}
 	}
-
+	
+	//<editor-fold defaultstate="collapsed" desc="Override Methods">
 	@Override
 	public int getScore() {
 		return this.currentLevel.getScore();
 	}
-
+	
 	@Override
 	public String getLevelName() {
-		throw new UnsupportedOperationException("Not supported yet.");
+		if(this.currentLevel!=null) {
+			return this.currentLevel.getLevelData().getLevelName();
+		} else {
+			return null;
+		}
 	}
-
+	
 	@Override
 	public List<REPoint> getPlayerBody() {
 		if (this.currentLevel != null) {
@@ -119,7 +128,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 			return new ArrayList<REPoint>(0);
 		}
 	}
-
+	
 	@Override
 	public List<REPoint> getItems() {
 		if (this.currentLevel != null) {
@@ -128,7 +137,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 			return new ArrayList<REPoint>(0);
 		}
 	}
-
+	
 	@Override
 	public List<REPoint> getStaticElement() {
 		if (this.currentLevel != null) {
@@ -137,7 +146,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 			return new ArrayList<REPoint>(0);
 		}
 	}
-
+	
 	@Override
 	public Object getLevelMetaData() {
 		if (this.currentLevel != null) {
@@ -146,14 +155,15 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 			return null;
 		}
 	}
-
+	
 	@Override
 	public XYPoint getGameFieldSize() {
 		return this.gameFieldSize;
 	}
-
+	
 	@Override
 	public boolean isLevelLoad() {
 		return this.currentLevel != null;
 	}
+	//</editor-fold>
 }
