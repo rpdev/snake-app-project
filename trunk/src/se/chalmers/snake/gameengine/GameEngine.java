@@ -1,10 +1,10 @@
 package se.chalmers.snake.gameengine;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import se.chalmers.snake.interfaces.ControlResourcesIC;
 import se.chalmers.snake.interfaces.GameEngineIC;
+import se.chalmers.snake.interfaces.LevelIC;
 import se.chalmers.snake.interfaces.MotionDetectorIC;
 import se.chalmers.snake.interfaces.util.REPoint;
 import se.chalmers.snake.interfaces.util.XYPoint;
@@ -19,51 +19,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	private final Oscillator oscillator;
 	private final MotionDetectorIC motionDetector;
 	private final XYPoint gameFieldSize;
-	private LevelStore currentLevel = null;
-
-	private class LevelStore {
-
-		private int score;
-		private final Object level;
-		private final PlayerBody playerBody;
-		private final ArrayList<REPoint> items;
-		private final List<REPoint> staticElement;
-
-		private LevelStore(Object level) {
-			this.level = level;
-			this.items = new ArrayList<REPoint>(5);
-			this.playerBody = new PlayerBody(null, null, 0.0, 5, 5, 0);
-
-
-			this.staticElement = Collections.unmodifiableList(this.listStaticElement(level));
-
-
-		}
-
-		private List<REPoint> listStaticElement(Object level) {
-			ArrayList<REPoint> alRE = new ArrayList<REPoint>();
-
-			return alRE;
-		}
-
-		private List<REPoint> clonePlayerBody() {
-			ArrayList al = null;
-			synchronized (this.playerBody) {
-				al = new ArrayList(this.playerBody.size());
-				al.addAll(this.playerBody);
-			}
-			return al;
-		}
-
-		private List<REPoint> cloneItemList() {
-			ArrayList al = null;
-			synchronized (this.items) {
-				al = new ArrayList(this.items.size());
-				al.addAll(this.items);
-			}
-			return al;
-		}
-	}
+	private LevelData currentLevel = null;
 
 	public GameEngine(ControlResourcesIC controlResources) {
 		super(GameEngineIC.GameEngineEvent.class);
@@ -72,6 +28,8 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 		this.controlResources = controlResources;
 		this.motionDetector = controlResources.getMotionDetector();
 		this.gameFieldSize = controlResources.getScreenSize();
+
+
 		// Config the Oscillator to make 10 fps
 		this.oscillator = new Oscillator(100, new Runnable() {
 
@@ -84,9 +42,6 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	}
 
 	private void step() {
-		if (this.currentLevel != null && this.currentLevel.playerBody != null && motionDetector != null) {
-			this.currentLevel.playerBody.step(motionDetector.getAngleByRadians());
-		}
 	}
 
 	@Override
@@ -123,13 +78,24 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 
 	@Override
 	public synchronized boolean loadLevel(String name) {
-		this.fireObserver(GameEngineEvent.NEW_GAME);
-		throw new UnsupportedOperationException("Not supported yet.");
+		LevelIC level = this.controlResources.getLevelDatabase().getByName(name);
+		if (level != null) {
+			this.pauseGame();
+			try {
+				this.currentLevel = new LevelData(level,this.gameFieldSize);
+			} catch (Exception ex) {
+				return false;
+			}
+			this.fireObserver(GameEngineEvent.NEW_GAME);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
 	public int getScore() {
-		return this.currentLevel.score;
+		return this.currentLevel.getScore();
 	}
 
 	@Override
@@ -158,7 +124,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	@Override
 	public List<REPoint> getStaticElement() {
 		if (this.currentLevel != null) {
-			return this.currentLevel.staticElement;
+			return this.currentLevel.getStaticElement();
 		} else {
 			return new ArrayList<REPoint>(0);
 		}
@@ -167,7 +133,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	@Override
 	public Object getLevelMetaData() {
 		if (this.currentLevel != null) {
-			return this.currentLevel.level;
+			return this.currentLevel.getLevelMetaData();
 		} else {
 			return null;
 		}
