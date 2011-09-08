@@ -144,14 +144,14 @@ class PlayerBody extends LinkedList<REPoint> {
 	 */
 	public synchronized void step(double angle) {
 		this.lengthSincLastAddSegment += this.bodySegmentRadius;
-		REPoint topSeg = super.pollFirst();
+		REPoint topSeg = super.removeFirst();
 		REPoint newSeg = new REPoint(REPoint.REType.BODYSEG, topSeg, this.bodySegmentRadius);
 		super.addFirst(newSeg);
 		super.addFirst(this.nextPoint(topSeg, angle, this.bodySegmentRadius));
 		if (this.bufferBodySegment > 0) {
 			this.bufferBodySegment--;
 		} else {
-			super.addLast(new REPoint(REPoint.REType.TAILSEG, super.pollLast(), this.bodySegmentRadius));
+			super.addLast(new REPoint(REPoint.REType.TAILSEG, super.removeLast(), this.bodySegmentRadius));
 		}
 	}
 
