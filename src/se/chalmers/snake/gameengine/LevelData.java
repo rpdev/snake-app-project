@@ -15,6 +15,7 @@ class LevelData {
 	private int score;
 	private final LevelIC level;
 	private final PlayerBody playerBody;
+	
 	private final ArrayList<REPoint> items;
 	private final List<REPoint> staticElement;
 	private double xScal,yScal,fixScal;
@@ -46,8 +47,6 @@ class LevelData {
 	
 	private List<REPoint> listStaticElement() {
 		ArrayList<REPoint> alRE = new ArrayList<REPoint>();
-
-		
 		for(REPoint rsp: this.level.getObstacles()) {
 			if(rsp.type==REPoint.REType.WALL) {
 				alRE.add(new REPoint(REPoint.REType.WALL, (int)(this.xScal*rsp.x), (int)(this.yScal*rsp.y), (int)this.fixScal*rsp.radius));
