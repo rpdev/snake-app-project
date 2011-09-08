@@ -10,7 +10,7 @@ import se.chalmers.snake.interfaces.util.XYPoint;
 /**
  *
  */
-class LevelData {
+class LevelEngine {
 
 	private int score;
 	private final LevelIC level;
@@ -22,7 +22,7 @@ class LevelData {
 	private int itemsRadius;
 	private int playerBodyWidth;
 
-	LevelData(LevelIC level, XYPoint gameFiledSize) {
+	LevelEngine(LevelIC level, XYPoint gameFiledSize) {
 		this.level = level;
 		this.calcScal(gameFiledSize);
 		this.itemsRadius = (int) (this.fixScal * level.getItemsRadius());
