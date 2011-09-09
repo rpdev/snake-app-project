@@ -38,6 +38,8 @@ class LevelEngine {
 		this.playerBody = new PlayerBody(gameFiledSize, startPoint, this.level.getStartAngle(), this.playerBodyWidth, level.getSnakeStartLength(), 0);
 		this.staticElement = Collections.unmodifiableList(this.listStaticElement());
 		this.score = 0;
+		this.addItems(this.level.getAddItems(0,0));
+		
 	}
 
 	/**
@@ -159,9 +161,7 @@ class LevelEngine {
 	
 	
 	private void addItems(int count) {
-		/**
-		 * 
-		 */
+		this.items.add( new ItemPoint(REPoint.REType.ITEM, new XYPoint(20,20), 10));
 		
 	}
 }

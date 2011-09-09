@@ -103,7 +103,7 @@ public class GameEngineTest {
 
 							@Override
 							public int getSpeed(List<Integer> collectTime) {
-							return 4;
+							return 2;
 							}
 
 							@Override
@@ -152,7 +152,7 @@ public class GameEngineTest {
 
 					@Override
 					public double getAngleByRadians() {
-						return 0.8;
+						return 0.4;
 					}
 
 					@Override
@@ -184,7 +184,7 @@ public class GameEngineTest {
 		gameEngine.loadLevel("Level 1");
 		gameEngine.startGame();
 		try{
-			Thread.sleep(10000);
+			Thread.sleep(100000);
 		} catch(Exception ex) {}
 		gameEngine.pauseGame();
 		
