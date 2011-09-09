@@ -15,13 +15,12 @@ import se.chalmers.snake.util.EnumObservable;
  */
 public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Void, Void> implements GameEngineIC {
 
-	public static final int UPDATE_FREQUENCY = 100;
+	public static final int UPDATE_FREQUENCY = 10;
 	private final ControlResourcesIC controlResources;
 	private final Oscillator oscillator;
 	private final MotionDetectorIC motionDetector;
 	private final XYPoint gameFieldSize;
 	private LevelEngine currentLevel = null;
-	private int currentSpeed;
 
 	public GameEngine(ControlResourcesIC controlResources) {
 		super(GameEngineIC.GameEngineEvent.class);
@@ -33,7 +32,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 		
 
 		// Config the Oscillator to make 10 fps
-		this.oscillator = new Oscillator(GameEngine.UPDATE_FREQUENCY, new Runnable() {
+		this.oscillator = new Oscillator(1000/GameEngine.UPDATE_FREQUENCY, new Runnable() {
 			@Override
 			public void run() {
 				GameEngine.this.step();
@@ -47,13 +46,15 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	 */
 	private void step() {
 		if(this.currentLevel!=null) {
-			this.currentLevel.step(this.motionDetector.getAngleByRadians(), this.currentSpeed);
-			/** Include **/
-			
-			
-			
+			if(this.currentLevel.step(this.motionDetector.getAngleByRadians())) {
+				this.fireObserver(GameEngineEvent.UPDATE);				
+			}  else {
+				this.pauseGame();
+				this.fireObserver(GameEngineEvent.PLAYER_LOSE);
+			}
 		}
 	}
+	
 
 	@Override
 	public synchronized boolean startGame() {
@@ -94,7 +95,6 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 			this.pauseGame();
 			try {
 				this.currentLevel = new LevelEngine(level,this.gameFieldSize);
-				this.currentSpeed = this.currentLevel.getPlayerSpeed();
 			} catch (Exception ex) {
 				return false;
 			}
@@ -123,7 +123,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	@Override
 	public List<REPoint> getPlayerBody() {
 		if (this.currentLevel != null) {
-			return this.currentLevel.clonePlayerBody();
+			return this.currentLevel.getPlayerBody();
 		} else {
 			return new ArrayList<REPoint>(0);
 		}
@@ -132,7 +132,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	@Override
 	public List<REPoint> getItems() {
 		if (this.currentLevel != null) {
-			return this.currentLevel.cloneItemList();
+			return this.currentLevel.getItemsList();
 		} else {
 			return new ArrayList<REPoint>(0);
 		}

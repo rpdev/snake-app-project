@@ -2,6 +2,7 @@ package se.chalmers.snake.gameengine;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import se.chalmers.snake.interfaces.LevelIC;
 import se.chalmers.snake.interfaces.util.REPoint;
@@ -21,23 +22,24 @@ class LevelEngine {
 	private double xScal, yScal, fixScal;
 	private int itemsRadius;
 	private int playerBodyWidth;
+	private boolean isRunning;
+	private int stepLength;
 
 	LevelEngine(LevelIC level, XYPoint gameFiledSize) {
 		this.level = level;
 		this.calcScal(gameFiledSize);
 		this.itemsRadius = (int) (this.fixScal * level.getItemsRadius());
 		this.playerBodyWidth = (int) (this.fixScal * level.getPlayerBodyWidth());
-
+		this.isRunning = true;
 		this.items = new ArrayList<ItemPoint>();
 		this.itemsCollect = new ArrayList<Integer>();
-
+		this.stepLength = level.getSpeed(this.itemsCollect);
 		XYPoint startPoint = new XYPoint((int) (this.xScal * level.getSnakeHeadStartLocation().x), (int) (this.yScal * level.getSnakeHeadStartLocation().y));
 		this.playerBody = new PlayerBody(gameFiledSize, startPoint, this.level.getStartAngle(), this.playerBodyWidth, level.getSnakeStartLength(), 0);
 		this.staticElement = Collections.unmodifiableList(this.listStaticElement());
 		this.score = 0;
 	}
 
-	
 	/**
 	 * Get a list of all items on the game filed.
 	 * @return 
@@ -46,7 +48,6 @@ class LevelEngine {
 		return this.items;
 	}
 
-	
 	int getItemsRadius() {
 		return this.itemsRadius;
 	}
@@ -58,11 +59,33 @@ class LevelEngine {
 	 * @param stepAngle
 	 * @param stepLength 
 	 */
-	void step(double stepAngle, int stepLength) {
+	synchronized boolean step(double stepAngle) {
+		if (this.isRunning == false) {
+			return false;
+		}
+
 		for (ItemPoint object : this.items) {
 			object.incTime();
 		}
-		this.playerBody.step(stepAngle, (int) (this.fixScal * stepLength));
+		
+		this.playerBody.step(stepAngle, (int) (this.fixScal * this.stepLength));
+		REPoint playerHead = this.playerBody.getHead();
+		if (this.isCollision(playerHead)) {
+			this.isRunning = false;
+			return false;
+		}
+		Iterator<ItemPoint> itPoint = this.items.iterator();
+		while(itPoint.hasNext()) {
+			ItemPoint item = itPoint.next();
+			if(playerHead.isCollideWith(item)) {
+				this.itemsCollect.add(item.time);	
+				this.stepLength = this.level.getSpeed(this.itemsCollect);
+				this.playerBody.addSeg(this.level.getBodyGrowth(item.time,this.itemsCollect.size()+1));
+				itPoint.remove();
+				this.addItems(this.level.getAddItems(this.itemsCollect.size(), this.items.size()));
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -77,7 +100,7 @@ class LevelEngine {
 	 * Get the player body, this is clone of the orginal.
 	 * @return 
 	 */
-	List<REPoint> clonePlayerBody() {
+	List<REPoint> getPlayerBody() {
 		ArrayList al = null;
 		synchronized (this.playerBody) {
 			al = new ArrayList(this.playerBody.size());
@@ -86,7 +109,7 @@ class LevelEngine {
 		return al;
 	}
 
-	List<REPoint> cloneItemList() {
+	List<REPoint> getItemsList() {
 		ArrayList al = null;
 		synchronized (this.items) {
 			al = new ArrayList(this.items.size());
@@ -102,11 +125,7 @@ class LevelEngine {
 	LevelIC getLevelData() {
 		return this.level;
 	}
-	
-	int getPlayerSpeed() {
-		return this.level.getSpeed(this.itemsCollect);
-	}
-	
+
 
 	private void calcScal(XYPoint gameFiledSize) {
 		int outScal = (gameFiledSize.x + gameFiledSize.y) / 2;
@@ -125,5 +144,23 @@ class LevelEngine {
 			}
 		}
 		return alRE;
+	}
+
+	private boolean isCollision(REPoint head) {
+		if (this.playerBody.isSelfCollision()) {
+			return true;
+		}
+		for (REPoint ePoint : this.staticElement) {
+			if (head.isCollideWith(ePoint)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	private void addItems(int count) {
+		
+		
 	}
 }

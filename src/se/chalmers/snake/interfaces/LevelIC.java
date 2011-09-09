@@ -84,11 +84,13 @@ public interface LevelIC {
 	public boolean hasReachedGoal(List<Integer> collectTime);
 	
 	/**
-	 * How many items should be displayed at once.
-	 * @param collectTime
+	 * How many items should add this time to the game.
+	 * @param totalCollected is the number of collects item the player has collect
+	 * @param totalItemInGame is the number of items on in the game now.
 	 * @return
 	 */
-	public int getItemsCount(int totalCollected);
+	//public int getItemsCount(int totalCollected);
+	public int getAddItems(int totalCollected,int totalItemInGame);
 	
 	/**
 	 * Growth of the snake's body after collected an item, this value

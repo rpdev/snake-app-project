@@ -2,6 +2,7 @@ package se.chalmers.snake.gameengine;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.ListIterator;
 import se.chalmers.snake.interfaces.util.REPoint;
 import se.chalmers.snake.interfaces.util.XYPoint;
 
@@ -109,7 +110,7 @@ class PlayerBody extends LinkedList<REPoint> {
 	 * @param p2
 	 * @return 
 	 */
-	private double getAngle(XYPoint p1, XYPoint p2) {
+	double getAngle(XYPoint p1, XYPoint p2) {
 		return Math.atan2(p1.y - p2.y, p1.x - p2.x);
 	}
 
@@ -118,7 +119,7 @@ class PlayerBody extends LinkedList<REPoint> {
 	 * @param angle
 	 * @param length 
 	 */
-	public synchronized void step(double angle, int length) {
+	synchronized void step(double angle, int length) {
 		this.lengthSincLastAddSegment += length;
 		if (length == this.bodySegmentRadius) {
 			this.step(angle);
@@ -153,7 +154,7 @@ class PlayerBody extends LinkedList<REPoint> {
 	 * Move the player 1 fix step, each step has a length of BodySegmentRadius
 	 * @param angle 
 	 */
-	public synchronized void step(double angle) {
+	synchronized void step(double angle) {
 		this.lengthSincLastAddSegment += this.bodySegmentRadius;
 		REPoint topSeg = super.removeFirst();
 		REPoint newSeg = new REPoint(REPoint.REType.BODYSEG, topSeg, this.bodySegmentRadius);
@@ -171,7 +172,7 @@ class PlayerBody extends LinkedList<REPoint> {
 	 * The head is the main part and the only point that is nead to be test for collide.
 	 * @return 
 	 */
-	public REPoint getHead() {
+	REPoint getHead() {
 		return super.getFirst();
 	}
 
@@ -184,5 +185,31 @@ class PlayerBody extends LinkedList<REPoint> {
 			sb.append("[").append(rep.x).append(":").append(rep.y).append("]\n");
 		}
 		return "PlayerBody{BufferSeg=" + bufferBodySegment + ", BodyRadius=" + bodySegmentRadius + ", \n" + sb.toString() + "}";
+	}
+
+	/**
+	 * Test if some part of the body is collision with the head.
+	 * The tre first segment will not be tests.
+	 * @return 
+	 */
+	synchronized boolean isSelfCollision() {
+		if (super.size() < 4) {
+			return false;
+		}
+		REPoint head = this.getFirst();
+		ListIterator<REPoint> it = super.listIterator(4);
+		while (it.hasNext()) {
+			if (head.isCollideWith(it.next())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	void addSeg(int bodyGrowth) {
+		if (bodyGrowth > 0) {
+			this.bufferBodySegment += bodyGrowth;
+		}
 	}
 }
