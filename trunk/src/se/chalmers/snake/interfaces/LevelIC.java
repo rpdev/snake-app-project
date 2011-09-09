@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.graphics.Point;
 import se.chalmers.snake.interfaces.util.REPoint;
+import se.chalmers.snake.interfaces.util.XYPoint;
 
 /**
  *
@@ -22,7 +23,7 @@ public interface LevelIC {
 	 * Return the default size of the map in pixels.
 	 * @return
 	 */
-	public Point getMapSize();
+	public XYPoint getMapSize();
 	
 	/**
 	 * Return the length of the snake at level start,
@@ -35,7 +36,7 @@ public interface LevelIC {
 	 * The start location of the snakes head.
 	 * @return
 	 */
-	public Point getSnakeHeadStartLocation();
+	public XYPoint getSnakeHeadStartLocation();
 	
 	/**
 	 * Get the direction of the snake body from the head at start,
