@@ -113,7 +113,11 @@ public class GameEngineTest {
 
 							@Override
 							public int getAddItems(int totalCollected, int totalItemInGame) {
-								return 1;
+								if(totalCollected==0) {
+									 return 1;
+								} else {
+									return 0;
+								}
 							}
 
 							@Override

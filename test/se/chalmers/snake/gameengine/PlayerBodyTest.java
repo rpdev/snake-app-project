@@ -44,7 +44,7 @@ public class PlayerBodyTest {
 	}
 
 	@Test
-	public void testAddBodySeg() {
+	public void testAddStartSeg() {
 		System.out.println("== testAddBodySeg ==");
 		PlayerBody pb = new PlayerBody(new XYPoint(100, 100), new XYPoint(50, 50), 0, 5, 5, 4);
 		for (int i = 0; i < 5; i++) {
@@ -57,7 +57,7 @@ public class PlayerBodyTest {
 	@Test
 	public void testMove() {
 		System.out.println("== testMove ==");
-		PlayerBody pb = new PlayerBody(new XYPoint(100, 100), new XYPoint(50, 50), 0, 5, 5, 4);
+		PlayerBody pb = new PlayerBody(new XYPoint(100, 100), new XYPoint(50, 50), 0, 5, 5,0);
 		for (int i = 0; i < 5; i++) {
 			System.out.println(" -- STEP testMove --");
 			pb.step(1.0, 3);
@@ -65,5 +65,22 @@ public class PlayerBodyTest {
 		}
 	}
 	
+	
+	@Test
+	public void testAddSegInGame() {
+		System.out.println("== testAddSegInGame ==");
+		PlayerBody pb = new PlayerBody(new XYPoint(100, 100), new XYPoint(50, 50), 0, 5, 5,0);
+		for (int i = 0; i < 3; i++) {
+			System.out.println(" -- STEP testAddSegInGame --");
+			pb.step(1.0, 3);
+			System.out.println(pb);
+		}
+		pb.addSeg(1);
+		for (int i = 0; i < 3; i++) {
+			System.out.println(" -- STEP testAddSegInGame --");
+			pb.step(1.0, 3);
+			System.out.println(pb);
+		}
+	}
 	
 }

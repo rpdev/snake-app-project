@@ -76,7 +76,9 @@ class LevelEngine {
 			this.isRunning = false;
 			return false;
 		}
+		// Test if the players head are collide with the items.
 		Iterator<ItemPoint> itPoint = this.items.iterator();
+		int addsItemCount = 0;
 		while(itPoint.hasNext()) {
 			ItemPoint item = itPoint.next();
 			if(playerHead.isCollideWith(item)) {
@@ -84,9 +86,12 @@ class LevelEngine {
 				this.stepLength = this.level.getSpeed(this.itemsCollect);
 				this.playerBody.addSeg(this.level.getBodyGrowth(item.time,this.itemsCollect.size()+1));
 				itPoint.remove();
-				this.addItems(this.level.getAddItems(this.itemsCollect.size(), this.items.size()));
+				addsItemCount += this.level.getAddItems(this.itemsCollect.size(), this.items.size()+addsItemCount);
+				//this.addItems(this.level.getAddItems(this.itemsCollect.size(), this.items.size()));
 			}
 		}
+		
+		this.addItems(addsItemCount);
 		return true;
 	}
 	
@@ -161,7 +166,8 @@ class LevelEngine {
 	
 	
 	private void addItems(int count) {
+		if(count>0) {
 		this.items.add( new ItemPoint(REPoint.REType.ITEM, new XYPoint(20,20), 10));
-		
+		}
 	}
 }
