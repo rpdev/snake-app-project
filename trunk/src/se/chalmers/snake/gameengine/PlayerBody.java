@@ -152,6 +152,8 @@ class PlayerBody implements Iterable<REPoint> {
 		if (this.bufferBodySegment > 0 && this.lengthSincLastAddSegment >= this.bodySegmentRadius) {
 			double mirrorAngle = angle > Math.PI ? angle - Math.PI : angle + Math.PI; // Get the Mirror angle.
 			FloatPoint newTail = this.nextPoint(this.seg.getLast(), mirrorAngle, this.bodySegmentRadius);
+			this.bufferBodySegment--;
+			this.lengthSincLastAddSegment = 0;
 			this.seg.addLast(newTail);
 		}
 	}
