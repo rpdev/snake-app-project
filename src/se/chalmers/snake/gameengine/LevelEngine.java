@@ -105,12 +105,7 @@ class LevelEngine {
 	 * @return 
 	 */
 	List<REPoint> getPlayerBody() {
-		ArrayList al = null;
-		synchronized (this.playerBody) {
-			al = new ArrayList(this.playerBody.size());
-			al.addAll(this.playerBody);
-		}
-		return al;
+		return this.playerBody.get();
 	}
 
 	List<REPoint> getItemsList() {
