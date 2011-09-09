@@ -15,7 +15,7 @@ class LevelEngine {
 
 	private int score;
 	private final LevelIC level;
-	private final PlayerBody playerBody;
+	final PlayerBody playerBody;
 	private final List<ItemPoint> items;
 	private final List<Integer> itemsCollect;
 	private final List<REPoint> staticElement;
@@ -86,6 +86,10 @@ class LevelEngine {
 			}
 		}
 		return true;
+	}
+	
+	boolean hasReachedGoal() {
+		return this.level.hasReachedGoal(this.itemsCollect);
 	}
 
 	/**
@@ -160,7 +164,9 @@ class LevelEngine {
 	
 	
 	private void addItems(int count) {
-		
+		/**
+		 * 
+		 */
 		
 	}
 }
