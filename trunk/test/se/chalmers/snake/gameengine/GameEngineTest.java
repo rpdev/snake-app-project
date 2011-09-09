@@ -103,7 +103,7 @@ public class GameEngineTest {
 
 							@Override
 							public int getSpeed(List<Integer> collectTime) {
-								return 10;
+							return 4;
 							}
 
 							@Override
@@ -152,7 +152,7 @@ public class GameEngineTest {
 
 					@Override
 					public double getAngleByRadians() {
-						return 0.0;
+						return 0.8;
 					}
 
 					@Override
