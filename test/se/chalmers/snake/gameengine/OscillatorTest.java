@@ -10,10 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Figaro
- */
+
 public class OscillatorTest {
 	private long diff = 0;
 	public OscillatorTest() {

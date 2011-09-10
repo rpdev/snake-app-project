@@ -19,10 +19,7 @@ import se.chalmers.snake.interfaces.MotionDetectorIC.ReferenceSurface;
 import se.chalmers.snake.interfaces.util.REPoint;
 import se.chalmers.snake.interfaces.util.XYPoint;
 
-/**
- *
- * @author Figaro
- */
+
 public class GameEngineTest {
 	
 	public GameEngineTest() {
