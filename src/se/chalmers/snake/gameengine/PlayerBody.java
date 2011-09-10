@@ -129,7 +129,7 @@ class PlayerBody implements Iterable<REPoint> {
 	 * @param angle
 	 * @param length 
 	 */
-	synchronized void step(double angle, int length) {
+	public synchronized void step(double angle, int length) {
 		this.lengthSincLastAddSegment += length;
 		if (length == this.bodySegmentRadius) {
 			this.step(angle);
@@ -180,7 +180,12 @@ class PlayerBody implements Iterable<REPoint> {
 	 */
 	public REPoint getHead() {
 		FloatPoint floatPoint = this.seg.getFirst();
-		return new REPoint(REPoint.REType.ITEM, (int) floatPoint.x, (int) floatPoint.y, this.bodySegmentRadius);
+		return new REPoint(REPoint.REType.HEADSEG, (int) floatPoint.x, (int) floatPoint.y, this.bodySegmentRadius);
+	}
+	
+	public REPoint getTail() {
+		FloatPoint floatPoint = this.seg.getLast();
+		return new REPoint(REPoint.REType.TAILSEG, (int) floatPoint.x, (int) floatPoint.y, this.bodySegmentRadius);
 	}
 
 	public List<REPoint> get() {
@@ -217,7 +222,7 @@ class PlayerBody implements Iterable<REPoint> {
 	 * The tre first segment will not be tests.
 	 * @return 
 	 */
-	synchronized boolean isSelfCollision() {
+	public synchronized boolean isSelfCollision() {
 		if (this.seg.size() > 3) {
 			FloatPoint head = this.seg.getFirst();
 			ListIterator<FloatPoint> it = this.seg.listIterator(3);
@@ -237,13 +242,13 @@ class PlayerBody implements Iterable<REPoint> {
 		return xx<this.bodySegmentRadius2 && yy<this.bodySegmentRadius2 && (Math.sqrt(xx * xx + yy * yy)) > (this.bodySegmentRadius2);
 	}
 
-	void addSeg(int bodyGrowth) {
+	public void addSeg(int bodyGrowth) {
 		if (bodyGrowth > 0) {
 			this.bufferBodySegment += bodyGrowth;
 		}
 	}
 
-	int size() {
+	public int size() {
 		return this.seg.size();
 	}
 

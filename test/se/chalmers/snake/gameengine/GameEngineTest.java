@@ -113,11 +113,7 @@ public class GameEngineTest {
 
 							@Override
 							public int getAddItems(int totalCollected, int totalItemInGame) {
-								if(totalCollected==0) {
-									 return 1;
-								} else {
-									return 0;
-								}
+								return 1;
 							}
 
 							@Override
@@ -156,7 +152,7 @@ public class GameEngineTest {
 
 					@Override
 					public double getAngleByRadians() {
-						return 0.4;
+						return 1.0;
 					}
 
 					@Override
