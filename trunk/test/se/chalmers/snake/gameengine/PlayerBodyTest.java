@@ -7,10 +7,7 @@ import se.chalmers.snake.interfaces.util.REPoint;
 import se.chalmers.snake.interfaces.util.XYPoint;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Figaro
- */
+
 public class PlayerBodyTest {
 
 	public PlayerBodyTest() {
