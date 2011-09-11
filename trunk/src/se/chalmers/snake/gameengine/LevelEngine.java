@@ -190,36 +190,24 @@ class LevelEngine {
 	 */
 	private void fullAllPossibleItemsList(int itemSize, XYPoint gameSize) {
 		int itemSize2 = itemSize * 2;
+		int itemSize3 = itemSize * 3;
 		int itemSize4 = itemSize * 4;
 
-		int startX = itemSize2 + (gameSize.x % itemSize4) / 2;
-		int countX = gameSize.x / itemSize4;
+		int startX = itemSize2 + (gameSize.x % itemSize3) / 2;
+		int countX = gameSize.x / itemSize3;
 
-		int startY = itemSize2 + (gameSize.y % itemSize4) / 2;
-		int countY = gameSize.y / itemSize4;
-		List<REPoint> playerBodyData = this.playerBody.get();
+		int startY = itemSize2 + (gameSize.y % itemSize3) / 2;
+		int countY = gameSize.y / itemSize3;
 		for (int x = 0; x < countX; x++) {
 			for (int y = 0; y < countY; y++) {
-				
-				
-				
-				
-				REPoint point = new REPoint(REPoint.REType.ITEM, startX + x * itemSize4, startY + y * itemSize4, itemSize2);
-				for(REPoint playerPoint:playerBodyData) {
-					if(point.isCollideWith(playerPoint)) {
-						point = new REPoint(REPoint.REType.BODYSEG, startX + x * itemSize4, startY + y * itemSize4, itemSize2);
-					}
-				}
-								
+				REPoint point = new REPoint(REPoint.REType.ITEM, startX + x * itemSize3, startY + y * itemSize3, itemSize2);
 				if (!this.isStaticElementCollision(point)) {
 					this.allPossibleItems.add(point);
 				}
 			}
 		}
-		
 		for(REPoint r:this.allPossibleItems) {
 			System.out.println(r);
 		}
-
 	}
 }
