@@ -16,13 +16,22 @@ class LevelEngine {
 	private int score;
 	private final LevelIC level;
 	final PlayerBody playerBody;
+	
+	
+	// Holds data for place items in the game, and hold history of collect items.
 	private final List<REPoint> allPossibleItems;
+	private int allPossibleItemsIndex;
 	private final List<ItemPoint> items;
 	private final List<Integer> itemsCollect;
+	
+	
+	// Holds data for statics variabels, and calcs
 	private final List<REPoint> staticElement;
 	private double xScal, yScal, fixScal;
 	private int itemsRadius;
 	private int playerBodyWidth;
+	
+	
 	private boolean isRunning;
 	private int stepLength;
 
@@ -39,10 +48,19 @@ class LevelEngine {
 		this.playerBody = new PlayerBody(gameFiledSize, startPoint, this.level.getStartAngle(), this.playerBodyWidth, level.getSnakeStartLength(), 0);
 		this.staticElement = Collections.unmodifiableList(this.listStaticElement());
 		this.score = 0;
+
+		/**
+		 * create a source of possible locations of items to be place at.
+		 */
 		this.allPossibleItems = new ArrayList<REPoint>();
 		this.fullAllPossibleItemsList(itemsRadius, gameFiledSize);
+		Collections.shuffle(this.allPossibleItems);
+		this.allPossibleItemsIndex = 0;
 
 
+		/**
+		 * Add the basic numbers of items.
+		 */
 		this.addItems(this.level.getAddItems(0, 0));
 
 
@@ -71,9 +89,6 @@ class LevelEngine {
 		if (this.isRunning == false) {
 			return false;
 		}
-
-
-
 		this.playerBody.step(stepAngle, (int) (this.fixScal * this.stepLength));
 		REPoint playerHead = this.playerBody.getHead();
 		if (this.isCollision()) {
@@ -169,8 +184,25 @@ class LevelEngine {
 	}
 
 	private void addItems(int count) {
+		
 		if (count > 0) {
-			this.items.add(new ItemPoint(REPoint.REType.ITEM, new XYPoint(20, 20), 10));
+			for (int i = 0; i < 2; i++) {
+				while (this.allPossibleItemsIndex < this.allPossibleItems.size() && count > 0) {
+					REPoint mainPoint = this.allPossibleItems.get(this.allPossibleItemsIndex++);
+					int x = (int) (mainPoint.x + (Math.random() * this.itemsRadius * 2 - this.itemsRadius));
+					int y = (int) (mainPoint.y + (Math.random() * this.itemsRadius * 2 - this.itemsRadius));
+					ItemPoint item = new ItemPoint(REPoint.REType.ITEM, x, y, this.itemsRadius);
+					if (!this.playerBody.isCollisionWith(item)) {
+						this.items.add(item);
+						count--;
+					}
+				}
+				if (count == 0) {
+					return;
+				}
+				this.allPossibleItemsIndex = 0;
+				Collections.shuffle(this.allPossibleItems);
+			}
 		}
 	}
 
@@ -192,11 +224,9 @@ class LevelEngine {
 		int itemSize2 = itemSize * 2;
 		int itemSize3 = itemSize * 3;
 		int itemSize4 = itemSize * 4;
-
-		int startX = itemSize2 + (gameSize.x % itemSize3) / 2;
+		int startX = itemSize2 + ((gameSize.x - itemSize4) % itemSize3) / 2;
 		int countX = gameSize.x / itemSize3;
-
-		int startY = itemSize2 + (gameSize.y % itemSize3) / 2;
+		int startY = itemSize2 + ((gameSize.y - itemSize4) % itemSize3) / 2;
 		int countY = gameSize.y / itemSize3;
 		for (int x = 0; x < countX; x++) {
 			for (int y = 0; y < countY; y++) {
@@ -205,9 +235,6 @@ class LevelEngine {
 					this.allPossibleItems.add(point);
 				}
 			}
-		}
-		for(REPoint r:this.allPossibleItems) {
-			System.out.println(r);
 		}
 	}
 }

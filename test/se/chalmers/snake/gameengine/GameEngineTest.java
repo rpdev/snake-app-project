@@ -180,13 +180,13 @@ public class GameEngineTest {
 		GameEngine gameEngine = new GameEngine(this.getControlResources());
 		gameEngine.loadLevel("Level 1");
 		
-		/*
+		
 		gameEngine.startGame();
 		try {
 			Thread.sleep(100000);
 		} catch (Exception ex) {
 		}
 		gameEngine.pauseGame();
-		 */
+		
 	}
 }
