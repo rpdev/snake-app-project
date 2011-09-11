@@ -9,30 +9,30 @@ import se.chalmers.snake.interfaces.util.REPoint;
 import se.chalmers.snake.interfaces.util.XYPoint;
 
 /**
- * Make the player body, of this game, the player body is basce on a LinkedList of REPoint.
+ * Make the player body, of this game, the player body is base on a LinkedList of REPoint.
  */
 class PlayerBody implements Iterable<REPoint> {
 
-	private class FloatPoint {
+	private class PBFPoint {
 
 		private float x, y;
 
-		private FloatPoint(float x, float y) {
+		private PBFPoint(float x, float y) {
 			this.x = x;
 			this.y = y;
 		}
 
-		private FloatPoint(XYPoint p) {
+		private PBFPoint(XYPoint p) {
 			this.x = p.x;
 			this.y = p.y;
 		}
 
-		private FloatPoint(FloatPoint fp) {
+		private PBFPoint(PBFPoint fp) {
 			this.x = fp.x;
 			this.y = fp.y;
 		}
 	}
-	private final LinkedList<FloatPoint> seg;
+	private final LinkedList<PBFPoint> seg;
 	private final int bodySegmentRadius;
 	private final int bodySegmentRadius2;
 	private final XYPoint gameSize;
@@ -53,7 +53,7 @@ class PlayerBody implements Iterable<REPoint> {
 			throw new IllegalArgumentException("The condition 'bodySegmentRadius > 0 && startSegNumber > 1 && startAngle >= 0 && startAngle <= Math.PI * 2' is not true.");
 		}
 
-		this.seg = new LinkedList<FloatPoint>();
+		this.seg = new LinkedList<PBFPoint>();
 		this.gameSize = gameSize;
 		this.bodySegmentRadius = bodySegmentRadius;
 		this.bodySegmentRadius2 = 2 * this.bodySegmentRadius;
@@ -68,10 +68,8 @@ class PlayerBody implements Iterable<REPoint> {
 	 * @param segCount 
 	 */
 	private void initBody(XYPoint point, double angle, int segCount) {
-		//super.add(new REPoint(REPoint.REType.HEADSEG, point, this.bodySegmentRadius));
-		FloatPoint floatPoint = new FloatPoint(point);
+		PBFPoint floatPoint = new PBFPoint(point);
 		this.seg.add(floatPoint);
-
 		double mirrorAngle = angle > Math.PI ? angle - Math.PI : angle + Math.PI; // Get the Mirror angle.
 		for (int i = 0; i < segCount; i++) {
 			floatPoint = this.nextPoint(floatPoint, mirrorAngle, this.bodySegmentRadius);
@@ -80,7 +78,14 @@ class PlayerBody implements Iterable<REPoint> {
 		}
 	}
 
-	private FloatPoint nextPoint(FloatPoint oldPoint, double angle, int length) {
+	/**
+	 * Calc a new PBFPoint from the old, that the new points is move from the old with select lenght and angle.
+	 * @param oldPoint
+	 * @param angle
+	 * @param length
+	 * @return 
+	 */
+	private PBFPoint nextPoint(PBFPoint oldPoint, double angle, int length) {
 		float newX = (float) (oldPoint.x + length * Math.cos(angle));
 		float newY = (float) (oldPoint.y + length * Math.sin(angle));
 		if (newX <= 0) {
@@ -93,10 +98,16 @@ class PlayerBody implements Iterable<REPoint> {
 		} else if (newY > this.gameSize.y) {
 			newY = newY - this.gameSize.y;
 		}
-		return new FloatPoint(newX, newY);
+		return new PBFPoint(newX, newY);
 	}
 
-	private void nextPointStep(FloatPoint point, double angle, int length) {
+	/**
+	 * Modify the PBFPoint to move select lenght in select angle
+	 * @param point
+	 * @param angle
+	 * @param length 
+	 */
+	private void nextPointStep(PBFPoint point, double angle, int length) {
 		float newX = (float) (point.x + length * Math.cos(angle));
 		float newY = (float) (point.y + length * Math.sin(angle));
 		if (newX <= 0) {
@@ -119,7 +130,7 @@ class PlayerBody implements Iterable<REPoint> {
 	 * @param p2
 	 * @return 
 	 */
-	private double getAngle(FloatPoint p1, FloatPoint p2) {
+	private double getAngle(PBFPoint p1, PBFPoint p2) {
 		return Math.atan2(p1.y - p2.y, p1.x - p2.x);
 	}
 
@@ -135,23 +146,23 @@ class PlayerBody implements Iterable<REPoint> {
 			this.step(angle);
 			return;
 		}
-		FloatPoint oldPoint = null;
-		Iterator<FloatPoint> it = this.seg.iterator();
+		PBFPoint oldPoint = null;
+		Iterator<PBFPoint> it = this.seg.iterator();
 		while (it.hasNext()) {
-			FloatPoint point = it.next();
+			PBFPoint point = it.next();
 			if (oldPoint != null) {
 				angle = this.getAngle(oldPoint, point);
 				oldPoint.x = point.x;
 				oldPoint.y = point.y;
 			} else {
-				oldPoint = new FloatPoint(point);
+				oldPoint = new PBFPoint(point);
 			}
 			this.nextPointStep(point, angle, length);
 		}
 
 		if (this.bufferBodySegment > 0 && this.lengthSincLastAddSegment >= this.bodySegmentRadius) {
 			double mirrorAngle = angle > Math.PI ? angle - Math.PI : angle + Math.PI; // Get the Mirror angle.
-			FloatPoint newTail = this.nextPoint(this.seg.getLast(), mirrorAngle, this.bodySegmentRadius);
+			PBFPoint newTail = this.nextPoint(this.seg.getLast(), mirrorAngle, this.bodySegmentRadius);
 			this.bufferBodySegment--;
 			this.lengthSincLastAddSegment = 0;
 			this.seg.addLast(newTail);
@@ -179,21 +190,21 @@ class PlayerBody implements Iterable<REPoint> {
 	 * @return 
 	 */
 	public REPoint getHead() {
-		FloatPoint floatPoint = this.seg.getFirst();
+		PBFPoint floatPoint = this.seg.getFirst();
 		return new REPoint(REPoint.REType.HEADSEG, (int) floatPoint.x, (int) floatPoint.y, this.bodySegmentRadius);
 	}
 
 	public REPoint getTail() {
-		FloatPoint floatPoint = this.seg.getLast();
+		PBFPoint floatPoint = this.seg.getLast();
 		return new REPoint(REPoint.REType.TAILSEG, (int) floatPoint.x, (int) floatPoint.y, this.bodySegmentRadius);
 	}
 
 	public List<REPoint> get() {
 		ArrayList<REPoint> rList = new ArrayList<REPoint>(this.seg.size());
 		boolean isFirst = true;
-		Iterator<FloatPoint> it = this.seg.iterator();
+		Iterator<PBFPoint> it = this.seg.iterator();
 		while (it.hasNext()) {
-			FloatPoint point = it.next();
+			PBFPoint point = it.next();
 			if (isFirst == true) {
 				rList.add(new REPoint(REPoint.REType.HEADSEG, (int) point.x, (int) point.y, this.bodySegmentRadius));
 				isFirst = false;
@@ -210,9 +221,9 @@ class PlayerBody implements Iterable<REPoint> {
 	public String toString() {
 
 		StringBuilder sb = new StringBuilder();
-		Iterator<FloatPoint> it = this.seg.iterator();
+		Iterator<PBFPoint> it = this.seg.iterator();
 		while (it.hasNext()) {
-			FloatPoint rep = it.next();
+			PBFPoint rep = it.next();
 			sb.append("[").append((int) rep.x).append(":").append((int) rep.y).append("]\n");
 		}
 		return "PlayerBody{Size=" + this.seg.size() + ", BufferSeg=" + this.bufferBodySegment + ", BodyRadius=" + this.bodySegmentRadius + ", \n" + sb.toString() + "}";
@@ -225,8 +236,8 @@ class PlayerBody implements Iterable<REPoint> {
 	 */
 	public synchronized boolean isSelfCollision() {
 		if (this.seg.size() > 3) {
-			FloatPoint head = this.seg.getFirst();
-			ListIterator<FloatPoint> it = this.seg.listIterator(3);
+			PBFPoint head = this.seg.getFirst();
+			ListIterator<PBFPoint> it = this.seg.listIterator(3);
 			while (it.hasNext()) {
 				if (this.isCollision(it.next(), head)) {
 					return false;
@@ -238,7 +249,7 @@ class PlayerBody implements Iterable<REPoint> {
 	}
 
 	synchronized boolean isCollisionWith(REPoint point) {
-		for (FloatPoint body : this.seg) {
+		for (PBFPoint body : this.seg) {
 			float xx = Math.abs(body.x - point.x);
 			float yy = Math.abs(body.y - point.y);
 			int rr = point.radius + this.bodySegmentRadius;
@@ -249,7 +260,7 @@ class PlayerBody implements Iterable<REPoint> {
 		return false;
 	}
 
-	private boolean isCollision(FloatPoint p1, FloatPoint p2) {
+	private boolean isCollision(PBFPoint p1, PBFPoint p2) {
 		float xx = Math.abs(p1.x - p2.x);
 		float yy = Math.abs(p1.y - p2.y);
 		return xx < this.bodySegmentRadius2 && yy < this.bodySegmentRadius2 && (Math.sqrt(xx * xx + yy * yy)) < (this.bodySegmentRadius2);

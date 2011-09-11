@@ -13,25 +13,29 @@ import se.chalmers.snake.interfaces.util.XYPoint;
  */
 class LevelEngine {
 
+	private class LEIPoint extends REPoint {
+		private int time = 0;
+		private LEIPoint(XYPoint xyPoint, int radius) {
+			super(REPoint.REType.ITEM, xyPoint, radius);
+
+		}
+		private LEIPoint(int x, int y, int radius) {
+			super(REPoint.REType.ITEM,x, y, radius);
+		}
+	}
 	private int score;
 	private final LevelIC level;
 	final PlayerBody playerBody;
-	
-	
 	// Holds data for place items in the game, and hold history of collect items.
 	private final List<REPoint> allPossibleItems;
 	private int allPossibleItemsIndex;
-	private final List<ItemPoint> items;
+	private final List<LEIPoint> items;
 	private final List<Integer> itemsCollect;
-	
-	
 	// Holds data for statics variabels, and calcs
 	private final List<REPoint> staticElement;
 	private double xScal, yScal, fixScal;
 	private int itemsRadius;
 	private int playerBodyWidth;
-	
-	
 	private boolean isRunning;
 	private int stepLength;
 
@@ -41,7 +45,7 @@ class LevelEngine {
 		this.itemsRadius = (int) (this.fixScal * level.getItemsRadius());
 		this.playerBodyWidth = (int) (this.fixScal * level.getPlayerBodyWidth());
 		this.isRunning = true;
-		this.items = new ArrayList<ItemPoint>();
+		this.items = new ArrayList<LEIPoint>();
 		this.itemsCollect = new ArrayList<Integer>();
 		this.stepLength = level.getSpeed(this.itemsCollect);
 		XYPoint startPoint = new XYPoint((int) (this.xScal * level.getSnakeHeadStartLocation().x), (int) (this.yScal * level.getSnakeHeadStartLocation().y));
@@ -70,7 +74,7 @@ class LevelEngine {
 	 * Get a list of all items on the game filed.
 	 * @return 
 	 */
-	List<ItemPoint> getItem() {
+	List<LEIPoint> getItem() {
 		return this.items;
 	}
 
@@ -96,10 +100,10 @@ class LevelEngine {
 			return false;
 		}
 		// Test if the players head are collide with the items.
-		Iterator<ItemPoint> itPoint = this.items.iterator();
+		Iterator<LEIPoint> itPoint = this.items.iterator();
 		int addsItemCount = 0;
 		while (itPoint.hasNext()) {
-			ItemPoint item = itPoint.next();
+			LEIPoint item = itPoint.next();
 			if (playerHead.isCollideWith(item)) {
 				this.itemsCollect.add(item.time);
 				this.stepLength = this.level.getSpeed(this.itemsCollect);
@@ -147,10 +151,18 @@ class LevelEngine {
 		return this.score;
 	}
 
+	/**
+	 * Get the level data, only some of the meta data should be used.
+	 * @return 
+	 */
 	LevelIC getLevelData() {
 		return this.level;
 	}
 
+	/**
+	 * Get the escaling factor of the map to the screen resolution
+	 * @param gameFiledSize 
+	 */
 	private void calcScal(XYPoint gameFiledSize) {
 		int outScal = (gameFiledSize.x + gameFiledSize.y) / 2;
 		XYPoint inScalPoint = new XYPoint(this.level.getMapSize().x, this.level.getMapSize().y);
@@ -160,6 +172,10 @@ class LevelEngine {
 		this.fixScal = (double) outScal / (double) inScal;
 	}
 
+	/**
+	 * Recalc all REPoints for the Static Elements.
+	 * @return 
+	 */
 	private List<REPoint> listStaticElement() {
 		ArrayList<REPoint> alRE = new ArrayList<REPoint>();
 		for (REPoint rsp : this.level.getObstacles()) {
@@ -170,6 +186,11 @@ class LevelEngine {
 		return alRE;
 	}
 
+	/**
+	 * Test if the player has collision with a wall or the player self.
+	 * ( Only the head will be test for collision for speed up the test.
+	 * @return 
+	 */
 	private boolean isCollision() {
 		if (this.playerBody.isSelfCollision()) {
 			return true;
@@ -183,15 +204,18 @@ class LevelEngine {
 		return false;
 	}
 
+	/**
+	 * Add a new item in the game
+	 * @param count 
+	 */
 	private void addItems(int count) {
-		
 		if (count > 0) {
 			for (int i = 0; i < 2; i++) {
 				while (this.allPossibleItemsIndex < this.allPossibleItems.size() && count > 0) {
 					REPoint mainPoint = this.allPossibleItems.get(this.allPossibleItemsIndex++);
 					int x = (int) (mainPoint.x + (Math.random() * this.itemsRadius * 2 - this.itemsRadius));
 					int y = (int) (mainPoint.y + (Math.random() * this.itemsRadius * 2 - this.itemsRadius));
-					ItemPoint item = new ItemPoint(REPoint.REType.ITEM, x, y, this.itemsRadius);
+					LEIPoint item = new LEIPoint(x, y, this.itemsRadius);
 					if (!this.playerBody.isCollisionWith(item)) {
 						this.items.add(item);
 						count--;
