@@ -16,6 +16,7 @@ class LevelEngine {
 	private int score;
 	private final LevelIC level;
 	final PlayerBody playerBody;
+	private final List<REPoint> allPossibleItems;
 	private final List<ItemPoint> items;
 	private final List<Integer> itemsCollect;
 	private final List<REPoint> staticElement;
@@ -38,8 +39,13 @@ class LevelEngine {
 		this.playerBody = new PlayerBody(gameFiledSize, startPoint, this.level.getStartAngle(), this.playerBodyWidth, level.getSnakeStartLength(), 0);
 		this.staticElement = Collections.unmodifiableList(this.listStaticElement());
 		this.score = 0;
-		this.addItems(this.level.getAddItems(0,0));
-		
+		this.allPossibleItems = new ArrayList<REPoint>();
+		this.fullAllPossibleItemsList(itemsRadius, gameFiledSize);
+
+
+		this.addItems(this.level.getAddItems(0, 0));
+
+
 	}
 
 	/**
@@ -66,35 +72,33 @@ class LevelEngine {
 			return false;
 		}
 
-		for (ItemPoint object : this.items) {
-			object.incTime();
-		}
-		
+
+
 		this.playerBody.step(stepAngle, (int) (this.fixScal * this.stepLength));
 		REPoint playerHead = this.playerBody.getHead();
-		if (this.isCollision(playerHead)) {
+		if (this.isCollision()) {
 			this.isRunning = false;
 			return false;
 		}
 		// Test if the players head are collide with the items.
 		Iterator<ItemPoint> itPoint = this.items.iterator();
 		int addsItemCount = 0;
-		while(itPoint.hasNext()) {
+		while (itPoint.hasNext()) {
 			ItemPoint item = itPoint.next();
-			if(playerHead.isCollideWith(item)) {
-				this.itemsCollect.add(item.time);	
+			if (playerHead.isCollideWith(item)) {
+				this.itemsCollect.add(item.time);
 				this.stepLength = this.level.getSpeed(this.itemsCollect);
-				this.playerBody.addSeg(this.level.getBodyGrowth(item.time,this.itemsCollect.size()+1));
+				this.playerBody.addSeg(this.level.getBodyGrowth(item.time, this.itemsCollect.size() + 1));
 				itPoint.remove();
-				addsItemCount += this.level.getAddItems(this.itemsCollect.size(), this.items.size()+addsItemCount);
+				addsItemCount += this.level.getAddItems(this.itemsCollect.size(), this.items.size() + addsItemCount);
 				//this.addItems(this.level.getAddItems(this.itemsCollect.size(), this.items.size()));
 			}
 		}
-		
+
 		this.addItems(addsItemCount);
 		return true;
 	}
-	
+
 	boolean hasReachedGoal() {
 		return this.level.hasReachedGoal(this.itemsCollect);
 	}
@@ -132,7 +136,6 @@ class LevelEngine {
 		return this.level;
 	}
 
-
 	private void calcScal(XYPoint gameFiledSize) {
 		int outScal = (gameFiledSize.x + gameFiledSize.y) / 2;
 		XYPoint inScalPoint = new XYPoint(this.level.getMapSize().x, this.level.getMapSize().y);
@@ -152,10 +155,11 @@ class LevelEngine {
 		return alRE;
 	}
 
-	private boolean isCollision(REPoint head) {
+	private boolean isCollision() {
 		if (this.playerBody.isSelfCollision()) {
 			return true;
 		}
+		REPoint head = this.playerBody.getHead();
 		for (REPoint ePoint : this.staticElement) {
 			if (head.isCollideWith(ePoint)) {
 				return true;
@@ -163,11 +167,59 @@ class LevelEngine {
 		}
 		return false;
 	}
-	
-	
+
 	private void addItems(int count) {
-		if(count>0) {
-		this.items.add( new ItemPoint(REPoint.REType.ITEM, new XYPoint(20,20), 10));
+		if (count > 0) {
+			this.items.add(new ItemPoint(REPoint.REType.ITEM, new XYPoint(20, 20), 10));
 		}
+	}
+
+	private boolean isStaticElementCollision(REPoint point) {
+		for (REPoint ePoint : this.staticElement) {
+			if (point.isCollideWith(ePoint)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Make a 2d map of the game filed for place the Items on.
+	 * @param itemSize
+	 * @param gameSize 
+	 */
+	private void fullAllPossibleItemsList(int itemSize, XYPoint gameSize) {
+		int itemSize2 = itemSize * 2;
+		int itemSize4 = itemSize * 4;
+
+		int startX = itemSize2 + (gameSize.x % itemSize4) / 2;
+		int countX = gameSize.x / itemSize4;
+
+		int startY = itemSize2 + (gameSize.y % itemSize4) / 2;
+		int countY = gameSize.y / itemSize4;
+		List<REPoint> playerBodyData = this.playerBody.get();
+		for (int x = 0; x < countX; x++) {
+			for (int y = 0; y < countY; y++) {
+				
+				
+				
+				
+				REPoint point = new REPoint(REPoint.REType.ITEM, startX + x * itemSize4, startY + y * itemSize4, itemSize2);
+				for(REPoint playerPoint:playerBodyData) {
+					if(point.isCollideWith(playerPoint)) {
+						point = new REPoint(REPoint.REType.BODYSEG, startX + x * itemSize4, startY + y * itemSize4, itemSize2);
+					}
+				}
+								
+				if (!this.isStaticElementCollision(point)) {
+					this.allPossibleItems.add(point);
+				}
+			}
+		}
+		
+		for(REPoint r:this.allPossibleItems) {
+			System.out.println(r);
+		}
+
 	}
 }
