@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package se.chalmers.snake.gameengine;
 
 import android.graphics.Point;
@@ -85,7 +82,9 @@ public class GameEngineTest {
 
 							@Override
 							public List<REPoint> getObstacles() {
-								return new ArrayList<REPoint>(0);
+								ArrayList<REPoint> a = new ArrayList<REPoint>(1);
+								a.add(new REPoint(REPoint.REType.WALL, 10,10,10));
+								return a;
 							}
 
 							@Override
@@ -171,7 +170,7 @@ public class GameEngineTest {
 
 			@Override
 			public XYPoint getScreenSize() {
-				return new XYPoint(1024, 1024);
+				return new XYPoint(100, 100);
 			}
 		};
 	}

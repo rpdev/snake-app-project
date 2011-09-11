@@ -56,7 +56,7 @@ class PlayerBody implements Iterable<REPoint> {
 		this.seg = new LinkedList<FloatPoint>();
 		this.gameSize = gameSize;
 		this.bodySegmentRadius = bodySegmentRadius;
-		this.bodySegmentRadius2 = 2*this.bodySegmentRadius;
+		this.bodySegmentRadius2 = 2 * this.bodySegmentRadius;
 		this.bufferBodySegment = startBufferSegNumber;
 		this.initBody(startPosition, startAngle, startSegNumber - 1);
 	}
@@ -182,7 +182,7 @@ class PlayerBody implements Iterable<REPoint> {
 		FloatPoint floatPoint = this.seg.getFirst();
 		return new REPoint(REPoint.REType.HEADSEG, (int) floatPoint.x, (int) floatPoint.y, this.bodySegmentRadius);
 	}
-	
+
 	public REPoint getTail() {
 		FloatPoint floatPoint = this.seg.getLast();
 		return new REPoint(REPoint.REType.TAILSEG, (int) floatPoint.x, (int) floatPoint.y, this.bodySegmentRadius);
@@ -196,6 +196,7 @@ class PlayerBody implements Iterable<REPoint> {
 			FloatPoint point = it.next();
 			if (isFirst == true) {
 				rList.add(new REPoint(REPoint.REType.HEADSEG, (int) point.x, (int) point.y, this.bodySegmentRadius));
+				isFirst = false;
 			} else if (it.hasNext()) {
 				rList.add(new REPoint(REPoint.REType.BODYSEG, (int) point.x, (int) point.y, this.bodySegmentRadius));
 			} else {
@@ -236,10 +237,22 @@ class PlayerBody implements Iterable<REPoint> {
 		return false;
 	}
 
+	synchronized boolean isCollisionWith(REPoint point) {
+		for (FloatPoint body : this.seg) {
+			float xx = Math.abs(body.x - point.x);
+			float yy = Math.abs(body.y - point.y);
+			int rr = point.radius + this.bodySegmentRadius;
+			if (xx < rr && yy < rr && Math.sqrt(xx * xx + yy * yy) < rr) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private boolean isCollision(FloatPoint p1, FloatPoint p2) {
-		float xx=Math.abs(p1.x-p2.x);
-		float yy=Math.abs(p1.y-p2.y);
-		return xx<this.bodySegmentRadius2 && yy<this.bodySegmentRadius2 && (Math.sqrt(xx * xx + yy * yy)) > (this.bodySegmentRadius2);
+		float xx = Math.abs(p1.x - p2.x);
+		float yy = Math.abs(p1.y - p2.y);
+		return xx < this.bodySegmentRadius2 && yy < this.bodySegmentRadius2 && (Math.sqrt(xx * xx + yy * yy)) < (this.bodySegmentRadius2);
 	}
 
 	public void addSeg(int bodyGrowth) {
