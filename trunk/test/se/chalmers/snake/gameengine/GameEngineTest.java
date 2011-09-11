@@ -19,9 +19,8 @@ import se.chalmers.snake.interfaces.MotionDetectorIC.ReferenceSurface;
 import se.chalmers.snake.interfaces.util.REPoint;
 import se.chalmers.snake.interfaces.util.XYPoint;
 
-
 public class GameEngineTest {
-	
+
 	public GameEngineTest() {
 	}
 
@@ -32,13 +31,14 @@ public class GameEngineTest {
 	@AfterClass
 	public static void tearDownClass() throws Exception {
 	}
-	
+
 	private ControlResourcesIC getControlResources() {
 		return new ControlResourcesIC() {
 
 			@Override
 			public LevelDatabaseIC getLevelDatabase() {
 				return new LevelDatabaseIC() {
+
 					@Override
 					public LevelIC getByLevel(int level) {
 						return null;
@@ -65,7 +65,7 @@ public class GameEngineTest {
 
 							@Override
 							public XYPoint getMapSize() {
-								return new XYPoint(100,100);
+								return new XYPoint(100, 100);
 							}
 
 							@Override
@@ -75,7 +75,7 @@ public class GameEngineTest {
 
 							@Override
 							public XYPoint getSnakeHeadStartLocation() {
-								return new XYPoint(50,50);
+								return new XYPoint(50, 50);
 							}
 
 							@Override
@@ -100,7 +100,7 @@ public class GameEngineTest {
 
 							@Override
 							public int getSpeed(List<Integer> collectTime) {
-							return 2;
+								return 2;
 							}
 
 							@Override
@@ -121,10 +121,14 @@ public class GameEngineTest {
 					}
 
 					@Override
-					public String[] getLevelListByName() { return null; }
+					public String[] getLevelListByName() {
+						return null;
+					}
 
 					@Override
-					public int[] getLevelListByLevel() { return null; }
+					public int[] getLevelListByLevel() {
+						return null;
+					}
 				};
 			}
 
@@ -133,14 +137,16 @@ public class GameEngineTest {
 				return new MotionDetectorIC() {
 
 					@Override
-					public void start() {}
+					public void start() {
+					}
 
 					@Override
 					public void stop() {
 					}
 
 					@Override
-					public void setReferenceSurface(ReferenceSurface rs) {}
+					public void setReferenceSurface(ReferenceSurface rs) {
+					}
 
 					@Override
 					public int getAngleByDegrees() {
@@ -165,26 +171,23 @@ public class GameEngineTest {
 
 			@Override
 			public XYPoint getScreenSize() {
-				return new XYPoint(100,100);
+				return new XYPoint(1024, 1024);
 			}
 		};
 	}
-	
-	
-	
-	
-	
 
 	@Test
 	public void testRunGame() {
 		GameEngine gameEngine = new GameEngine(this.getControlResources());
 		gameEngine.loadLevel("Level 1");
+		
+		/*
 		gameEngine.startGame();
-		try{
+		try {
 			Thread.sleep(100000);
-		} catch(Exception ex) {}
+		} catch (Exception ex) {
+		}
 		gameEngine.pauseGame();
-		
-		
+		 */
 	}
 }
