@@ -16,7 +16,7 @@ import se.chalmers.snake.mapeditor.LoadSaveMapXML.SquareData;
 import se.chalmers.snake.mapeditor.Square.Dir;
 
 class SnakeMapEditor {
-	private final MainPanel mainPanel = new MainPanel(this, 45, 45);
+	private final MainPanel mainPanel = new MainPanel(this, 35, 35);
 	private final JFrame frame;
 	private Square markedSquare;
 
