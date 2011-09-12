@@ -106,7 +106,8 @@ class Square extends JButton {
 	}
 	
 	void markPath(Dir dir, int length){
-		filled = !filled;
+		if(!marked)
+			filled = !filled;
 		if(length > 0 && neighbors.containsKey(dir))
 			neighbors.get(dir).markPath(dir, --length);
 		this.repaint();
