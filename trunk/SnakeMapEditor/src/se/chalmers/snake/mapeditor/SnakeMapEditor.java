@@ -3,6 +3,7 @@ package se.chalmers.snake.mapeditor;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.Point;
 import java.io.File;
 import java.util.EnumMap;
 import java.util.Map.Entry;
@@ -15,9 +16,16 @@ import se.chalmers.snake.mapeditor.LoadSaveMapXML.Data;
 import se.chalmers.snake.mapeditor.LoadSaveMapXML.SquareData;
 import se.chalmers.snake.mapeditor.Square.Dir;
 
+/**
+ * This package is used to easily create maps and see what it
+ * look like. The classes in this package contains lots of bugs.
+ * The map editor is designed for developers that have a good understanding in
+ * how the map editor works and therefore know how to avoid bugs. 
+ */
 class SnakeMapEditor {
 	private final MainPanel mainPanel = new MainPanel(this, 35, 35);
 	private final JFrame frame;
+	private boolean drawSnake = false;
 	private Square markedSquare;
 
 	private SnakeMapEditor() {
@@ -29,7 +37,7 @@ class SnakeMapEditor {
 	}
 
 	private JFrame createFrame() {
-		JFrame frame = new JFrame("WARNING: No safety checks, only developers!");
+		JFrame frame = new JFrame("WARNING: No safety checks, only developers! Alpha version");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 		frame.add(new LeftSidePanel(this), BorderLayout.WEST);
@@ -75,10 +83,14 @@ class SnakeMapEditor {
 	}
 
 	void setMarkedSquare(Square square) {
-		if(markedSquare != null)
-			markedSquare.removeMark();
+		if(markedSquare != null){
+			markedSquare.setMark(false);
+		}
 		markedSquare = square;
-		square.setMark();
+		if(drawSnake)
+			square.setSnakeMark(true);
+		else
+			square.setMark(true);
 	}
 
 	void loadMap() {
@@ -93,7 +105,7 @@ class SnakeMapEditor {
 					radie =	Integer.parseInt(d.data.get(Settings.CIRCLERADIE));
 					mainPanel.fill(rows, columns, radie);
 					for(SquareData s : d.squares)
-						mainPanel.markSquare(s.id);
+						mainPanel.markSquare(s.snake, s.id, new Point(s.x, s.y));
 					frame.pack();
 				}
 			});
@@ -118,5 +130,17 @@ class SnakeMapEditor {
 		if(choice == JFileChooser.APPROVE_OPTION)
 			return fc.getSelectedFile();
 		return null;
+	}
+
+	void drawSnake(Dir dir, int length) {
+		if(!markedSquare.isSnakeMarked())
+			throw new IllegalArgumentException("Marked square not snake marked");
+		markedSquare.markSnakePath(dir, length);
+	}
+
+	void activateSnakeDraw(boolean activate) {
+		drawSnake = activate;
+		if(markedSquare != null)
+			markedSquare.setSnakeMark(activate);
 	}
 }

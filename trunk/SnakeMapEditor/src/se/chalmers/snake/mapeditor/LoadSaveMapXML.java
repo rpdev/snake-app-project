@@ -29,7 +29,7 @@ import org.xml.sax.SAXException;
 import se.chalmers.snake.mapeditor.SnakeMapEditor.Settings;
 
 public class LoadSaveMapXML {
-	private static final String ROOT="SnakeAppMap", ID="id", X="x", Y="y";
+	private static final String ROOT="SnakeAppMap", ID="id", X="x", Y="y",SNAKE = "Snake";
 	private static LoadSaveMapXML instance;
 	
 	private LoadSaveMapXML(){
@@ -45,7 +45,7 @@ public class LoadSaveMapXML {
 	void saveMap(EnumMap<Settings,String> data, Square[] squares) {
 		try {
 			Document doc = createDocument(data, squares);
-			File f = new File("test.xml");
+			File f = new File(data.get(Settings.LEVELNAME)+".xml");
 			if(f.exists())
 				f.delete();
 			Transformer transformer = TransformerFactory.newInstance().newTransformer();
@@ -53,7 +53,7 @@ public class LoadSaveMapXML {
 			StreamResult result = new StreamResult(f);
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.transform(source, result);
-			System.out.println("Saved");
+			System.out.println("Saved: " + f.getAbsolutePath());
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		} catch (TransformerConfigurationException e) {
@@ -90,12 +90,14 @@ public class LoadSaveMapXML {
 		EnumMap<Settings, String> data = new EnumMap<Settings, String>(Settings.class);
 		ArrayList<SquareData> squares = new ArrayList<SquareData>();
 		NodeList nl = doc.getDocumentElement().getChildNodes();
-		Element squareNode = null;
+		Element squareNode = null, snakeNode = null;
 		for(int i=0;i<nl.getLength();i++){
 			Node n = nl.item(i);
 			if(n.getNodeType() == Node.ELEMENT_NODE){
 				if(n.getNodeName().equals(Square.class.getSimpleName()))
 					squareNode = (Element) n;
+				else if(n.getNodeName().equals(SNAKE))
+					snakeNode = (Element) n;
 				else{
 					Element e = (Element) n;
 					Settings key = Settings.valueOf(e.getNodeName().toUpperCase());
@@ -109,7 +111,20 @@ public class LoadSaveMapXML {
 			Node n = squareNodeList.item(i);
 			if(n.getNodeType() == Node.ELEMENT_NODE){
 			Element e = (Element) n;
-				squares.add(new SquareData(
+				squares.add(new SquareData(false,
+						Integer.parseInt(e.getAttribute(ID)),
+						Integer.parseInt(e.getAttribute(X)),
+						Integer.parseInt(e.getAttribute(Y))
+						)
+				);
+			}
+		}
+		NodeList snakeNodeList = snakeNode.getChildNodes();
+		for(int i=0;i<snakeNodeList.getLength();i++){
+			Node n = snakeNodeList.item(i);
+			if(n.getNodeType() == Node.ELEMENT_NODE){
+			Element e = (Element) n;
+				squares.add(new SquareData(true,
 						Integer.parseInt(e.getAttribute(ID)),
 						Integer.parseInt(e.getAttribute(X)),
 						Integer.parseInt(e.getAttribute(Y))
@@ -122,8 +137,10 @@ public class LoadSaveMapXML {
 	
 	class SquareData{
 		final int id, x, y;
+		final boolean snake;
 		
-		private SquareData(int id, int x, int y){
+		private SquareData(boolean snake, int id, int x, int y){
+			this.snake = snake;
 			this.id = id;
 			this.x = x;
 			this.y = y;
@@ -159,11 +176,20 @@ public class LoadSaveMapXML {
 		
 		// Save filled squares
 		Element filledSquares = doc.createElement(Square.class.getSimpleName());
+		Element snakeSquares = doc.createElement(SNAKE);
 		root.appendChild(filledSquares);
+		root.appendChild(snakeSquares);
 		for(int i=0;i<squares.length;i++){
 			if (squares[i].isFilled()) {
 				Element n = doc.createElement(Square.class.getSimpleName());
 				filledSquares.appendChild(n);
+				Point p = squares[i].getLoc();
+				n.setAttribute(ID, Integer.toString(i));
+				n.setAttribute(X, Integer.toString(p.x));
+				n.setAttribute(Y, Integer.toString(p.y));
+			} else if(squares[i].isSnakeMarked()){
+				Element n = doc.createElement(SNAKE);
+				snakeSquares.appendChild(n);
 				Point p = squares[i].getLoc();
 				n.setAttribute(ID, Integer.toString(i));
 				n.setAttribute(X, Integer.toString(p.x));

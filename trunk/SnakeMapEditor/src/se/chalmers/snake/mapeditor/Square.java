@@ -15,7 +15,7 @@ import javax.swing.JButton;
 class Square extends JButton {
 	private final EnumMap<Dir,Square> neighbors = new EnumMap<Dir, Square>(Dir.class);
 	private final Point location;
-	private volatile boolean filled = false, marked = false;
+	private volatile boolean filled = false, marked = false, snake = false;
 
 	enum Dir{
 		NW(-1,-1),	N(0,-1),	NE(1,-1),
@@ -81,12 +81,20 @@ class Square extends JButton {
 		return location;
 	}
 	
-	void setMark(){
-		marked = true;
+	boolean isSnakeMarked(){
+		return snake;
 	}
 	
-	void removeMark(){
-		marked = false;
+	void setSnakeMark(boolean snakeMark){
+		if(snake)
+			snake = false;
+		else
+			snake = snakeMark;
+		filled = false;
+	}
+	
+	void setMark(boolean mark){
+		marked = mark;
 	}
 	
 	boolean isFilled(){
@@ -113,6 +121,14 @@ class Square extends JButton {
 		this.repaint();
 	}
 	
+	void markSnakePath(Dir dir, int length) {
+		if(!snake)
+			snake = !snake;
+		if(length > 0 && neighbors.containsKey(dir))
+			neighbors.get(dir).markSnakePath(dir, --length);
+		this.repaint();
+	}
+	
 	void linkNeighbors(Square neighbor, Dir dir){
 		neighbors.put(dir, neighbor);
 		neighbor.neighbors.put(dir.getOpposit(), this);
@@ -120,9 +136,14 @@ class Square extends JButton {
 	
 	@Override
 	public void paintComponent(Graphics g){
-		if(filled){
+		if(filled || snake){
 			Dimension d = this.getPreferredSize();
-			g.setColor( marked ? Color.BLUE : Color.GREEN);
+			if(snake)
+				g.setColor(Color.RED);
+			else if(marked)
+				g.setColor(Color.BLUE);
+			else
+				g.setColor(Color.GREEN);
 			g.fillOval(0, 0, d.width - 1 , d.height - 1);
 		}
 		super.paintComponents(g);
