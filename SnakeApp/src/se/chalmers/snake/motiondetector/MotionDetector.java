@@ -7,7 +7,7 @@ import android.hardware.SensorManager;
 import se.chalmers.snake.interfaces.MotionDetectorIC;
 
 /**
- *
+ * This is the MotionDetector
  */
 public class MotionDetector implements SensorEventListener, MotionDetectorIC {
 	private MotionDetectorIC.ReferenceSurface referenceSurface;
