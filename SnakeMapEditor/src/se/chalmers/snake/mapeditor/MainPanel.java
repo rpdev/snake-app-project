@@ -3,7 +3,8 @@ package se.chalmers.snake.mapeditor;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Point;
-import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.TreeMap;
 
 import javax.swing.JPanel;
 
@@ -13,7 +14,19 @@ import se.chalmers.snake.mapeditor.Square.Dir;
 class MainPanel extends JPanel {
 	private final GridBagConstraints c = new GridBagConstraints();
 	private final SnakeMapEditor snakeMapEditor;
-	private Square[] squares;
+	private TreeMap<Point, Square> squares = new TreeMap<Point, Square>(new Comparator<Point>(){
+
+		@Override
+		public int compare(Point o1, Point o2) {
+			if(o1.y == o2.y){
+				if(o1.x == o2.x)
+					return 0;
+				return (o1.x < o2.x) ? -1 : 1;
+			}
+			return (o1.y < o2.y) ? -1 : 1;
+		}
+		
+	});
 
 	MainPanel(SnakeMapEditor snakeMapEditor, int rows, int columns) {
 		this.snakeMapEditor = snakeMapEditor;
@@ -22,13 +35,17 @@ class MainPanel extends JPanel {
 	}
 	
 	Square[] getSquares(){
-		return squares.clone();
+		return squares.values().toArray(new Square[squares.size()]);
 	}
 	
-	void markSquare(int id){
-		squares[id].setFilled(true);
+	void markSquare(boolean snake, int id, Point point){
+		Square s = squares.get(point);
+		if(snake)
+			s.setSnakeMark(true);
+		else
+			s.setFilled(true);
 	}
-		
+	
 	void fill(int rows, int columns, int radie) {
 		removeAll();
 		fillPanel(rows, columns, radie);
@@ -37,11 +54,11 @@ class MainPanel extends JPanel {
 	private void fillPanel(final int rows, final int columns, final int radie) {
 		c.gridx = c.gridy = 0;
 		Square[][] array = new Square[columns][rows];
-		ArrayList<Square> squares = new ArrayList<Square>(columns*rows);
 		for (int i = 0; i < columns; i++) {
 			for (int j = 0; j < rows; j++) {
-				Square s = new Square(snakeMapEditor, radie, this, new Point(j,i));
-				squares.add(s);
+				Point p = new Point(j,i);
+				Square s = new Square(snakeMapEditor, radie, this, p);
+				squares.put(p,s);
 				setNeigbours(array, s, j, i);
 				array[i][j] = s;
 				if(i==0 || i==columns-1 || j==0 || j == rows -1)
@@ -52,7 +69,6 @@ class MainPanel extends JPanel {
 			c.gridx = 0;
 			c.gridy++;
 		}
-		squares.toArray(this.squares = new Square[squares.size()]);
 		// Create a star in the middle
 		//for(Dir d : Dir.values())
 		//	array[columns/2][rows/2].markPath(d,5);
