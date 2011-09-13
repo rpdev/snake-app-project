@@ -1,14 +1,12 @@
 
 package se.chalmers.snake.gameengine;
 
-import android.graphics.Point;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import se.chalmers.snake.interfaces.ControlResourcesIC;
-import static org.junit.Assert.*;
 import se.chalmers.snake.interfaces.GameEngineIC;
 import se.chalmers.snake.interfaces.LevelDatabaseIC;
 import se.chalmers.snake.interfaces.LevelIC;
