@@ -138,5 +138,5 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 	 * 
 	 * @return  Return the a level, or null if no level are load.
 	 */
-	public Object getLevelMetaData();
+	public LevelIC getLevelMetaData();
 }
