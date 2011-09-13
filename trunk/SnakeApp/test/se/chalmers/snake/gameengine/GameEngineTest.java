@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import se.chalmers.snake.interfaces.ControlResourcesIC;
 import static org.junit.Assert.*;
+import se.chalmers.snake.interfaces.GameEngineIC;
 import se.chalmers.snake.interfaces.LevelDatabaseIC;
 import se.chalmers.snake.interfaces.LevelIC;
 import se.chalmers.snake.interfaces.MotionDetectorIC;
@@ -127,10 +128,7 @@ public class GameEngineTest {
 						return null;
 					}
 
-					@Override
-					public LevelDatabaseIC getInstance() {
-						throw new UnsupportedOperationException("Not supported yet.");
-					}
+
 				};
 			}
 
@@ -174,6 +172,11 @@ public class GameEngineTest {
 			@Override
 			public XYPoint getScreenSize() {
 				return new XYPoint(100, 100);
+			}
+
+			@Override
+			public GameEngineIC getGameEngine() {
+				throw new UnsupportedOperationException("Not supported yet.");
 			}
 		};
 	}
