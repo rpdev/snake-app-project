@@ -1,13 +1,7 @@
 package se.chalmers.snake.interfaces;
 
 public interface LevelDatabaseIC {
-	
-	/**
-	 * Return the instance of the level database.
-	 * @return LevelDatabase
-	 */
-	public LevelDatabaseIC getInstance();
-	
+		
 	/**
 	 * Return a level map from the database based on the level
 	 * of that game map.  
