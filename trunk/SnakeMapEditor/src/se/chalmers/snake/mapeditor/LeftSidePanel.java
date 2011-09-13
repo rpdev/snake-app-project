@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EnumMap;
+import java.util.Map.Entry;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -74,7 +75,7 @@ class LeftSidePanel extends JPanel {
 		// level title
 		panel.add(new JLabel(Settings.LEVELNAME.name), c);
 		c.gridy++;
-		JTextField levelName = new JTextField("Level 1",10);
+		JTextField levelName = new JTextField(Settings.LEVELNAME.info,10);
 		panel.add(levelName, c);
 		values.put(Settings.LEVELNAME,levelName);
 		
@@ -82,7 +83,7 @@ class LeftSidePanel extends JPanel {
 		c.gridy++;
 		panel.add(new JLabel(Settings.LEVELDESCRIPTION.name), c);
 		c.gridy++;
-		JTextArea levelInfo = new JTextArea("Some info about this level.");
+		JTextArea levelInfo = new JTextArea(Settings.LEVELDESCRIPTION.info);
 		levelInfo.setWrapStyleWord(true);
 		levelInfo.setLineWrap(true);
 		values.put(Settings.LEVELDESCRIPTION, levelInfo);
@@ -94,7 +95,7 @@ class LeftSidePanel extends JPanel {
 		c.gridy++;
 		panel.add(new JLabel(Settings.LEVELDIFFICULY.name), c);
 		c.gridy++;
-		JTextField level = new JTextField("1",10);
+		JTextField level = new JTextField(Settings.LEVELDIFFICULY.info,10);
 		values.put(Settings.LEVELDIFFICULY, level);
 		panel.add(level, c);
 		
@@ -105,7 +106,7 @@ class LeftSidePanel extends JPanel {
 		c.gridy++;
 		JPanel panelX = new JPanel(new FlowLayout());
 		panelX.add(new JLabel(Settings.MAPSIZEX.name), c);
-		JTextField mapX = new JTextField("45",5);
+		JTextField mapX = new JTextField(Settings.MAPSIZEX.info,5);
 		values.put(Settings.MAPSIZEX, mapX);
 		panelX.add(mapX);
 		panel.add(panelX, c);
@@ -113,7 +114,7 @@ class LeftSidePanel extends JPanel {
 		c.gridy++;
 		JPanel panelY = new JPanel(new FlowLayout());
 		panelY.add(new JLabel(Settings.MAPSIZEY.name));
-		JTextField mapY = new JTextField("45",5);
+		JTextField mapY = new JTextField(Settings.MAPSIZEY.info,5);
 		values.put(Settings.MAPSIZEY, mapY);
 		panelY.add(mapY);
 		panel.add(panelY, c);
@@ -122,7 +123,7 @@ class LeftSidePanel extends JPanel {
 		c.gridy++;
 		panel.add(new JLabel(Settings.CIRCLERADIE.name), c);
 		c.gridy++;
-		JTextField circleRadie = new JTextField("10",10);
+		JTextField circleRadie = new JTextField(Settings.CIRCLERADIE.info,10);
 		values.put(Settings.CIRCLERADIE, circleRadie);
 		panel.add(circleRadie, c);
 		
@@ -131,7 +132,7 @@ class LeftSidePanel extends JPanel {
 		c.gridy++; c.gridx = 0;
 		panel.add(new JLabel(Settings.COLLECTIBLE.name), c);
 		c.gridy++;
-		JTextField collect = new JTextField("10",10);
+		JTextField collect = new JTextField(Settings.COLLECTIBLE.info,10);
 		values.put(Settings.COLLECTIBLE, collect);
 		panel.add(collect, c);
 		
@@ -181,5 +182,11 @@ class LeftSidePanel extends JPanel {
 		});
 		
 		return panel;
+	}
+
+	
+	void setValues(EnumMap<Settings, String> data) {
+		for(Entry<Settings, String> e : data.entrySet())
+			values.get(e.getKey()).setText(e.getValue());
 	}
 }
