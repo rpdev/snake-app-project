@@ -2,13 +2,9 @@ package se.chalmers.snake.interfaces;
 
 import java.util.List;
 
-import android.graphics.Point;
 import se.chalmers.snake.interfaces.util.REPoint;
 import se.chalmers.snake.interfaces.util.XYPoint;
 
-/**
- *
- */
 public interface LevelIC {
 	final static int snakeBodyWidth = 2;
 	final static int itemsRadius = 2;
