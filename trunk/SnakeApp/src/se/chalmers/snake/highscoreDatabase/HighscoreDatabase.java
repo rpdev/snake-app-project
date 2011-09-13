@@ -15,4 +15,11 @@ public class HighscoreDatabase implements HighscoreDatabaseIC{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public boolean addPlayerToHighscore(String playerName, int points,
+			String level) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
