@@ -23,7 +23,8 @@ import se.chalmers.snake.mapeditor.Square.Dir;
  * how the map editor works and therefore know how to avoid bugs. 
  */
 class SnakeMapEditor {
-	private final MainPanel mainPanel = new MainPanel(this, 35, 35);
+	private final MainPanel mainPanel = new MainPanel(this, Integer.parseInt(Settings.MAPSIZEY.info), Integer.parseInt(Settings.MAPSIZEX.info));
+	private LeftSidePanel leftPanel;
 	private final JFrame frame;
 	private boolean drawSnake = false;
 	private Square markedSquare;
@@ -40,7 +41,7 @@ class SnakeMapEditor {
 		JFrame frame = new JFrame("WARNING: No safety checks, only developers! Alpha version");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
-		frame.add(new LeftSidePanel(this), BorderLayout.WEST);
+		frame.add(leftPanel = new LeftSidePanel(this), BorderLayout.WEST);
 		frame.add(mainPanel, BorderLayout.CENTER);
 		frame.add(new RightSidePanel(this), BorderLayout.EAST);
 		frame.pack();
@@ -49,18 +50,19 @@ class SnakeMapEditor {
 	}
 
 	enum Settings{
-		LEVELNAME("Level Name:"),
-		LEVELDESCRIPTION("Level Description:"),
-		LEVELDIFFICULY("Level Number:"),
-		MAPSIZEX("X:"),
-		MAPSIZEY("Y:"),
-		COLLECTIBLE("Collectables:"),
-		CIRCLERADIE("Circle radie:");
+		LEVELNAME("Level Name:","Level 1"),
+		LEVELDESCRIPTION("Level Description:","Capture all apples."),
+		LEVELDIFFICULY("Level Number:","1"),
+		MAPSIZEX("X:","35"),
+		MAPSIZEY("Y:","35"),
+		COLLECTIBLE("Collectables:","10"),
+		CIRCLERADIE("Circle radie:","10");
 
-		final String name;
+		final String name, info;
 
-		private Settings(String name) {
+		private Settings(String name, String info) {
 			this.name = name;
+			this.info = info;
 		}
 	}
 
@@ -100,6 +102,7 @@ class SnakeMapEditor {
 				@Override
 				public void run() {
 					Data d = LoadSaveMapXML.getInstance().loadMap(f);
+					leftPanel.setValues(d.data);
 					int rows = Integer.parseInt(d.data.get(Settings.MAPSIZEX)),
 					columns = Integer.parseInt(d.data.get(Settings.MAPSIZEY)),
 					radie =	Integer.parseInt(d.data.get(Settings.CIRCLERADIE));
