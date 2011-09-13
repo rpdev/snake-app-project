@@ -15,7 +15,7 @@ public class GraphicLibrary {
 	}
 	
 	/*
-	 * Return the source-location for given file-id sdsdsdsd
+	 * Return the source-location for given file-id
 	 */
 	public String getSource(String name){
 		return graphicLib.get(name);
