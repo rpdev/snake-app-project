@@ -9,7 +9,7 @@ import se.chalmers.snake.interfaces.LevelDatabaseIC;
 import se.chalmers.snake.interfaces.LevelIC;
 
 public class LevelDatabase implements LevelDatabaseIC {
-	private static LevelDatabase instance;
+	public static LevelDatabase instance = new LevelDatabase();
 	private final File PATH = new File("./");
 	private final FilenameFilter FILTER  = new FilenameFilter() {			
 		@Override
@@ -30,14 +30,7 @@ public class LevelDatabase implements LevelDatabaseIC {
 			throw new IllegalArgumentException("Database error: " + PATH.getAbsolutePath() + " is a file");
 		loadFiles(PATH);
 	}
-	
-	@Override
-	public LevelDatabase getInstance(){
-		if(instance == null)
-			new LevelDatabase();
-		return instance;
-	}
-	
+		
 	@Override
 	public LevelIC getByLevel(int level) {
 		return new Level(levelvalues.get(level));

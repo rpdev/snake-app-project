@@ -25,7 +25,7 @@ import se.chalmers.snake.leveldatabase.LevelDatabase.Data;
 
 /**
  * The level class represent a level in the game, each level is created by reading the file
- * stored in the file that is sent tot he constructor of this class.
+ * stored in the file that is sent to the constructor of this class.
  */
 class Level implements LevelIC {
 	private static final String X="x", Y="y",SNAKE = "Snake", SQUARE = "Square";
