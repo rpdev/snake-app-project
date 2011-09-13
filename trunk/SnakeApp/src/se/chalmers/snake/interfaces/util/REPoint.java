@@ -6,6 +6,7 @@ import java.io.Serializable;
  * REPoint ( Radius Enum Point ) is use for store a data point for each Game REType, as Snake, Walls, Apple.
  */
 public class REPoint extends XYPoint implements Serializable, Cloneable {
+	private static final long serialVersionUID = -1408202542090251833L;
 
 	public static enum REType {
 
