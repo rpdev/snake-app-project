@@ -14,24 +14,28 @@ public class MotionDetector implements SensorEventListener, MotionDetectorIC {
 	private SensorManager sensorManager;
 	private boolean run;
 	private float x, y, z;
+	private int update = 0;
 	private double radianus;
 	private int degrees;
 
-	public MotionDetector() {
+	public MotionDetector(SensorManager sensorManager) {
+		this.sensorManager = sensorManager;
 		this.run = false;
 		this.degrees = 0;
 		this.radianus = 0.0;
+		this.x = this.y = this.z = -1;
 		this.referenceSurface = null;
 
 	}
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
-		if (event.sensor.getType() == Sensor.TYPE_ORIENTATION && event.values.length >= 2) {
+		if (event.sensor.getType() == Sensor.TYPE_ORIENTATION && event.values.length == 3) {
 			this.x = event.values[0];
 			this.y = event.values[1];
 			this.x = event.values[2];
 		}
+		this.update++;
 	}
 
 	@Override
@@ -47,7 +51,7 @@ public class MotionDetector implements SensorEventListener, MotionDetectorIC {
 	@Override
 	public synchronized void start() {
 		if (this.run == false) {
-			this.sensorManager.registerListener(this,
+			 this.sensorManager.registerListener(this,
 					  this.sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
 					  SensorManager.SENSOR_DELAY_GAME);
 			this.run = true;
@@ -78,6 +82,12 @@ public class MotionDetector implements SensorEventListener, MotionDetectorIC {
 	public double getAngleByRadians() {
 		return this.radianus;
 	}
+
+	@Override
+	public String toString() {
+		return "MotionDetector{" + "x=" + x + ", y=" + y + ", z=" + z + ", u="+update+'}';
+	}
+	
 	
 	
 }
