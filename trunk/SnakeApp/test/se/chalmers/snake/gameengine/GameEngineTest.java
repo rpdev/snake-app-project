@@ -82,9 +82,7 @@ public class GameEngineTest {
 
 							@Override
 							public List<REPoint> getObstacles() {
-								ArrayList<REPoint> a = new ArrayList<REPoint>(1);
-								a.add(new REPoint(REPoint.REType.WALL, 10,10,10));
-								return a;
+								return  new ArrayList<REPoint>(1);
 							}
 
 							@Override
@@ -127,6 +125,11 @@ public class GameEngineTest {
 					@Override
 					public int[] getLevelListByLevel() {
 						return null;
+					}
+
+					@Override
+					public LevelDatabaseIC getInstance() {
+						throw new UnsupportedOperationException("Not supported yet.");
 					}
 				};
 			}
