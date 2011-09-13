@@ -1,6 +1,7 @@
 package se.chalmers.snake.mastercontroller;
 
 import se.chalmers.snake.interfaces.ControlResourcesIC;
+import se.chalmers.snake.interfaces.GameEngineIC;
 import se.chalmers.snake.interfaces.LevelDatabaseIC;
 import se.chalmers.snake.interfaces.MotionDetectorIC;
 import se.chalmers.snake.interfaces.util.XYPoint;
@@ -28,6 +29,10 @@ public class ControlResources implements ControlResourcesIC {
 	@Override
 	public XYPoint getScreenSize() {
 		return new XYPoint(400,400);
+	}
+
+	public GameEngineIC getGameEngine() {
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 	
 }
