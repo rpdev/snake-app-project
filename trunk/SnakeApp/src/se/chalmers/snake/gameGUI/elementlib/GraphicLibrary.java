@@ -6,7 +6,7 @@ public class GraphicLibrary {
 	private  HashMap<String, String> graphicLib;
 	
 	/*
-	 * Creates new library of files
+	 * Creates new library of files!
 	 */
 	
 	public GraphicLibrary(){
