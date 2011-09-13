@@ -10,50 +10,67 @@ import se.chalmers.snake.interfaces.MotionDetectorIC;
  * This is the MotionDetector
  */
 public class MotionDetector implements SensorEventListener, MotionDetectorIC {
+
 	private MotionDetectorIC.ReferenceSurface referenceSurface;
 	private SensorManager sensorManager;
 	private boolean run;
-	private float x, y, z;
-	private int update = 0;
+	private float[] mGData = new float[3];
+	private float[] mMData = new float[3];
+	private float[] mR = new float[16];
+	private float[] mOrientation = new float[3];
+	private boolean isUpdate = false;
 	private double radianus;
 	private int degrees;
+	private int count = 0;
+	private Runnable callWhileUpdate;
 
-	public MotionDetector(SensorManager sensorManager) {
+	public MotionDetector(SensorManager sensorManager, Runnable callWhileUpdate) {
 		this.sensorManager = sensorManager;
 		this.run = false;
 		this.degrees = 0;
 		this.radianus = 0.0;
-		this.x = this.y = this.z = -1;
 		this.referenceSurface = null;
+		this.callWhileUpdate = callWhileUpdate;
 
 	}
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
-		if (event.sensor.getType() == Sensor.TYPE_ORIENTATION && event.values.length == 3) {
-			this.x = event.values[0];
-			this.y = event.values[1];
-			this.x = event.values[2];
+		int type = event.sensor.getType();
+		if (type == Sensor.TYPE_ACCELEROMETER) {
+			System.arraycopy(event.values, 0, this.mGData, 0, 3);
+			this.isUpdate = false;
+
+		} else if (type == Sensor.TYPE_MAGNETIC_FIELD) {
+			System.arraycopy(event.values, 0, this.mMData, 0, 3);
+			this.isUpdate = false;
+
+		} else {
+			return;
 		}
-		this.update++;
+		if (this.callWhileUpdate != null) {
+			this.callWhileUpdate.run();
+		}
+
 	}
 
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int i) {
 	}
 
-
 	@Override
 	public synchronized void setSensitivity(int sensitivity) {
-		
 	}
 
 	@Override
 	public synchronized void start() {
 		if (this.run == false) {
-			 this.sensorManager.registerListener(this,
-					  this.sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
-					  SensorManager.SENSOR_DELAY_GAME);
+
+			Sensor gsensor = this.sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+			Sensor msensor = this.sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+			this.sensorManager.registerListener(this, gsensor, SensorManager.SENSOR_DELAY_GAME);
+			this.sensorManager.registerListener(this, msensor, SensorManager.SENSOR_DELAY_GAME);
+
 			this.run = true;
 		}
 	}
@@ -65,29 +82,46 @@ public class MotionDetector implements SensorEventListener, MotionDetectorIC {
 			this.run = false;
 		}
 	}
-	
+
 	@Override
 	public synchronized void setReferenceSurface(ReferenceSurface rs) {
-		if(rs!=null) {
-		this.referenceSurface = rs;
+		if (rs != null) {
+			this.referenceSurface = rs;
 		}
 	}
 
 	@Override
 	public int getAngleByDegrees() {
+		this.recalc();
 		return this.degrees;
 	}
 
 	@Override
 	public double getAngleByRadians() {
+		this.recalc();
 		return this.radianus;
+	}
+
+	private void recalc() {
+				
+		if (this.isUpdate == false) {
+			if (SensorManager.getRotationMatrix(this.mR, null, this.mGData, this.mMData)) {
+				SensorManager.getOrientation(this.mR, this.mOrientation);
+					
+				
+				this.radianus = Math.atan2(mOrientation[1], mOrientation[2]) + Math.PI;
+				this.degrees = (int) (this.radianus * (180.0f / Math.PI));
+				this.count++;
+				this.isUpdate = true;
+			}
+		}
 	}
 
 	@Override
 	public String toString() {
-		return "MotionDetector{" + "x=" + x + ", y=" + y + ", z=" + z + ", u="+update+'}';
+		this.recalc();
+		return "MotionDetector{" + "run=" + run + ", radianus=" + radianus + ", degrees=" + degrees + ", count=" + count + '}';
 	}
-	
-	
+
 	
 }

@@ -160,7 +160,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	}
 
 	@Override
-	public Object getLevelMetaData() {
+	public LevelIC getLevelMetaData() {
 		if (this.currentLevel != null) {
 			return this.currentLevel.getLevelData();
 		} else {
