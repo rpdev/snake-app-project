@@ -15,4 +15,6 @@ public interface ControlResourcesIC {
 
 	public XYPoint getScreenSize();
 	
+	public GameEngineIC getGameEngine();
+	
 }
