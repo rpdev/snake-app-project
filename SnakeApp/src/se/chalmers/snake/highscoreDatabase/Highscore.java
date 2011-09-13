@@ -4,10 +4,17 @@ public class Highscore {
 	
 	private String playerName;
 	private int points;
-	
+	private String level;
+
 	public Highscore(String playerName, int points) {
 		this.setPlayerName(playerName);
 		this.setPoints(points);
+	}
+	
+	public Highscore(String playerName, int points, String level) {
+		this.setPlayerName(playerName);
+		this.setPoints(points);
+		this.setLevel(level);
 	}
 	
 	public void setPlayerName(String playerName) {
@@ -24,6 +31,14 @@ public class Highscore {
 	
 	public int getPoints() {
 		return points;
+	}
+
+	public void setLevel(String level) {
+		this.level = level;
+	}
+
+	public String getLevel() {
+		return level;
 	}
 
 }
