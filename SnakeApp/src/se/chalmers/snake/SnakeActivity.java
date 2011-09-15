@@ -1,48 +1,71 @@
 package se.chalmers.snake;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import se.chalmers.snake.leveldatabase.LevelDatabase;
 import android.app.Activity;
-import android.content.Context;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.widget.TextView;
-import se.chalmers.snake.motiondetector.MotionDetector;
 
-
-public class SnakeActivity extends Activity{ //  implements SensorEventListener 
-	private SensorManager mSensorManager;
-	TextView iViewO = null;
-	TextView calcViewO = null;
-	MotionDetector motionDetector;
-	public SnakeActivity() {
-	}
+public class SnakeActivity extends Activity { // implements SensorEventListener
+	/*
+	 * private SensorManager mSensorManager; TextView iViewO = null; TextView
+	 * calcViewO = null; MotionDetector motionDetector; public SnakeActivity() {
+	 * }
+	 * 
+	 * @Override public void onCreate(Bundle savedInstanceState) {
+	 * super.onCreate(savedInstanceState); setContentView(R.layout.main); iViewO
+	 * = (TextView) findViewById(R.id.iboxo); calcViewO = (TextView)
+	 * findViewById(R.id.calcvalue); calcViewO.setText("asdasd");
+	 * /*this.mSensorManager = (SensorManager)
+	 * getSystemService(Context.SENSOR_SERVICE); this.motionDetector = new
+	 * MotionDetector(this.mSensorManager,new Runnable() { public void run() {
+	 * calcViewO.setText(motionDetector.toString()); } }); }
+	 * 
+	 * @Override protected void onResume() { super.onResume();
+	 * this.motionDetector.start();
+	 * 
+	 * }
+	 * 
+	 * @Override protected void onPause() { super.onPause();
+	 * this.motionDetector.stop(); }
+	 */
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
-		iViewO = (TextView) findViewById(R.id.iboxo);
-		calcViewO = (TextView) findViewById(R.id.calcvalue);
-		this.mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-		this.motionDetector = new MotionDetector(this.mSensorManager,new Runnable() {
-			public void run() {
-				calcViewO.setText(motionDetector.toString());
-			}
-		});
-
+		tv = new TextView(this);
+		try {
+			for (String s : LevelDatabase.getInstance().getLevelListByName())
+				tv.append(LevelDatabase.getInstance().getByName(s).getMapSize().toString() + "\n");
+		} catch (Exception e) {
+			tv.append(stackTraceToString(e));
+		}
+		setContentView(tv);
 	}
+	public static TextView tv;
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		this.motionDetector.start();
-
+	// http://javahowto.blogspot.com/2006/08/save-exception-stacktrace-to-string.html
+	private String stackTraceToString(Throwable e) {
+		String retValue = null;
+		StringWriter sw = null;
+		PrintWriter pw = null;
+		try {
+			sw = new StringWriter();
+			pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+			retValue = sw.toString();
+		} finally {
+			try {
+				if (pw != null)
+					pw.close();
+				if (sw != null)
+					sw.close();
+			} catch (IOException ignore) {}
+		}
+		return retValue;
 	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		this.motionDetector.stop();
-	}
-
 
 }
