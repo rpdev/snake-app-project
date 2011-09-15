@@ -5,16 +5,20 @@ import java.io.FilenameFilter;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import android.os.Environment;
+
 import se.chalmers.snake.interfaces.LevelDatabaseIC;
 import se.chalmers.snake.interfaces.LevelIC;
 
 public class LevelDatabase implements LevelDatabaseIC {
-	public static LevelDatabase instance = new LevelDatabase();
-	private final File PATH = new File("./");
+	private static LevelDatabase instance;
+	private final File PATH;
 	private final FilenameFilter FILTER  = new FilenameFilter() {			
 		@Override
 		public boolean accept(File dir, String filename) {
-			String n = dir.getName();
+			if((new File(dir, filename)).isDirectory())
+				return true;
+			String n = filename;
 			if(n.contains(".") && n.substring(n.lastIndexOf('.')+1).equalsIgnoreCase("XML"))
 				return true;
 			else
@@ -26,11 +30,18 @@ public class LevelDatabase implements LevelDatabaseIC {
 	
 	private LevelDatabase(){
 		instance = this;
+		PATH = Environment.getExternalStorageDirectory();
 		if(PATH.isFile())
 			throw new IllegalArgumentException("Database error: " + PATH.getAbsolutePath() + " is a file");
 		loadFiles(PATH);
 	}
-		
+	
+	public static LevelDatabaseIC getInstance(){
+		if(instance == null)
+			new LevelDatabase();
+		return instance;
+	}
+	
 	@Override
 	public LevelIC getByLevel(int level) {
 		return new Level(levelvalues.get(level));
@@ -62,7 +73,7 @@ public class LevelDatabase implements LevelDatabaseIC {
 				loadFiles(fi);
 		else{
 			String name = f.getName();
-			int level = Integer.parseInt(name.substring(name.indexOf(' ')).trim());
+			int level = Integer.parseInt(name.substring(name.indexOf(' '), name.indexOf('.')).trim());
 			Data data = new Data(f, name, level);
 			levelnames.put(name, data);
 			levelvalues.put(level, data);
