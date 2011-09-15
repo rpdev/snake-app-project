@@ -158,7 +158,7 @@ class Level implements LevelIC {
 				else{
 					Element e = (Element) n;
 					Settings key = Settings.valueOf(e.getNodeName().toUpperCase());
-					String value = e.getNodeValue();
+					String value = e.getFirstChild().getNodeValue();
 					values.put(key, value);
 				}
 			}
