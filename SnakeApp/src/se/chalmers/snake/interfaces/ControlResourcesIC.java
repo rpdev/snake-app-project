@@ -11,7 +11,7 @@ public interface ControlResourcesIC {
 	
 	public MotionDetectorIC getMotionDetector();
 
-	public Object getSystemEventController();	
+	public SystemEventIC getSystemEventController();	
 
 	public XYPoint getScreenSize();
 	
