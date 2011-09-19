@@ -36,6 +36,7 @@ public class MotionDetectorActivity extends Activity {
 				MotionDetectorActivity.this.calcViewO.setText(motionDetector.toString());
 			}
 		});
+		this.motionDetector.setSensitivity(15);
 		
 	}
 

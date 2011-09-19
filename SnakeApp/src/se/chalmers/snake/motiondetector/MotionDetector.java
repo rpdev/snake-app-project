@@ -10,7 +10,10 @@ import se.chalmers.snake.interfaces.MotionDetectorIC;
  * This is the MotionDetector
  */
 public class MotionDetector implements SensorEventListener, MotionDetectorIC {
-
+private static final double RAD_TO_DEG = (180.0f / Math.PI);
+private static final double DEG_TO_RAD = (Math.PI/180.0f);
+	
+	
 	private MotionDetectorIC.ReferenceSurface referenceSurface;
 	private SensorManager sensorManager;
 	private boolean run;
@@ -22,7 +25,9 @@ public class MotionDetector implements SensorEventListener, MotionDetectorIC {
 	private double radianus;
 	private int degrees;
 	private int count = 0;
+	private double sensitivity=0;
 	private Runnable callWhileUpdate;
+	
 
 public MotionDetector(SensorManager sensorManager) {
 		this.sensorManager = sensorManager;
@@ -31,6 +36,7 @@ public MotionDetector(SensorManager sensorManager) {
 		this.radianus = 0.0;
 		this.referenceSurface = null;
 		this.callWhileUpdate = null;
+		this.sensitivity = 0;
 	}
 
 	public MotionDetector(SensorManager sensorManager, Runnable callWhileUpdate) {
@@ -69,6 +75,7 @@ public MotionDetector(SensorManager sensorManager) {
 
 	@Override
 	public synchronized void setSensitivity(int sensitivity) {
+		this.sensitivity = (sensitivity*(2.22/100));
 	}
 
 	@Override
@@ -117,10 +124,14 @@ public MotionDetector(SensorManager sensorManager) {
 			if (SensorManager.getRotationMatrix(this.mR, null, this.mGData, this.mMData)) {
 				SensorManager.getOrientation(this.mR, this.mOrientation);
 					
+				//sum = 9.8
 				
-				this.radianus = Math.atan2(mOrientation[1], mOrientation[2]) + Math.PI;
-				this.degrees = (int) (this.radianus * (180.0f / Math.PI));
+				if(Math.sqrt(this.mOrientation[1]*this.mOrientation[1]+this.mOrientation[2]*this.mOrientation[2])>this.sensitivity){
+				this.radianus = Math.atan2(this.mOrientation[1], this.mOrientation[2]) + Math.PI;
+				
+				this.degrees = (int) (this.radianus * MotionDetector.RAD_TO_DEG);
 				this.count++;
+				}
 				this.isUpdate = true;
 			}
 		}
