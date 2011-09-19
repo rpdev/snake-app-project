@@ -8,6 +8,6 @@
         <title>Snake App Webpage</title>
     </head>
     <body>
-        <h1>Snake App Webpage</h1>
+        <h1>Snake App Webpage.</h1>
     </body>
 </html>
