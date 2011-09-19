@@ -16,6 +16,7 @@ public class SnakeActivity extends Activity { // implements SensorEventListener
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		tv = new TextView(this);
+		tv.append("SnakeActivity");
 		try {
 			for (String s : LevelDatabase.getInstance().getLevelListByName())
 				tv.append(LevelDatabase.getInstance().getByName(s).getMapSize().toString() + "\n");
