@@ -2,14 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package se.chalmers.snake.motiondetector;
+package se.chalmers.snake;
 
 import android.app.Activity;
 import android.content.Context;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.widget.TextView;
-import se.chalmers.snake.R;
+import se.chalmers.snake.motiondetector.MotionDetector;
 
 /**
  *
@@ -29,13 +29,14 @@ public class MotionDetectorActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.motiondetector);
-		calcViewO = (TextView) findViewById(R.id.calcvalue);
+		this.calcViewO = (TextView) findViewById(R.id.calcvalue);
 		this.mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		this.motionDetector = new MotionDetector(this.mSensorManager, new Runnable() {
 			public void run() {
-				calcViewO.setText(motionDetector.toString());
+				MotionDetectorActivity.this.calcViewO.setText(motionDetector.toString());
 			}
 		});
+		
 	}
 
 	@Override
