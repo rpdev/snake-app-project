@@ -8,6 +8,7 @@ import se.chalmers.snake.util.EnumObservable;
 import se.chalmers.snake.util.EnumObserver;
 
 import java.util.List;
+import se.chalmers.snake.leveldatabase.LevelDatabase;
 
 public class Primary implements EnumObserver<GameEngineIC.GameEngineEvent, Void,Void>{
 	
@@ -24,6 +25,14 @@ public class Primary implements EnumObserver<GameEngineIC.GameEngineEvent, Void,
 		this.gameEngine.addObserver(GameEngineIC.GameEngineEvent.UPDATE,this);
 		this.gameEngine.addObserver(GameEngineIC.GameEngineEvent.LEVEL_END,this);
 		this.gameEngine.addObserver(GameEngineIC.GameEngineEvent.PLAYER_LOSE,this);
+		
+		this.gameEngine.loadLevel("level 1"); //GameEngineEvent.NEW_GAME
+		
+		this.gameEngine.startGame(); // GameEngineEvent.START_GAME
+		
+		this.gameEngine.pauseGame(); // GameEngineEvent.PAUSE_GAME
+		
+		
 	}
 
 	@Override

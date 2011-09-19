@@ -24,6 +24,15 @@ public class MotionDetector implements SensorEventListener, MotionDetectorIC {
 	private int count = 0;
 	private Runnable callWhileUpdate;
 
+public MotionDetector(SensorManager sensorManager) {
+		this.sensorManager = sensorManager;
+		this.run = false;
+		this.degrees = 0;
+		this.radianus = 0.0;
+		this.referenceSurface = null;
+		this.callWhileUpdate = null;
+	}
+
 	public MotionDetector(SensorManager sensorManager, Runnable callWhileUpdate) {
 		this.sensorManager = sensorManager;
 		this.run = false;
