@@ -12,7 +12,7 @@ import android.widget.TextView;
 import se.chalmers.snake.motiondetector.MotionDetector;
 
 /**
- *
+ * Test case for MotionDetector
  * @author 
  */
 public class MotionDetectorActivity extends Activity {
