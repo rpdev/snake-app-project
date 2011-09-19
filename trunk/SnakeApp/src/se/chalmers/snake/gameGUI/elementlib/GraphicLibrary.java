@@ -11,8 +11,6 @@ public class GraphicLibrary {
 	
 	public GraphicLibrary(){
 		graphicLib = new HashMap<String, String>();
-		// Exempel på hur man lägger till en resurs i biblioteket. Görs eftersom man skapar GUI och vet vilka bilder vi ska använda.
-		//graphicLib.put(logo, logo.gif);
 	}
 	
 	/*
