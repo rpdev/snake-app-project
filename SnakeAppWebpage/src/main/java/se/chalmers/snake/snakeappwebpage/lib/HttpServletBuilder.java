@@ -307,9 +307,8 @@ public abstract class HttpServletBuilder extends HttpServlet {
 
 	
 	/**
-	 * 
-	 * @param methodType What type of request is requested. 
-	 * @param requestURI The Request URI, for full URL see {@link HttpMeta#getURL()}
+	 * Processes all HTTP requests, 
+	 * use <code>httpMeta.isMethodPostGet()</code> for test if POST or GET Method.
 	 * @param httpMeta The HTTP Meta data, controller for Session, Cookie, RequestScope...
 	 * @param httpOutput The HTTP output unit, for return data to the users.
 	 */
