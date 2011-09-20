@@ -1,7 +1,12 @@
 package se.chalmers.snake.snakeappwebpage;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.annotation.WebServlet;
 import se.chalmers.snake.snakeappwebpage.lib.HttpServletBuilder;
+import se.chalmers.snake.snakeappwebpage.serverstorage.ServerStorage;
+import se.chalmers.snake.snakeappwebpage.serverstorage.UserTab;
 
 @WebServlet(name = "EasyServlet", urlPatterns = {"/EasyServlet"})
 public class EasyServlet extends HttpServletBuilder {
@@ -13,10 +18,11 @@ public class EasyServlet extends HttpServletBuilder {
 	 * @param httpOutput The HTTP output unit, for return data to the users.
 	 */
 	@Override
-	protected void pageRequest(HttpMeta httpMeta, HttpOutput httpOutput) {
+	protected void pageRequest(HttpMeta httpMeta, HttpOutput httpOutput) throws Exception {
 		if (httpMeta.isMethodPostGet()) {
 			httpMeta.setContentType("text/html;charset=UTF-8");
-			httpOutput.forward("index.jsp");
+			httpOutput.getWriter().println(""+ServerStorage.size(UserTab.PORTOTYPE));
+			
 		}
 	}
 }
