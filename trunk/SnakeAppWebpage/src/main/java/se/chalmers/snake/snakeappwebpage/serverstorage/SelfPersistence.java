@@ -7,19 +7,23 @@ import javax.persistence.EntityTransaction;
 /**
  *
  */
-public abstract class MyPersistence implements Serializable {
+abstract class SelfPersistence implements Serializable {
 
-	public MyPersistence() {
+	public SelfPersistence() {
 	}
 
-	protected abstract void trackPersistence(EntityManager entityManager);
+	abstract SelfPersistence trackPersistence(EntityManager entityManager);
 
-	protected abstract boolean trackDestroy(EntityManager entityManager, MyPersistence removeObj);
+	abstract boolean trackDestroy(EntityManager entityManager, SelfPersistence removeObj);
 
 	
 	
-	
-	public boolean persistence(ServerStorage serverStorage) {
+	/**
+	 * Presistence this obj to the database, this will include sub objects.
+	 * @param serverStorage
+	 * @return 
+	 */
+	public boolean persistence() {
 		EntityManager entityManager = ServerStorage.ENTITY_MANAGER_FACTORY.createEntityManager();
 		EntityTransaction entityTransaction = entityManager.getTransaction();
 
@@ -38,7 +42,7 @@ public abstract class MyPersistence implements Serializable {
 		return false;
 	}
 
-	public boolean destroy(MyPersistence removeObj) {
+	public boolean destroy(SelfPersistence removeObj) {
 		EntityManager entityManager = ServerStorage.ENTITY_MANAGER_FACTORY.createEntityManager();
 		EntityTransaction entityTransaction = entityManager.getTransaction();
 
@@ -50,7 +54,8 @@ public abstract class MyPersistence implements Serializable {
 			entityTransaction.begin();
 			this.trackDestroy(entityManager, removeObj);
 			if (removeObj != this) {
-				this.trackPersistence(entityManager);
+				SelfPersistence myPersistence= this.trackPersistence(entityManager);
+				myPersistence.destroy(removeObj.trackPersistence(entityManager));
 			}
 			entityTransaction.commit();
 			return true;

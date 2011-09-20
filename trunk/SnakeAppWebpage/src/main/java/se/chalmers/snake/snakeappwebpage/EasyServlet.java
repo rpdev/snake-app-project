@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import javax.servlet.annotation.WebServlet;
 import se.chalmers.snake.snakeappwebpage.lib.HttpServletBuilder;
 import se.chalmers.snake.snakeappwebpage.serverstorage.ServerStorage;
-import se.chalmers.snake.snakeappwebpage.serverstorage.UserTab;
+import se.chalmers.snake.snakeappwebpage.serverstorage.UserAccount;
 
 @WebServlet(name = "EasyServlet", urlPatterns = {"/EasyServlet"})
 public class EasyServlet extends HttpServletBuilder {
@@ -21,7 +21,7 @@ public class EasyServlet extends HttpServletBuilder {
 	protected void pageRequest(HttpMeta httpMeta, HttpOutput httpOutput) throws Exception {
 		if (httpMeta.isMethodPostGet()) {
 			httpMeta.setContentType("text/html;charset=UTF-8");
-			httpOutput.getWriter().println(""+ServerStorage.size(UserTab.PORTOTYPE));
+			httpOutput.getWriter().println(""+ServerStorage.size(UserAccount.PORTOTYPE));
 			
 		}
 	}
