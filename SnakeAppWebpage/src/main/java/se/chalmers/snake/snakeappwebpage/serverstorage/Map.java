@@ -2,25 +2,21 @@ package se.chalmers.snake.snakeappwebpage.serverstorage;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
  */
 @Entity
-public class UserTab extends MyPersistence implements Serializable {
-
-	public static final Class<UserTab> PORTOTYPE = UserTab.class;
+public class Map implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+   @GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-
-	protected UserTab() {
-	}
 
 	public long getId() {
 		return id;
@@ -39,10 +35,11 @@ public class UserTab extends MyPersistence implements Serializable {
 
 	@Override
 	public boolean equals(Object object) {
-		if (!(object instanceof UserTab)) {
+		// TODO: Warning - this method won't work in the case the id fields are not set
+		if (!(object instanceof Map)) {
 			return false;
 		}
-		UserTab other = (UserTab) object;
+		Map other = (Map) object;
 		if (this.id != other.id) {
 			return false;
 		}
@@ -51,18 +48,7 @@ public class UserTab extends MyPersistence implements Serializable {
 
 	@Override
 	public String toString() {
-		return "UserTab[ id=" + id + " ]";
+		return "se.chalmers.snake.snakeappwebpage.serverstorage.Map[ id=" + id + " ]";
 	}
-
 	
-	@Override
-	protected void trackPersistence(EntityManager entityManager) {
-		entityManager.merge(this);
-	}
-
-	@Override
-	protected boolean trackDestroy(EntityManager entityManager, MyPersistence removeObj) {
-		entityManager.remove(this);
-		return true;
-	}
 }
