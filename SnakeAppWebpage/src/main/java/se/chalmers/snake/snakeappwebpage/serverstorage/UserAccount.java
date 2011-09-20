@@ -32,11 +32,9 @@ public class UserAccount extends SelfPersistence implements Serializable {
 	private String userDescription;
 	
 	
-	@OneToMany(mappedBy = "userAccount")
-	private List<PublicMap> publicMaps;
 	
-	@OneToMany
-	private List<Map> privateMaps;
+	@OneToMany(mappedBy = "userAccount")
+	private List<Map> maps;
 	
 	
 	//</editor-fold>
@@ -81,6 +79,8 @@ public class UserAccount extends SelfPersistence implements Serializable {
 	public void setUserPassword(String userPassword) {
 		this.userPassword = ServerStorage.SHAHashString(userPassword);
 	}
+
+	
 	//</editor-fold>
 
 	//<editor-fold defaultstate="collapsed" desc="Object Override">
