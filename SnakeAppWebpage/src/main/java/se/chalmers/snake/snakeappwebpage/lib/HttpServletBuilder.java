@@ -314,7 +314,7 @@ public abstract class HttpServletBuilder extends HttpServlet {
 	 */
 	protected abstract void pageRequest(
 			  HttpMeta httpMeta,
-			  HttpOutput httpOutput);
+			  HttpOutput httpOutput) throws Exception;
 
 	//<editor-fold defaultstate="collapsed" desc="Override Methods">
 	@Override
@@ -358,6 +358,8 @@ public abstract class HttpServletBuilder extends HttpServlet {
 		PrintWriter pw = response.getWriter();
 		try {
 			this.pageRequest(new HttpMeta(method,request, response), new HttpOutput(request, response,pw));
+		} catch(Exception ex) {
+			ex.printStackTrace();
 		} finally {
 			pw.close();
 		}
