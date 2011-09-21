@@ -2,39 +2,177 @@ package se.chalmers.snake.gameengine;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import se.chalmers.snake.interfaces.ControlResourcesIC;
 import se.chalmers.snake.interfaces.GameEngineIC;
-import se.chalmers.snake.interfaces.GameEngineIC.GameEngineEvent;
+import se.chalmers.snake.interfaces.LevelDatabaseIC;
+import se.chalmers.snake.interfaces.LevelIC;
+import se.chalmers.snake.interfaces.MotionDetectorIC;
+import se.chalmers.snake.interfaces.SystemEventIC;
 import se.chalmers.snake.interfaces.util.REPoint;
-import se.chalmers.snake.util.EnumObservable;
+import se.chalmers.snake.interfaces.util.XYPoint;
 
-public class TestGameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Void, Void>{
-	
-	private List<REPoint> snakeBody;
-	
-	public TestGameEngine(){
-		super(GameEngineIC.GameEngineEvent.class);
-		snakeBody = new ArrayList<REPoint>();
+/**
+ *
+ */
+public class TestGameEngine {
 
-		snakeBody.add(new REPoint(REPoint.REType.HEADSEG,30,5,5));
-		snakeBody.add(new REPoint(REPoint.REType.BODYSEG,25,5,5));
-		snakeBody.add(new REPoint(REPoint.REType.BODYSEG,20,5,5));
-		snakeBody.add(new REPoint(REPoint.REType.BODYSEG,15,5,5));
-		snakeBody.add(new REPoint(REPoint.REType.TAILSEG,10,5,5));
+	private static ControlResourcesIC getControlResources() {
+		return new ControlResourcesIC() {
+
+			@Override
+			public LevelDatabaseIC getLevelDatabase() {
+				return new LevelDatabaseIC() {
+
+					@Override
+					public LevelIC getByLevel(int level) {
+						return null;
+					}
+
+					@Override
+					public LevelIC getByName(String name) {
+						return new LevelIC() {
+
+							@Override
+							public String getLevelName() {
+								return "Level 1";
+							}
+
+							@Override
+							public String getLevelDescription() {
+								return "This is level 1";
+							}
+
+							@Override
+							public int getLevel() {
+								return 1;
+							}
+
+							@Override
+							public XYPoint getMapSize() {
+								return new XYPoint(100, 100);
+							}
+
+							@Override
+							public int getSnakeStartLength() {
+								return 5;
+							}
+
+							@Override
+							public XYPoint getSnakeHeadStartLocation() {
+								return new XYPoint(50, 50);
+							}
+
+							@Override
+							public double getStartAngle() {
+								return 0;
+							}
+
+							@Override
+							public List<REPoint> getObstacles() {
+								return new ArrayList<REPoint>();
+							}
+
+							@Override
+							public int getPlayerBodyWidth() {
+								return 5;
+							}
+
+							@Override
+							public int getItemsRadius() {
+								return 5;
+							}
+
+							@Override
+							public int getSpeed(List<Integer> collectTime) {
+								return 2;
+							}
+
+							@Override
+							public boolean hasReachedGoal(List<Integer> collectTime) {
+								return false;
+							}
+
+							@Override
+							public int getAddItems(int totalCollected, int totalItemInGame) {
+								return 1;
+							}
+
+							@Override
+							public int getBodyGrowth(int collectTime, int totalCollected) {
+								return 1;
+							}
+						};
+					}
+
+					@Override
+					public String[] getLevelListByName() {
+						return null;
+					}
+
+					@Override
+					public int[] getLevelListByLevel() {
+						return null;
+					}
+				};
+			}
+
+			@Override
+			public MotionDetectorIC getMotionDetector() {
+				return new MotionDetectorIC() {
+
+					@Override
+					public void start() {
+					}
+
+					@Override
+					public void stop() {
+					}
+
+					@Override
+					public void setReferenceSurface(ReferenceSurface rs) {
+					}
+
+					@Override
+					public int getAngleByDegrees() {
+						return 0;
+					}
+
+					@Override
+					public double getAngleByRadians() {
+						return 1.0;
+					}
+
+					@Override
+					public void setSensitivity(int sensitivity) {
+					}
+				};
+			}
+
+
+			@Override
+			public XYPoint getScreenSize() {
+				return new XYPoint(100, 100);
+			}
+
+			@Override
+			public GameEngineIC getGameEngine() {
+				throw new UnsupportedOperationException("Not supported yet.");
+			}
+
+			public SystemEventIC getSystemEventController() {
+				return new SystemEventIC() {
+					public void systemInterrupt() {
+						
+					}
+				};
+			}
+		};
 	}
 	
-	public void startGame(){
-				List<REPoint> snake = new ArrayList<REPoint>();
-				for(REPoint point : snakeBody){
-					snake.add(new REPoint(point.getType(),point.getX() + 40,5,5));
-				}
-				snakeBody = snake;
-				this.fireObserver(GameEngineEvent.UPDATE);
-		
+	public static GameEngineIC getGameEngine() {
+		GameEngine gameEngine = new GameEngine(TestGameEngine.getControlResources());
+		gameEngine.loadLevel("Level 1");
+		return gameEngine;
 	}
 	
-	public List<REPoint> getPlayerBody(){
-		return snakeBody;
-	}
-
 }

@@ -54,7 +54,7 @@ public class Primary implements EnumObserver<GameEngineIC.GameEngineEvent, Void,
 	/**
 	 * test
 	 */
-	public void setTestObjects(List<REPoint> pb, TestGameEngine ts){
+	public void setTestObjects(List<REPoint> pb, GameEngineIC ts){
 		this.snakeBody = pb;
 		ts.addObserver(GameEngineIC.GameEngineEvent.UPDATE, this);
 		for(REPoint point : snakeBody){

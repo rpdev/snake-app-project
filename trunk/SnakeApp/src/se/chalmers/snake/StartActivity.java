@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Button;
+import se.chalmers.snake.interfaces.GameEngineIC;
 
 public class StartActivity extends Activity { // implements SensorEventListener
 
@@ -43,9 +44,11 @@ public class StartActivity extends Activity { // implements SensorEventListener
 			primary = new Primary(controlResources, spelplan, context);
 
 //	        //test
-			TestGameEngine testGameEngine = new TestGameEngine();
-			primary.setTestObjects(testGameEngine.getPlayerBody(), testGameEngine);
-			testGameEngine.startGame();
+			GameEngineIC gameEngine = TestGameEngine.getGameEngine();
+			
+			primary.setTestObjects(gameEngine.getPlayerBody(), gameEngine);
+			gameEngine.startGame();
+			
 //
 //			gameEngine = (GameEngine)controlResources.getGameEngine();
 //			

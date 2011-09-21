@@ -148,7 +148,8 @@ class LevelEngine {
 	}
 
 	int getScore() {
-		return this.score;
+		//return this.score;
+		return this.itemsCollect.size();
 	}
 
 	/**
