@@ -86,7 +86,7 @@ public class TestGameEngine {
 
 							@Override
 							public int getSpeed(List<Integer> collectTime) {
-								return 5;
+								return 3;
 							}
 
 							@Override
@@ -96,12 +96,12 @@ public class TestGameEngine {
 
 							@Override
 							public int getAddItems(int totalCollected, int totalItemInGame) {
-								return 3;
+								return 1;
 							}
 
 							@Override
 							public int getBodyGrowth(int collectTime, int totalCollected) {
-								return 5;
+								return 3;
 							}
 						};
 					}
