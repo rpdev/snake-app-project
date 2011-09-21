@@ -49,7 +49,7 @@ public class TestGameEngine {
 
 							@Override
 							public XYPoint getMapSize() {
-								return new XYPoint(100, 100);
+								return new XYPoint(150, 200);
 							}
 
 							@Override
@@ -69,17 +69,19 @@ public class TestGameEngine {
 
 							@Override
 							public List<REPoint> getObstacles() {
-								return new ArrayList<REPoint>();
+								ArrayList<REPoint> item = new ArrayList<REPoint>();
+								item.add(new REPoint(REPoint.REType.ITEM, 100,150,10));
+								return item;
 							}
 
 							@Override
 							public int getPlayerBodyWidth() {
-								return 2;
+								return 5;
 							}
 
 							@Override
 							public int getItemsRadius() {
-								return 5;
+								return 10;
 							}
 
 							@Override
@@ -99,7 +101,7 @@ public class TestGameEngine {
 
 							@Override
 							public int getBodyGrowth(int collectTime, int totalCollected) {
-								return 1;
+								return 4;
 							}
 						};
 					}
@@ -139,7 +141,7 @@ public class TestGameEngine {
 
 					@Override
 					public double getAngleByRadians() {
-						return 1.5;
+						return 2;
 					}
 
 					@Override
