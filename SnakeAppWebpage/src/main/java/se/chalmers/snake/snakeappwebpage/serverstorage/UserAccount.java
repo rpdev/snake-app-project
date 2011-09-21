@@ -30,9 +30,6 @@ public class UserAccount extends SelfPersistence implements Serializable {
 	private String userMail;
 	@Column(nullable = false)
 	private String userDescription;
-	
-	
-	
 	@OneToMany(mappedBy = "userAccount")
 	private List<Map> maps;
 	

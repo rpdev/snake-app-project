@@ -21,7 +21,10 @@ public class EasyServlet extends HttpServletBuilder {
 	protected void pageRequest(HttpMeta httpMeta, HttpOutput httpOutput) throws Exception {
 		if (httpMeta.isMethodPostGet()) {
 			httpMeta.setContentType("text/html;charset=UTF-8");
-			httpOutput.getWriter().println(""+ServerStorage.size(UserAccount.PORTOTYPE));
+			//httpOutput.getWriter().println(""+ServerStorage.size(UserAccount.PORTOTYPE));
+			(new UserAccount()).persistence();
+			UserAccount p1 = new UserAccount();
+
 			
 		}
 	}

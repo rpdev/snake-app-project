@@ -24,6 +24,8 @@ public class HardServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		try {
 			request.getRequestDispatcher("index.jsp").forward(request, response);
+			
+			
 		} finally {			
 			out.close();
 		}
