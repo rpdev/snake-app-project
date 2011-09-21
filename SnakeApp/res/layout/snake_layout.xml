@@ -4,7 +4,7 @@
 	android:id="@+id/spelplan"	
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:background="@drawable/snake_bg">
+	android:background="@drawable/spelplan_bg">
     
     <RelativeLayout 
     android:layout_width="fill_parent"
@@ -14,18 +14,18 @@
     </RelativeLayout>
     
     
-    <RelativeLayout
+    <RelativeLayout android:id="@+id/menu_buttons" 
 		android:layout_width="fill_parent"
-		android:layout_height="fill_parent">
+		android:layout_height="fill_parent"
+		android:background="@drawable/snake_bg">
 		
-		<LinearLayout android:id="@+id/menu_buttons" 
+		<LinearLayout
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_centerInParent="true"
 			android:paddingTop="15dip"
 			android:gravity="center_horizontal"
 			android:orientation="vertical" 
-			android:visibility="visible"
 			>			
 			
 			<Button 
