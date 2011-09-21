@@ -33,6 +33,7 @@ class PlayerBody implements Iterable<REPoint> {
 		}
 	}
 	private final LinkedList<PBFPoint> seg;
+	private final int bodySegmentLength;
 	private final int bodySegmentRadius;
 	private final int bodySegmentRadius2;
 	private final XYPoint gameSize;
@@ -57,6 +58,7 @@ class PlayerBody implements Iterable<REPoint> {
 		this.gameSize = gameSize;
 		this.bodySegmentRadius = bodySegmentRadius;
 		this.bodySegmentRadius2 = 2 * this.bodySegmentRadius;
+		this.bodySegmentLength = bodySegmentRadius;
 		this.bufferBodySegment = startBufferSegNumber;
 		this.initBody(startPosition, startAngle, startSegNumber - 1);
 	}
@@ -72,7 +74,7 @@ class PlayerBody implements Iterable<REPoint> {
 		this.seg.add(floatPoint);
 		double mirrorAngle = angle > Math.PI ? angle - Math.PI : angle + Math.PI; // Get the Mirror angle.
 		for (int i = 0; i < segCount; i++) {
-			floatPoint = this.nextPoint(floatPoint, mirrorAngle, this.bodySegmentRadius);
+			floatPoint = this.nextPoint(floatPoint, mirrorAngle, this.bodySegmentLength);
 			this.seg.add(floatPoint);
 
 		}
@@ -142,7 +144,7 @@ class PlayerBody implements Iterable<REPoint> {
 	 */
 	public synchronized void step(double angle, int length) {
 		this.lengthSincLastAddSegment += length;
-		if (length == this.bodySegmentRadius) {
+		if (length == this.bodySegmentLength) {
 			this.step(angle);
 			return;
 		}
@@ -160,9 +162,9 @@ class PlayerBody implements Iterable<REPoint> {
 			this.nextPointStep(point, angle, length);
 		}
 
-		if (this.bufferBodySegment > 0 && this.lengthSincLastAddSegment >= this.bodySegmentRadius) {
+		if (this.bufferBodySegment > 0 && this.lengthSincLastAddSegment >= this.bodySegmentLength) {
 			double mirrorAngle = angle > Math.PI ? angle - Math.PI : angle + Math.PI; // Get the Mirror angle.
-			PBFPoint newTail = this.nextPoint(this.seg.getLast(), mirrorAngle, this.bodySegmentRadius);
+			PBFPoint newTail = this.nextPoint(this.seg.getLast(), mirrorAngle, this.bodySegmentLength);
 			this.bufferBodySegment--;
 			this.lengthSincLastAddSegment = 0;
 			this.seg.addLast(newTail);
@@ -174,8 +176,7 @@ class PlayerBody implements Iterable<REPoint> {
 	 * @param angle 
 	 */
 	private void step(double angle) {
-		this.lengthSincLastAddSegment += this.bodySegmentRadius;
-		this.seg.addFirst(this.nextPoint(this.seg.getFirst(), angle, this.bodySegmentRadius));
+		this.seg.addFirst(this.nextPoint(this.seg.getFirst(), angle, this.bodySegmentLength));
 		if (this.bufferBodySegment > 0) {
 			this.bufferBodySegment--;
 			this.lengthSincLastAddSegment = 0;
@@ -199,6 +200,11 @@ class PlayerBody implements Iterable<REPoint> {
 		return new REPoint(REPoint.REType.TAILSEG, (int) floatPoint.x, (int) floatPoint.y, this.bodySegmentRadius);
 	}
 
+	/**
+	 * Get the Player Body Seg List.
+	 * The list is a clone of the Private List of the maticmatic
+	 * @return 
+	 */
 	public List<REPoint> get() {
 		ArrayList<REPoint> rList = new ArrayList<REPoint>(this.seg.size());
 		boolean isFirst = true;

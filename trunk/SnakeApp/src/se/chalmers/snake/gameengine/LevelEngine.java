@@ -47,9 +47,9 @@ class LevelEngine {
 		this.isRunning = true;
 		this.items = new ArrayList<LEIPoint>();
 		this.itemsCollect = new ArrayList<Integer>();
-		this.stepLength = level.getSpeed(this.itemsCollect);
+		this.stepLength = (int) (level.getSpeed(this.itemsCollect)*this.fixScal);
 		XYPoint startPoint = new XYPoint((int) (this.xScal * level.getSnakeHeadStartLocation().x), (int) (this.yScal * level.getSnakeHeadStartLocation().y));
-		this.playerBody = new PlayerBody(gameFiledSize, startPoint, this.level.getStartAngle(), this.playerBodyWidth, level.getSnakeStartLength(), 0);
+		this.playerBody = new PlayerBody(gameFiledSize, startPoint, this.level.getStartAngle(), (int)(this.playerBodyWidth*this.fixScal), level.getSnakeStartLength(), 0);
 		this.staticElement = Collections.unmodifiableList(this.listStaticElement());
 		this.score = 0;
 
@@ -66,8 +66,6 @@ class LevelEngine {
 		 * Add the basic numbers of items.
 		 */
 		this.addItems(this.level.getAddItems(0, 0));
-
-
 	}
 
 	/**
@@ -106,7 +104,7 @@ class LevelEngine {
 			LEIPoint item = itPoint.next();
 			if (playerHead.isCollideWith(item)) {
 				this.itemsCollect.add(item.time);
-				this.stepLength = this.level.getSpeed(this.itemsCollect);
+				this.stepLength = (int) (this.level.getSpeed(this.itemsCollect)*this.fixScal);
 				this.playerBody.addSeg(this.level.getBodyGrowth(item.time, this.itemsCollect.size() + 1));
 				itPoint.remove();
 				addsItemCount += this.level.getAddItems(this.itemsCollect.size(), this.items.size() + addsItemCount);
