@@ -1,6 +1,5 @@
 package se.chalmers.snake.gameGUI;
 
-import se.chalmers.snake.gameengine.TestGameEngine;
 import se.chalmers.snake.interfaces.ControlResourcesIC;
 import se.chalmers.snake.interfaces.GameEngineIC;
 import se.chalmers.snake.interfaces.GameEngineIC.GameEngineEvent;
@@ -12,7 +11,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.widget.FrameLayout;
-import se.chalmers.snake.leveldatabase.LevelDatabase;
 
 public class Primary implements EnumObserver<GameEngineIC.GameEngineEvent, Void,Void>{
 	
