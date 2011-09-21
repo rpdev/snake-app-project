@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -17,71 +18,102 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class Map implements Serializable {
+
 	@ManyToOne
 	private UserAccount userAccount;
-
 	public static enum Status {
 		PUBLIC,
 		DELETE,
 		CREATE
 	}
-	
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date publicDate;
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private Status status;
 	@OneToMany
 	private List<MapComment> comments;
+	@Column(nullable = false)
+	private String mapName;
+	@Column(nullable = false)
+	private String mapDescription;
+	@Column(nullable = false)
+	private int mapLevel;
 	
 	
+
 	//<editor-fold defaultstate="collapsed" desc="Set and Get">
 	public long getId() {
 		return id;
 	}
-	
+
 	public void setId(long id) {
 		this.id = id;
 	}
-	
+
 	public List<MapComment> getComments() {
 		return comments;
 	}
-	
+
 	public void setComments(List<MapComment> comments) {
 		this.comments = comments;
 	}
-	
+
 	public Date getPublicDate() {
 		return publicDate;
 	}
-	
+
 	public void setPublicDate(Date publicDate) {
 		this.publicDate = publicDate;
 	}
-	
+
 	public Status getStatus() {
 		return status;
 	}
-	
+
 	public void setStatus(Status status) {
 		this.status = status;
 	}
-	
+
 	public UserAccount getUserAccount() {
 		return userAccount;
 	}
-	
+
 	public void setUserAccount(UserAccount userAccount) {
 		this.userAccount = userAccount;
 	}
+
+	public String getMapDescription() {
+		return mapDescription;
+	}
+
+	public void setMapDescription(String mapDescription) {
+		this.mapDescription = mapDescription;
+	}
+
+	public int getMapLevel() {
+		return mapLevel;
+	}
+
+	public void setMapLevel(int mapLevel) {
+		this.mapLevel = mapLevel;
+	}
+
+	public String getMapName() {
+		return mapName;
+	}
+
+	public void setMapName(String mapName) {
+		this.mapName = mapName;
+	}
+	
+	
+	
 	//</editor-fold>
-	
-	
-	
+
 	@Override
 	public int hashCode() {
 		int hash = 0;
@@ -101,6 +133,4 @@ public class Map implements Serializable {
 		}
 		return true;
 	}
-
-	
 }

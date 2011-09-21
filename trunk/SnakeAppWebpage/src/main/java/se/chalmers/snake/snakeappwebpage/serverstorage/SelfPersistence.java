@@ -7,7 +7,7 @@ import javax.persistence.EntityTransaction;
 /**
  *
  */
-abstract class SelfPersistence implements Serializable {
+public abstract class SelfPersistence implements Serializable {
 
 	public SelfPersistence() {
 	}
