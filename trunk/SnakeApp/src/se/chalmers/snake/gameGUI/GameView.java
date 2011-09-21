@@ -28,12 +28,14 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	private Paint paint;
 	private List<REPoint> snakeBody;
 	private List<REPoint> items;
+	private List<REPoint> staticitem;
 
 	public GameView(Context context, GameEngineIC gameEngine) {
 		super(context);
 		this.paint = new Paint();
 		this.paint.setStyle(Paint.Style.FILL);
 		this.gameEngine = gameEngine;
+		this.staticitem = gameEngine.getStaticElement();
 		this.snakeBody = new ArrayList(0);
 		this.setBackgroundResource(R.drawable.spelplan_bg);
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.UPDATE, this);
@@ -52,6 +54,11 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 			for (REPoint reP : this.items) {
 				canvas.drawCircle(reP.x, reP.y, reP.radius, this.paint);
 			}
+			
+			paint.setColor(Color.BLACK);
+			for (REPoint reP : this.staticitem) {
+				canvas.drawCircle(reP.x, reP.y, reP.radius, this.paint);
+			}
 		}
 	}
 
@@ -60,9 +67,7 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	public Void observerNotify(EnumObservable<GameEngineEvent, Void, Void> observable, GameEngineEvent event, Void arg) {
 		this.snakeBody = this.gameEngine.getPlayerBody();
 		this.items = this.gameEngine.getItems();
-		
 		this.postInvalidate();
-
 		return null;
 	}
 }
