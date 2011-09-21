@@ -1,7 +1,5 @@
 package se.chalmers.snake.mastercontroller;
 
-import android.app.Activity;
-import android.content.Context;
 import android.hardware.SensorManager;
 import se.chalmers.snake.gameengine.GameEngine;
 import se.chalmers.snake.interfaces.ControlResourcesIC;
@@ -22,7 +20,7 @@ public class ControlResources implements ControlResourcesIC {
 	private GameEngineIC gameEngineIC;
 	private XYPoint screenSize;
 	private SystemEventIC systemEventIC;
-	private ControlResources(SensorManager sensorManager, XYPoint screenSize) {
+	public ControlResources(SensorManager sensorManager, XYPoint screenSize) {
 		this.motionDetectorIC = new MotionDetector(sensorManager);
 		this.systemEventIC= new SystemEventIC() {
 			public void systemInterrupt() {

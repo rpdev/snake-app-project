@@ -8,18 +8,27 @@
 	 android:icon="@drawable/icon" 
 	 android:theme="@style/CustomButton">
 		 
-		<activity android:name="SnakeActivity"
+		<activity android:name="StartActivity"
                   android:label="@string/app_name">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-	
-	
 	<!-- TEST CASE -->
+		<activity android:name="DrawTestActivity"
+                  android:label="Snake DrawTest"
+						android:taskAffinity="se.chalmers.snake.gamegui"
+						>
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		
+		
 		<activity android:name="MotionDetectorActivity"
-                  android:label="MotionDetectorActivity"
+                  android:label="Snake MotionDetectorActivity"
 						android:taskAffinity="se.chalmers.snake.motiondetector"
 						>
 			<intent-filter>
@@ -27,6 +36,5 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		  
 	</application>
 </manifest> 
