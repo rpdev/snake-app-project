@@ -55,8 +55,10 @@ public class DrawTest extends View {
 			boolean inter = !Rect.intersects(r1,r2);
 			if(!inter)
 				paint.setColor(Color.MAGENTA);
-			for(int i=0;i<pts.length-1;i++)
-				canvas.drawLine(pts[i].x, pts[i].y, pts[i+1].x, pts[i+1].y, paint);
+			for(int i=0;i<pts.length;i++) {
+				//canvas.drawLine(pts[i].x, pts[i].y, pts[i+1].x, pts[i+1].y, paint);
+				canvas.drawCircle(pts[i].x, pts[i].y, w, paint);
+			}
 			if(inter)
 				paint.setColor(Color.RED);
 			canvas.drawRect(r1, paint);//canvas.drawCircle(pts[0].x, pts[0].y, 20, paint);
