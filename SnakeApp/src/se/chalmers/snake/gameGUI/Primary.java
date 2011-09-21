@@ -46,6 +46,7 @@ public class Primary implements EnumObserver<GameEngineIC.GameEngineEvent, Void,
 				spelplan.addView(new BodySegment(context, point.getX(), point.getY(), point.getRadius()));
 			}
 		}
+		spelplan.invalidate();
 		return null;
 	}
 	
