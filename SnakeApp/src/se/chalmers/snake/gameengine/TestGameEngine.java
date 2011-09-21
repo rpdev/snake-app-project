@@ -76,7 +76,7 @@ public class TestGameEngine {
 
 							@Override
 							public int getPlayerBodyWidth() {
-								return 5;
+								return 2;
 							}
 
 							@Override
@@ -86,7 +86,7 @@ public class TestGameEngine {
 
 							@Override
 							public int getSpeed(List<Integer> collectTime) {
-								return 3;
+								return 5;
 							}
 
 							@Override
@@ -96,12 +96,12 @@ public class TestGameEngine {
 
 							@Override
 							public int getAddItems(int totalCollected, int totalItemInGame) {
-								return 1;
+								return 3;
 							}
 
 							@Override
 							public int getBodyGrowth(int collectTime, int totalCollected) {
-								return 4;
+								return 5;
 							}
 						};
 					}
