@@ -15,7 +15,7 @@ import se.chalmers.snake.interfaces.util.XYPoint;
  *
  */
 public class TestGameEngine {
-
+	public static XYPoint screenSize = new XYPoint(150,200);
 	private static ControlResourcesIC getControlResources() {
 		return new ControlResourcesIC() {
 
@@ -74,7 +74,7 @@ public class TestGameEngine {
 
 							@Override
 							public int getPlayerBodyWidth() {
-								return 5;
+								return 2;
 							}
 
 							@Override
@@ -84,7 +84,7 @@ public class TestGameEngine {
 
 							@Override
 							public int getSpeed(List<Integer> collectTime) {
-								return 2;
+								return 3;
 							}
 
 							@Override
@@ -139,7 +139,7 @@ public class TestGameEngine {
 
 					@Override
 					public double getAngleByRadians() {
-						return 1.0;
+						return 1.5;
 					}
 
 					@Override
@@ -151,7 +151,7 @@ public class TestGameEngine {
 
 			@Override
 			public XYPoint getScreenSize() {
-				return new XYPoint(100, 100);
+				return TestGameEngine.screenSize;
 			}
 
 			@Override
@@ -169,9 +169,10 @@ public class TestGameEngine {
 		};
 	}
 	
-	public static GameEngineIC getGameEngine() {
+	public static GameEngineIC getGameEngine(XYPoint size) {
+		TestGameEngine.screenSize = size;
 		GameEngine gameEngine = new GameEngine(TestGameEngine.getControlResources());
-		gameEngine.loadLevel("Level 1");
+		gameEngine.loadLevel("");
 		return gameEngine;
 	}
 	

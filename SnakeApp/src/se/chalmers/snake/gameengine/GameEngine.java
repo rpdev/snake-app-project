@@ -60,10 +60,10 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 				this.fireObserver(GameEngineEvent.PLAYER_LOSE);
 			}
 		}
-		
+		/*
 		System.out.println(" -- STEP -- ");
 		System.out.println(this.currentLevel.playerBody);
-		
+		*/
 	}
 
 	@Override
