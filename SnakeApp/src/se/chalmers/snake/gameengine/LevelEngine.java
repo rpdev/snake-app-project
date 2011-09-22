@@ -91,7 +91,7 @@ class LevelEngine {
 		if (this.isRunning == false) {
 			return false;
 		}
-		this.playerBody.step(stepAngle, (int) (this.fixScal * this.stepLength));
+		this.playerBody.step(stepAngle, this.stepLength);
 		REPoint playerHead = this.playerBody.getHead();
 		if (this.isCollision()) {
 			this.isRunning = false;
