@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.MotionEvent;
 import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,12 +47,32 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		this.setBackgroundResource(R.drawable.spelplan_bg);
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.UPDATE, this);
 		this.gameEngine.startGame();
+		setFocusable(true);
 		
 		bodySeg = Bitmap.createScaledBitmap(
 				BitmapFactory.decodeResource(mRes, R.drawable.snake_body), 5 * 2, 5 * 2, true);
 		
-		
+		this.setOnTouchListener(onTouchListener);
 	}
+	
+	private OnTouchListener onTouchListener = new View.OnTouchListener(){
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			
+			return false;
+		}
+		
+		
+	};
+	
+	@Override
+    public void onWindowFocusChanged(boolean hasWindowFocus) {
+        if (!hasWindowFocus) {
+                gameEngine.pauseGame();
+
+        }
+    }
 
 	@Override
 	public void onDraw(Canvas canvas) {
