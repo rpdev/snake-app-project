@@ -1,0 +1,117 @@
+/* Styleeet For STI v2.0 -------------------------------*/
+
+
+body{
+	background-image: url(bg.jpg);
+}
+
+#snakebend{ 
+	background-image: url(snakebody_bend.png);
+	width: 116px;
+	height: 118px;
+	float: left;
+	margin-left: 25px;
+}
+
+#topmenu{
+	background-color: black;
+	text-align: center;
+	margin-bottom: 5px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+ }
+ #topmenu p { color: white; margin-top: 0px; margin-bottom: 0px; }
+ #topmenu a { color: white; }
+ #topmenu a:hover { color: red; text-decoration: underline; }
+
+#topmainbar{
+	background-image: url(snakebody_top.png);
+	height: 120px;
+	width: 802px;
+	float: left;
+	margin-top: -3px;
+}
+
+	#topmainbar a { color:#171151; text-decoration: none; }
+	#topmainbar a:hover { color:#9e0b0f; text-decoration: underline; } 
+
+
+#topedge{
+	background-image: url(snakebody_head.png);
+	height: 240px;
+	width: 150px;
+	float: left;
+	margin-top: 12px;
+}
+
+#tagdiv{
+	margin-left: 50px;
+	padding-top: 10px;
+}
+	#tagdiv p { font-size: 11px; color: white; }
+
+#snakeleft{
+	width: 137px;
+	height:577px;
+	margin-top: -134px;
+	background-image: url(snakebody_left.png);	
+}
+
+#topcontainer{
+	min-width: 1200px;
+}
+
+#maindiv{
+	float: left;
+	margin-top: 10px;
+	margin-left: 10px;
+	margin-top: -125px;
+	
+}
+
+#maindivtop{
+	background-image: url(maindivtop.png);
+	width: 800px;
+	height: 50px;
+}
+
+	#maindivtop p { font-size: 17px; color: gray; float: right; margin-top: 10px; margin-right: 50px; }
+	
+#maindivmain{
+	background-color: #204932;
+	width: 800px;
+}
+
+#content a { color:#171151; text-decoration: none; }
+#content a:hover { color:#9e0b0f; text-decoration: underline; }
+#content p { color: green; margin-left: 15px; margin-top: 0px; font-size: 17px; margin-bottom: 0px;}
+
+#maindivbottom{
+	background-image: url(maindivbottom.png);
+	width: 800px;
+	height: 110px;
+}
+
+#leftsidecontainer{
+	clear: left;
+	float: left;
+}
+
+#maincontainer{
+	min-width: 1600px;
+}
+
+#bitethis{ 
+   display:block; 
+   margin:0 auto; 
+   text-align:center;
+   border: 1px white solid  }
+   
+/*#ads{
+	width: 200px;
+	height:500px;
+	float: left;
+	clear: right;
+	margin-top: 20px;
+	margin-left: 30px;
+}*/
