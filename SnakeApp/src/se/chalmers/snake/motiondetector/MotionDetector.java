@@ -36,7 +36,7 @@ public MotionDetector(SensorManager sensorManager) {
 		this.radianus = 0.0;
 		this.referenceSurface = null;
 		this.callWhileUpdate = null;
-		this.sensitivity = 0;
+		this.setSensitivity(15);
 	}
 
 	public MotionDetector(SensorManager sensorManager, Runnable callWhileUpdate) {
@@ -46,6 +46,7 @@ public MotionDetector(SensorManager sensorManager) {
 		this.radianus = 0.0;
 		this.referenceSurface = null;
 		this.callWhileUpdate = callWhileUpdate;
+		this.setSensitivity(15);
 
 	}
 
@@ -108,12 +109,14 @@ public MotionDetector(SensorManager sensorManager) {
 
 	@Override
 	public int getAngleByDegrees() {
+		this.start();
 		this.recalc();
 		return this.degrees;
 	}
 
 	@Override
 	public double getAngleByRadians() {
+		this.start();
 		this.recalc();
 		return this.radianus;
 	}
@@ -123,12 +126,8 @@ public MotionDetector(SensorManager sensorManager) {
 		if (this.isUpdate == false) {
 			if (SensorManager.getRotationMatrix(this.mR, null, this.mGData, this.mMData)) {
 				SensorManager.getOrientation(this.mR, this.mOrientation);
-					
-				//sum = 9.8
-				
 				if(Math.sqrt(this.mOrientation[1]*this.mOrientation[1]+this.mOrientation[2]*this.mOrientation[2])>this.sensitivity){
 				this.radianus = Math.atan2(this.mOrientation[1], this.mOrientation[2]) + Math.PI;
-				
 				this.degrees = (int) (this.radianus * MotionDetector.RAD_TO_DEG);
 				this.count++;
 				}

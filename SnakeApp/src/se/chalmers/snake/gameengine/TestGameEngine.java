@@ -15,7 +15,10 @@ import se.chalmers.snake.interfaces.util.XYPoint;
  *
  */
 public class TestGameEngine {
-	public static XYPoint screenSize = new XYPoint(150,200);
+
+	public static XYPoint screenSize = new XYPoint(150, 200);
+	public static MotionDetectorIC motionDetector = null;
+
 	private static ControlResourcesIC getControlResources() {
 		return new ControlResourcesIC() {
 
@@ -59,24 +62,24 @@ public class TestGameEngine {
 
 							@Override
 							public XYPoint getSnakeHeadStartLocation() {
-								return new XYPoint(50, 50);
+								return new XYPoint(75, 100);
 							}
 
 							@Override
 							public double getStartAngle() {
-								return 0;
+								return Math.PI / 2;
 							}
 
 							@Override
 							public List<REPoint> getObstacles() {
 								ArrayList<REPoint> item = new ArrayList<REPoint>();
-								item.add(new REPoint(REPoint.REType.ITEM, 100,150,10));
+								item.add(new REPoint(REPoint.REType.ITEM, 100, 150, 10));
 								return item;
 							}
 
 							@Override
 							public int getPlayerBodyWidth() {
-								return 2;
+								return 5;
 							}
 
 							@Override
@@ -86,7 +89,7 @@ public class TestGameEngine {
 
 							@Override
 							public int getSpeed(List<Integer> collectTime) {
-								return 10;
+								return 3;
 							}
 
 							@Override
@@ -96,11 +99,7 @@ public class TestGameEngine {
 
 							@Override
 							public int getAddItems(int totalCollected, int totalItemInGame) {
-								if(totalCollected<10) {
-									return 2;
-								} else {
-									return 1;
-								}
+								return 0;
 							}
 
 							@Override
@@ -126,12 +125,21 @@ public class TestGameEngine {
 			public MotionDetectorIC getMotionDetector() {
 				return new MotionDetectorIC() {
 
+					private double angle = Math.PI / 2;
+
 					@Override
 					public void start() {
+						
+						if (TestGameEngine.motionDetector != null) {
+							TestGameEngine.motionDetector.start();
+						}
 					}
 
 					@Override
 					public void stop() {
+						if (TestGameEngine.motionDetector != null) {
+							TestGameEngine.motionDetector.stop();
+						}
 					}
 
 					@Override
@@ -145,7 +153,10 @@ public class TestGameEngine {
 
 					@Override
 					public double getAngleByRadians() {
-						return 1.3;
+						if (TestGameEngine.motionDetector != null) {
+							return TestGameEngine.motionDetector.getAngleByRadians();
+						}
+						return angle += 0.02;
 					}
 
 					@Override
@@ -153,7 +164,6 @@ public class TestGameEngine {
 					}
 				};
 			}
-
 
 			@Override
 			public XYPoint getScreenSize() {
@@ -167,19 +177,19 @@ public class TestGameEngine {
 
 			public SystemEventIC getSystemEventController() {
 				return new SystemEventIC() {
+
 					public void systemInterrupt() {
-						
 					}
 				};
 			}
 		};
 	}
-	
-	public static GameEngineIC getGameEngine(XYPoint size) {
+
+	public static GameEngineIC getGameEngine(XYPoint size, MotionDetectorIC motionDetector) {
 		TestGameEngine.screenSize = size;
+		TestGameEngine.motionDetector = motionDetector;
 		GameEngine gameEngine = new GameEngine(TestGameEngine.getControlResources());
 		gameEngine.loadLevel("");
 		return gameEngine;
 	}
-	
 }

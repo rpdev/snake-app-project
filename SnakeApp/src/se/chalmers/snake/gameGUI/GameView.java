@@ -5,9 +5,6 @@
 package se.chalmers.snake.gameGUI;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.BitmapFactory;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -32,73 +29,57 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	private Paint paint;
 	private List<REPoint> snakeBody;
 	private List<REPoint> items;
-	private List<REPoint> staticitem;
-	private Resources mRes;
-	private static Bitmap bodySeg;
 
 	public GameView(Context context, GameEngineIC gameEngine) {
 		super(context);
-		mRes = context.getResources();
 		this.paint = new Paint();
 		this.paint.setStyle(Paint.Style.FILL);
 		this.gameEngine = gameEngine;
 
-		this.snakeBody = new ArrayList<REPoint>(0);
 		this.setBackgroundResource(R.drawable.spelplan_bg);
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.UPDATE, this);
-		this.gameEngine.startGame();
-		setFocusable(true);
-		
-		bodySeg = Bitmap.createScaledBitmap(
-				BitmapFactory.decodeResource(mRes, R.drawable.snake_body), 5 , 5, true);
-		
-		this.setOnTouchListener(onTouchListener);
+		this.snakeBody = gameEngine.getPlayerBody();
+		this.items = gameEngine.getItems();
+		this.postInvalidate();
 	}
-	
-	private OnTouchListener onTouchListener = new View.OnTouchListener(){
 
-		@Override
-		public boolean onTouch(View v, MotionEvent event) {
-			
-			return false;
-		}
-		
-		
-	};
-	
-	@Override
-    public void onWindowFocusChanged(boolean hasWindowFocus) {
-        if (!hasWindowFocus) {
-                gameEngine.pauseGame();
-
-        }
-    }
 
 	@Override
 	public void onDraw(Canvas canvas) {
 		if (this.snakeBody != null) {
-
 			int c = 0;
+
 			for (REPoint reP : this.snakeBody) {
-				canvas.drawBitmap(bodySeg, 
-						reP.x - reP.radius, reP.y - reP.radius,null);
-			}
+				switch (c++ % 4) {
+					case 0:
+						paint.setColor(Color.YELLOW);
+						break;
+					case 1:
+						paint.setColor(Color.BLUE);
+						break;
+					case 2:
+						paint.setColor(Color.GREEN);
+						break;
+					case 3:
+						paint.setColor(Color.BLACK);
+						break;
 
-			paint.setColor(Color.RED);
-			for (REPoint reP : this.items) {
-
-
+				}
 
 				canvas.drawCircle(reP.x, reP.y, reP.radius, this.paint);
 			}
-
+			if (this.items != null) {
+				paint.setColor(Color.RED);
+				for (REPoint reP : this.items) {
+					canvas.drawCircle(reP.x, reP.y, reP.radius, this.paint);
+				}
+			}
 		}
 	}
 
 	public Void observerNotify(EnumObservable<GameEngineEvent, Void, Void> observable, GameEngineEvent event, Void arg) {
 		this.snakeBody = this.gameEngine.getPlayerBody();
 		this.items = this.gameEngine.getItems();
-		this.staticitem = gameEngine.getStaticElement(); // No, Move this into the start rutins.
 		this.postInvalidate();
 		return null;
 	}

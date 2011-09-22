@@ -15,12 +15,12 @@ import se.chalmers.snake.util.EnumObservable;
  */
 public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Void, Void> implements GameEngineIC {
 
-	public static final int UPDATE_FREQUENCY = 1;
+	public static final int UPDATE_FREQUENCY = 10;
 	private final ControlResourcesIC controlResources;
 	private final Oscillator oscillator;
 	private final MotionDetectorIC motionDetector;
-	private final XYPoint gameFieldSize;
 	private LevelEngine currentLevel = null;
+	private boolean isRun = false;
 
 	public GameEngine(ControlResourcesIC controlResources) {
 		super(GameEngineIC.GameEngineEvent.class);
@@ -28,8 +28,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 
 		this.controlResources = controlResources;
 		this.motionDetector = controlResources.getMotionDetector();
-		this.gameFieldSize = controlResources.getScreenSize();
-
+		this.isRun = false;
 
 		// Config the Oscillator to make 10 fps
 		this.oscillator = new Oscillator(1000 / GameEngine.UPDATE_FREQUENCY, new Runnable() {
@@ -71,7 +70,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 		if (this.currentLevel != null) {
 			this.fireObserver(GameEngineEvent.START_GAME);
 			this.oscillator.start();
-			
+			this.isRun = true;
 			return true;
 		} else {
 			return false;
@@ -83,6 +82,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 		if (this.currentLevel != null) {
 			this.oscillator.stop();
 			this.fireObserver(GameEngineEvent.PAUSE_GAME);
+			this.isRun = false;
 			return true;
 		} else {
 			return false;
@@ -105,7 +105,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 		if (level != null) {
 			this.pauseGame();
 			try {
-				this.currentLevel = new LevelEngine(level, this.gameFieldSize);
+				this.currentLevel = new LevelEngine(level, this.controlResources.getScreenSize());
 			} catch (Exception ex) {
 				ex.printStackTrace();
 				return false;
@@ -170,7 +170,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 
 	@Override
 	public XYPoint getGameFieldSize() {
-		return this.gameFieldSize;
+		return this.controlResources.getScreenSize();
 	}
 
 	@Override
@@ -178,4 +178,8 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 		return this.currentLevel != null;
 	}
 	//</editor-fold>
+
+	public boolean isRun() {
+		return this.isRun;
+	}
 }

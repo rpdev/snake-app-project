@@ -2,6 +2,8 @@ package se.chalmers.snake;
 
 import android.app.Activity;
 
+import android.content.Context;
+import android.hardware.SensorManager;
 import se.chalmers.snake.gameengine.TestGameEngine;
 import se.chalmers.snake.interfaces.util.XYPoint;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.Button;
 import se.chalmers.snake.gameGUI.GameView;
 import se.chalmers.snake.interfaces.GameEngineIC;
+import se.chalmers.snake.motiondetector.MotionDetector;
 
 public class StartActivity extends Activity { // implements SensorEventListener
 
@@ -20,8 +23,12 @@ public class StartActivity extends Activity { // implements SensorEventListener
 		public void onClick(View v) {
 			gameView = (FrameLayout) StartActivity.this.findViewById(R.id.spelplan);
 			XYPoint xyPoint = new XYPoint(gameView.getWidth(), gameView.getHeight());
-			GameEngineIC gameEngineIC = TestGameEngine.getGameEngine(xyPoint);
+			SensorManager mSensorManager = (SensorManager)StartActivity.this.getSystemService(Context.SENSOR_SERVICE);
+			
+			GameEngineIC gameEngineIC = TestGameEngine.getGameEngine(xyPoint,new MotionDetector(mSensorManager));
+			//GameEngineIC gameEngineIC = TestGameEngine.getGameEngine(xyPoint,null);
 			StartActivity.this.setContentView(new GameView(StartActivity.this,gameEngineIC));
+			gameEngineIC.startGame();
 		}
 	};
 

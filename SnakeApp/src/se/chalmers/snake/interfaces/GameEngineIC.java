@@ -59,6 +59,12 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 	public boolean pauseGame();
 
 	/**
+	 * Return the current status of the game if the game is run or not.
+	 * @return Return true if the game is running.
+	 */
+	public boolean isRun();
+	
+	/**
 	 * Call this method for restart a load game.
 	 * This will be sam as call GameEngineIC.loadLevel(GameEngineIC.getLevelName());
 	 * @return True if this action are allow and a load level exist.
