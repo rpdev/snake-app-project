@@ -5,6 +5,9 @@
 package se.chalmers.snake.gameGUI;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -29,17 +32,24 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	private List<REPoint> snakeBody;
 	private List<REPoint> items;
 	private List<REPoint> staticitem;
+	private Resources mRes;
+	private static Bitmap bodySeg;
 
 	public GameView(Context context, GameEngineIC gameEngine) {
 		super(context);
+		mRes = context.getResources();
 		this.paint = new Paint();
 		this.paint.setStyle(Paint.Style.FILL);
 		this.gameEngine = gameEngine;
 		
-		this.snakeBody = new ArrayList(0);
+		this.snakeBody = new ArrayList<REPoint>(0);
 		this.setBackgroundResource(R.drawable.spelplan_bg);
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.UPDATE, this);
 		this.gameEngine.startGame();
+		
+		bodySeg = Bitmap.createScaledBitmap(
+				BitmapFactory.decodeResource(mRes, R.drawable.snake_body), 5 * 2, 5 * 2, true);
+		
 		
 	}
 
@@ -48,7 +58,8 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		if (this.snakeBody != null) {
 			paint.setColor(Color.YELLOW);
 			for (REPoint reP : this.snakeBody) {
-				canvas.drawCircle(reP.x, reP.y, reP.radius, this.paint);
+				canvas.drawBitmap(bodySeg, 
+						reP.x - reP.radius, reP.y - reP.radius,null);
 			}
 			
 			paint.setColor(Color.RED);
