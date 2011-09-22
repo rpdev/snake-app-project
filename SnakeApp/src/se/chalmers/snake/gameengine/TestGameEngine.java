@@ -62,7 +62,7 @@ public class TestGameEngine {
 
 							@Override
 							public XYPoint getSnakeHeadStartLocation() {
-								return new XYPoint(75, 100);
+								return new XYPoint(25, 50);
 							}
 
 							@Override
@@ -79,7 +79,7 @@ public class TestGameEngine {
 
 							@Override
 							public int getPlayerBodyWidth() {
-								return 5;
+								return 3;
 							}
 
 							@Override
@@ -89,7 +89,7 @@ public class TestGameEngine {
 
 							@Override
 							public int getSpeed(List<Integer> collectTime) {
-								return 3;
+								return 5;
 							}
 
 							@Override

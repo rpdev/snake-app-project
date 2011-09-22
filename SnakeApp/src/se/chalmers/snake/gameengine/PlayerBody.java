@@ -63,7 +63,7 @@ class PlayerBody implements Iterable<REPoint> {
 		this.seg = new LinkedList<PBFPoint>();
 		this.gameSize = gameSize;
 		this.bodySpaceSize = bodySegmentRadius;
-		this.bodySegmentRadius = 3;
+		this.bodySegmentRadius = bodySegmentRadius;
 		this.bodySegmentRadius2 = 2 * this.bodySegmentRadius;
 
 		this.bufferBodySegment = startBufferSegNumber;
@@ -122,7 +122,6 @@ class PlayerBody implements Iterable<REPoint> {
 			return;
 		}
 
-
 		PBFPoint oldPoint = null;
 		Iterator<PBFPoint> it = this.seg.iterator();
 		float dy = 0;
@@ -130,18 +129,16 @@ class PlayerBody implements Iterable<REPoint> {
 		float jumpStep = length;
 		while (it.hasNext()) {
 			PBFPoint point = it.next();
-
 			if (oldPoint != null) {
 				float XP = oldPoint.x - point.x;
-				float XM = ((point.x<oldPoint.x)?(oldPoint.x-this.gameSize.x-point.x):XP+this.gameSize.x);
+				float XM = ((point.x < oldPoint.x) ? (oldPoint.x - this.gameSize.x - point.x) : this.gameSize.x-XP);
 				float YP = oldPoint.y - point.y;
-				float YM = ((point.y<oldPoint.y)?(oldPoint.y-this.gameSize.y-point.y):YP+this.gameSize.y);
-				
-				dx = Math.abs(XP)<Math.abs(XM)?XP:XM;
-				dy = Math.abs(YP)<Math.abs(YM)?YP:YM;
+				float YM = ((point.y < oldPoint.y) ? (oldPoint.y - this.gameSize.y - point.y) : this.gameSize.y-YP);
+				dx = Math.abs(XP) < Math.abs(XM) ? XP : XM;
+				dy = Math.abs(YP) < Math.abs(YM) ? YP : YM;
 				point.angle = Math.atan2(dy, dx);
 				double space = Math.sqrt(Math.pow(dy, 2) + Math.pow(dx, 2));
-				jumpStep = (float) (length - bodySpaceSize + space);
+				jumpStep = (float) (length - this.bodySpaceSize + space);
 				oldPoint.x = point.x;
 				oldPoint.y = point.y;
 				angle = point.angle;
@@ -164,7 +161,6 @@ class PlayerBody implements Iterable<REPoint> {
 		}
 	}
 
-	
 	/**
 	 * Move the player 1 fix step, each step has a length of bodySpaceSize
 	 * @param angle 
