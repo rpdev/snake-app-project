@@ -50,7 +50,7 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		setFocusable(true);
 		
 		bodySeg = Bitmap.createScaledBitmap(
-				BitmapFactory.decodeResource(mRes, R.drawable.snake_body), 5 * 2, 5 * 2, true);
+				BitmapFactory.decodeResource(mRes, R.drawable.snake_body), 5 , 5, true);
 		
 		this.setOnTouchListener(onTouchListener);
 	}
