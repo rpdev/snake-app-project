@@ -25,7 +25,7 @@ public class StartActivity extends Activity { // implements SensorEventListener
 			XYPoint xyPoint = new XYPoint(gameView.getWidth(), gameView.getHeight());
 			SensorManager mSensorManager = (SensorManager)StartActivity.this.getSystemService(Context.SENSOR_SERVICE);
 			GameEngineIC gameEngineIC = TestGameEngine.getGameEngine(xyPoint,null);
-			//gameEngineIC = TestGameEngine.getGameEngine(xyPoint,new MotionDetector(mSensorManager));
+			gameEngineIC = TestGameEngine.getGameEngine(xyPoint,new MotionDetector(mSensorManager));
 			//GameEngineIC gameEngineIC = TestGameEngine.getGameEngine(xyPoint,null);
 			StartActivity.this.setContentView(new GameView(StartActivity.this,gameEngineIC));
 			gameEngineIC.startGame();
