@@ -15,7 +15,7 @@ import se.chalmers.snake.util.EnumObservable;
  */
 public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Void, Void> implements GameEngineIC {
 
-	public static final int UPDATE_FREQUENCY = 10;
+	public static final int UPDATE_FREQUENCY = 1;
 	private final ControlResourcesIC controlResources;
 	private final Oscillator oscillator;
 	private final MotionDetectorIC motionDetector;
