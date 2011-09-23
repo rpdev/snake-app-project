@@ -16,20 +16,26 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import se.chalmers.snake.gameGUI.GameView;
+import se.chalmers.snake.highscoreDatabase.HighscoreDatabase;
 import se.chalmers.snake.interfaces.GameEngineIC;
+import se.chalmers.snake.interfaces.GameEngineIC.GameEngineEvent;
 import se.chalmers.snake.motiondetector.MotionDetector;
+import se.chalmers.snake.util.EnumObservable;
+import se.chalmers.snake.util.EnumObserver;
 
-public class StartActivity extends Activity { // implements SensorEventListener
+public class StartActivity extends Activity implements EnumObserver<GameEngineIC.GameEngineEvent, Void, Void> { // implements SensorEventListener
 
 	private RelativeLayout gameHolder;
 	private GameView gameView;
+	private HighscoreDatabase highData;
+	private GameEngineIC gameEngineIC;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.snake_layout);
-		
-//		switchToStartMenu();
+
+		highData = new HighscoreDatabase();
 
 		//Instantiate layouts
 		background = (RelativeLayout)findViewById(R.id.backgroundImage);
@@ -40,26 +46,26 @@ public class StartActivity extends Activity { // implements SensorEventListener
 		resumeGame = (Button) findViewById(R.id.resumeGame_button);
 		help = (Button) findViewById(R.id.help_button);
 		highscore = (Button) findViewById(R.id.highscore_button);
-//		back.setOnClickListener(backListener);
 
 		//Instantiate texts
 		helpText = (TextView) findViewById(R.id.helpText);
-//		helpText.setText("helptest");
 		highscoreText = (TextView) findViewById(R.id.highscoreText);
-//		highscoreText.setText("highscoretest");
 		back = (Button) findViewById(R.id.back_button);
 		
 		switchToStartMenu();
 		show();
 		newGame.setOnClickListener(newGameListener);
 		resumeGame.setOnClickListener(resumeGameListener);
+		help.setOnClickListener(helpListener);
+		highscore.setOnClickListener(highscoreListener);
+		back.setOnClickListener(backListener);
 
 
 	}
 	
 	/**
 	 * 
-	 * Take care of the Menu
+	 * Takes care of the Menu
 	 * 
 	 */
 	
@@ -85,6 +91,7 @@ public class StartActivity extends Activity { // implements SensorEventListener
 		onHelpMenu
 	};
 	private MenuState menuState; 
+	private MenuState previousMenuState; 
 	
 
 	public void show(){
@@ -99,6 +106,7 @@ public class StartActivity extends Activity { // implements SensorEventListener
 	}
 	
 	public void switchToStartMenu(){
+		previousMenuState = menuState;
 		menuState = MenuState.onStartMenu;
 		//These components should be present
 		background.setBackgroundResource(R.drawable.snake_bg);
@@ -114,21 +122,23 @@ public class StartActivity extends Activity { // implements SensorEventListener
 	}
 	
 	public void switchToPauseMenu(){
+		previousMenuState = menuState;
 		menuState = MenuState.onPauseMenu;
 		//These components should be present
 		menu.setVisibility(View.VISIBLE);
 		resumeGame.setVisibility(View.VISIBLE);
+		newGame.setVisibility(View.VISIBLE);
 		help.setVisibility(View.VISIBLE);
 		highscore.setVisibility(View.VISIBLE);
 		//These shouldn't
 		background.setBackgroundColor(0x00000000);
-		newGame.setVisibility(View.GONE);
 		helpText.setVisibility(View.GONE);
 		highscoreText.setVisibility(View.GONE);
 		back.setVisibility(View.GONE);
 	}
 	
 	public void switchToHighscoreMenu(){
+		previousMenuState = menuState;
 		menuState = MenuState.onHighscoreMenu;
 		//These components should be present
 		menu.setVisibility(View.VISIBLE);
@@ -140,10 +150,10 @@ public class StartActivity extends Activity { // implements SensorEventListener
 		highscore.setVisibility(View.GONE);
 		newGame.setVisibility(View.GONE);
 		helpText.setVisibility(View.GONE);
-		background.setBackgroundColor(0x00000000);
 	}
 	
 	public void switchToHelpMenu(){
+		previousMenuState = menuState;
 		menuState = MenuState.onHelpMenu;
 		//These components should be present
 		menu.setVisibility(View.VISIBLE);
@@ -155,16 +165,15 @@ public class StartActivity extends Activity { // implements SensorEventListener
 		highscore.setVisibility(View.GONE);
 		newGame.setVisibility(View.GONE);
 		highscoreText.setVisibility(View.GONE);
-		background.setBackgroundColor(0x00000000);
 	}
 	
 	private OnClickListener backListener = new OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
-			switch(menuState){
-			case onHelpMenu: switchToPauseMenu(); break;
-			case onHighscoreMenu: switchToPauseMenu(); break;
+			switch(previousMenuState){
+			case onStartMenu: switchToStartMenu(); break;
+			case onPauseMenu: switchToPauseMenu(); break;
 			default : break;
 			}
 			
@@ -178,21 +187,22 @@ public class StartActivity extends Activity { // implements SensorEventListener
 			XYPoint xyPoint = new XYPoint(spelplan.getWidth(), spelplan.getHeight());
 			
 			SensorManager mSensorManager = (SensorManager)StartActivity.this.getSystemService(Context.SENSOR_SERVICE);
-			GameEngineIC gameEngineIC = TestGameEngine.getGameEngine(xyPoint,null);
+			gameEngineIC = TestGameEngine.getGameEngine(xyPoint,null);
 			gameEngineIC = TestGameEngine.getGameEngine(xyPoint,new MotionDetector(mSensorManager));
-			//GameEngineIC gameEngineIC = TestGameEngine.getGameEngine(xyPoint,null);
-			gameView = new GameView(StartActivity.this,gameEngineIC);
-			gameHolder = (RelativeLayout)findViewById(R.id.gameViewHolder);
-			gameHolder.addView(gameView);
+			if(gameView == null){
+				gameView = new GameView(StartActivity.this,gameEngineIC);
+				gameEngineIC.addObserver(GameEngineIC.GameEngineEvent.PLAYER_LOSE, StartActivity.this);
+				gameHolder = (RelativeLayout)findViewById(R.id.gameViewHolder);
+				gameHolder.addView(gameView);
+			}
+			else {
+				gameView.addGameEngine(gameEngineIC);
+				gameEngineIC.addObserver(GameEngineIC.GameEngineEvent.PLAYER_LOSE, StartActivity.this);
+			}
 			gameEngineIC.startGame();
-//			newGame.setVisibility(View.GONE);
-//			findViewById(R.id.backgroundImage).setBackgroundColor(0x00000000);
-//			findViewById(R.id.menu_buttons).setVisibility(View.GONE);
-//			resumeGame.setVisibility(View.VISIBLE);
 			hide();
 		}
 	};
-
 
 	private View.OnClickListener resumeGameListener = new View.OnClickListener() {
 		
@@ -201,6 +211,25 @@ public class StartActivity extends Activity { // implements SensorEventListener
 			gameView.startGame();
 //			findViewById(R.id.menu_buttons).setVisibility(View.GONE);
 			hide();
+		}
+	};
+
+	private View.OnClickListener helpListener = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			switchToHelpMenu();
+			show();
+		}
+	};
+
+	private View.OnClickListener highscoreListener = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			highscoreText.setText(highData.toString());
+			switchToHighscoreMenu();
+			show();
 		}
 	};
 
@@ -216,6 +245,15 @@ public class StartActivity extends Activity { // implements SensorEventListener
 //			gameView.setVisibility(View.INVISIBLE);
 	 }
 	 return super.onKeyDown(keycode,event);  
+	}
+
+	@Override
+	public Void observerNotify(
+			EnumObservable<GameEngineEvent, Void, Void> observable,
+			GameEngineEvent event, Void arg) {
+		highData.addPlayerToHighscore("Auto", 5);
+		
+		return null;
 	}
 	
 }
