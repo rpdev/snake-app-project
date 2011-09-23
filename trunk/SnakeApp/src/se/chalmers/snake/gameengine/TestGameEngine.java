@@ -18,6 +18,7 @@ public class TestGameEngine {
 
 	public static XYPoint screenSize = new XYPoint(150, 200);
 	public static MotionDetectorIC motionDetector = null;
+	public static GameEngine gameEngine;
 
 	private static ControlResourcesIC getControlResources() {
 		return new ControlResourcesIC() {
@@ -73,7 +74,9 @@ public class TestGameEngine {
 							@Override
 							public List<REPoint> getObstacles() {
 								ArrayList<REPoint> item = new ArrayList<REPoint>();
-								item.add(new REPoint(REPoint.REType.ITEM, 100, 150, 10));
+								item.add(new REPoint(REPoint.REType.WALL, 125, 175, 20));
+								
+								
 								return item;
 							}
 
@@ -88,8 +91,8 @@ public class TestGameEngine {
 							}
 
 							@Override
-							public int getSpeed(List<Integer> collectTime) {
-								return 5;
+							public float getSpeed(List<Integer> collectTime) {
+								return (float) 2.5;
 							}
 
 							@Override
@@ -100,18 +103,14 @@ public class TestGameEngine {
 							@Override
 							public int getAddItems(int totalCollected, int totalItemInGame) {
 								if(totalCollected==0) {
-								return 10;
+								return 4;
 								}
 								return 1;
 							}
 
 							@Override
 							public int getBodyGrowth(int collectTime, int totalCollected) {
-								if(totalCollected<4) {
-									return 5;
-								} else {
-									return 0;
-								}
+									return 3;
 							}
 						};
 					}
@@ -183,7 +182,7 @@ public class TestGameEngine {
 
 			@Override
 			public GameEngineIC getGameEngine() {
-				throw new UnsupportedOperationException("Not supported yet.");
+				return TestGameEngine.gameEngine;
 			}
 
 			public SystemEventIC getSystemEventController() {
@@ -199,8 +198,8 @@ public class TestGameEngine {
 	public static GameEngineIC getGameEngine(XYPoint size, MotionDetectorIC motionDetector) {
 		TestGameEngine.screenSize = size;
 		TestGameEngine.motionDetector = motionDetector;
-		GameEngine gameEngine = new GameEngine(TestGameEngine.getControlResources());
-		gameEngine.loadLevel("");
-		return gameEngine;
+		TestGameEngine.gameEngine = new GameEngine(TestGameEngine.getControlResources());
+		TestGameEngine.gameEngine.loadLevel("");
+		return TestGameEngine.gameEngine;
 	}
 }

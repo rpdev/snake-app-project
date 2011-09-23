@@ -1,6 +1,7 @@
 package se.chalmers.snake.gameengine;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -32,7 +33,7 @@ class LevelEngine {
 	private final List<LEIPoint> items;
 	private final List<Integer> itemsCollect;
 	// Holds data for statics variabels, and calcs
-	private final List<REPoint> staticElement;
+	private final List<REPoint> obstacles;
 	private double xScal, yScal, fixScal;
 	private int itemsRadius;
 	private int playerBodyWidth;
@@ -42,6 +43,7 @@ class LevelEngine {
 	LevelEngine(LevelIC level, XYPoint gameFiledSize) {
 		this.level = level;
 		this.calcScal(gameFiledSize);
+		
 		this.itemsRadius = (int) (this.fixScal * level.getItemsRadius());
 		this.playerBodyWidth = (int) (this.fixScal * level.getPlayerBodyWidth());
 		this.isRunning = true;
@@ -49,8 +51,11 @@ class LevelEngine {
 		this.itemsCollect = new ArrayList<Integer>();
 		this.stepLength = (int) (level.getSpeed(this.itemsCollect)*this.fixScal);
 		XYPoint startPoint = new XYPoint((int) (this.xScal * level.getSnakeHeadStartLocation().x), (int) (this.yScal * level.getSnakeHeadStartLocation().y));
+		
 		this.playerBody = new PlayerBody(gameFiledSize, startPoint, this.level.getStartAngle(), (int)(this.playerBodyWidth*this.fixScal), level.getSnakeStartLength(), 0);
-		this.staticElement = Collections.unmodifiableList(this.listStaticElement());
+		
+		this.obstacles = Collections.unmodifiableList(this.listStaticElement());
+		System.out.println(Arrays.toString(this.obstacles.toArray()));
 		this.score = 0;
 
 		/**
@@ -124,8 +129,8 @@ class LevelEngine {
 	 * Get this game filed the walls and static Elements.
 	 * @return 
 	 */
-	List<REPoint> getStaticElement() {
-		return this.staticElement;
+	List<REPoint> getObstacles() {
+		return this.obstacles;
 	}
 
 	/**
@@ -178,9 +183,7 @@ class LevelEngine {
 	private List<REPoint> listStaticElement() {
 		ArrayList<REPoint> alRE = new ArrayList<REPoint>();
 		for (REPoint rsp : this.level.getObstacles()) {
-			if (rsp.type == REPoint.REType.WALL) {
-				alRE.add(new REPoint(REPoint.REType.WALL, (int) (this.xScal * rsp.x), (int) (this.yScal * rsp.y), (int) this.fixScal * rsp.radius));
-			}
+				alRE.add(new REPoint(REPoint.REType.WALL, (int) (this.xScal * rsp.x), (int) (this.yScal * rsp.y), (int) (this.fixScal * rsp.radius)));
 		}
 		return alRE;
 	}
@@ -195,7 +198,7 @@ class LevelEngine {
 			return true;
 		}
 		REPoint head = this.playerBody.getHead();
-		for (REPoint ePoint : this.staticElement) {
+		for (REPoint ePoint : this.obstacles) {
 			if (head.isCollideWith(ePoint)) {
 				return true;
 			}
@@ -230,7 +233,7 @@ class LevelEngine {
 	}
 
 	private boolean isStaticElementCollision(REPoint point) {
-		for (REPoint ePoint : this.staticElement) {
+		for (REPoint ePoint : this.obstacles) {
 			if (point.isCollideWith(ePoint)) {
 				return true;
 			}
