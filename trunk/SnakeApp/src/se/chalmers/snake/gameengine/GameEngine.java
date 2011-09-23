@@ -16,17 +16,20 @@ import se.chalmers.snake.util.EnumObservable;
 public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Void, Void> implements GameEngineIC {
 
 	public static final int UPDATE_FREQUENCY = 16;
+	private static final double PI_TIMES_2 = Math.PI * 2;
 	private final ControlResourcesIC controlResources;
 	private final Oscillator oscillator;
 	private final MotionDetectorIC motionDetector;
 	private LevelEngine currentLevel = null;
 	private boolean isRun = false;
+	private double currentAngle;
 
 	public GameEngine(ControlResourcesIC controlResources) {
 		super(GameEngineIC.GameEngineEvent.class);
 		this.controlResources = controlResources;
 		this.motionDetector = controlResources.getMotionDetector();
 		this.isRun = false;
+		this.currentAngle = 0;
 
 		// Config the Oscillator to make 10 fps
 		this.oscillator = new Oscillator(1000 / GameEngine.UPDATE_FREQUENCY, new Runnable() {
@@ -43,19 +46,29 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	 * Driv the game 1 step further on.
 	 */
 	private void step() {
+		
 		if (this.currentLevel != null) {
-			if (this.currentLevel.step(this.motionDetector.getAngleByRadians())) {
-				if (this.currentLevel.hasReachedGoal()) {
-					this.pauseGame();
-					this.fireObserver(GameEngineEvent.LEVEL_END);
-				} else {
-					this.fireObserver(GameEngineEvent.UPDATE);
-				}
+			double newAngle = this.motionDetector.getAngleByRadians();
+		
+			if (0 <= newAngle && newAngle <= PI_TIMES_2) {
+				double P = this.currentAngle - newAngle;
+				double M = ((newAngle < this.currentAngle) ? -PI_TIMES_2:PI_TIMES_2) + P;
+				newAngle += ((Math.abs(P) < Math.abs(M) ? P: M))*0.65;
+				if (this.currentLevel.step(newAngle)) {
+					this.currentAngle = newAngle;
+					if (this.currentLevel.hasReachedGoal()) {
+						this.pauseGame();
+						this.fireObserver(GameEngineEvent.LEVEL_END);
+					} else {
+						this.fireObserver(GameEngineEvent.UPDATE);
+					}
 
-			} else {
-				this.pauseGame();
-				this.fireObserver(GameEngineEvent.PLAYER_LOSE);
+				} else {
+					this.pauseGame();
+					this.fireObserver(GameEngineEvent.PLAYER_LOSE);
+				}
 			}
+		} else {
 		}
 	}
 
@@ -95,6 +108,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 			this.pauseGame();
 			try {
 				this.currentLevel = new LevelEngine(level, this.controlResources.getScreenSize());
+				this.currentAngle = this.currentLevel.getLevelData().getStartAngle();
 			} catch (Exception ex) {
 				return false;
 			}

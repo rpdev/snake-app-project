@@ -12,7 +12,9 @@ import se.chalmers.snake.interfaces.MotionDetectorIC;
 public class MotionDetector implements SensorEventListener, MotionDetectorIC {
 
 	private static final double RAD_TO_DEG = (180.0f / Math.PI);
-	private static final double DEG_TO_RAD = (Math.PI / 180.0f);
+	private static final double PI_TIMES_2 = Math.PI * 2;
+	
+	
 	private MotionDetectorIC.ReferenceSurface referenceSurface;
 	private SensorManager sensorManager;
 	private boolean run;
@@ -34,7 +36,7 @@ public class MotionDetector implements SensorEventListener, MotionDetectorIC {
 		this.radianus = 0.0;
 		this.referenceSurface = null;
 		this.callWhileUpdate = null;
-		this.setSensitivity(10);
+		this.setSensitivity(5);
 	}
 
 	public MotionDetector(SensorManager sensorManager, Runnable callWhileUpdate) {
@@ -44,7 +46,7 @@ public class MotionDetector implements SensorEventListener, MotionDetectorIC {
 		this.radianus = 0.0;
 		this.referenceSurface = null;
 		this.callWhileUpdate = callWhileUpdate;
-		this.setSensitivity(10);
+		this.setSensitivity(5);
 
 	}
 
@@ -123,15 +125,32 @@ public class MotionDetector implements SensorEventListener, MotionDetectorIC {
 		if (this.isUpdate == false) {
 			if (SensorManager.getRotationMatrix(this.mR, null, this.mGData, this.mMData)) {
 				SensorManager.getOrientation(this.mR, this.mOrientation);
+				if (this.referenceSurface != null) {
 
-				switch (this.referenceSurface) {
-					default: {
-						if (Math.sqrt(this.mOrientation[1] * this.mOrientation[1] + this.mOrientation[2] * this.mOrientation[2]) > this.sensitivity) {
-							this.radianus = Math.atan2(this.mOrientation[1], -this.mOrientation[2]);
+					switch (this.referenceSurface) {
+						case FLAT_TOP: {
+							if (Math.sqrt(this.mOrientation[1] * this.mOrientation[1] + this.mOrientation[2] * this.mOrientation[2]) > this.sensitivity) {
+								this.radianus = Math.atan2(this.mOrientation[1], -this.mOrientation[2]);
+							}
+						}
+						break;
+
+						default: {
+							if (Math.sqrt(this.mOrientation[1] * this.mOrientation[1] + this.mOrientation[2] * this.mOrientation[2]) > this.sensitivity) {
+								this.radianus = -Math.atan2(this.mOrientation[1], this.mOrientation[2]);
+							}
 						}
 					}
+
+				} else {
+					if (Math.sqrt(this.mOrientation[1] * this.mOrientation[1] + this.mOrientation[2] * this.mOrientation[2]) > this.sensitivity) {
+						this.radianus = -Math.atan2(this.mOrientation[1], this.mOrientation[2]);
+					}
 				}
-				
+				if (this.radianus < 0) {
+					this.radianus += PI_TIMES_2;
+				}
+
 				this.degrees = (int) (this.radianus * MotionDetector.RAD_TO_DEG);
 				this.count++;
 				this.isUpdate = true;
