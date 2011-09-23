@@ -5,6 +5,9 @@
 package se.chalmers.snake.gameGUI;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -29,9 +32,18 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	private List<REPoint> snakeBody;
 	private List<REPoint> items;
 	private List<REPoint> walls;
-
+	private Resources mRes;
+	private static Bitmap bodySeg;
+	//Bör implementeras på GameEngine
+	public static enum GameState{
+		PAUSED,
+		RUNNING
+	};
+	public GameState gameState;
+	
 	public GameView(Context context, GameEngineIC gameEngine) {
 		super(context);
+		mRes = context.getResources();
 		this.paint = new Paint();
 		this.paint.setStyle(Paint.Style.FILL);
 		this.gameEngine = gameEngine;
@@ -44,6 +56,10 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		this.snakeBody = gameEngine.getPlayerBody();
 		this.items = gameEngine.getItems();
 		this.walls = gameEngine.getObstacles();
+
+		bodySeg = Bitmap.createScaledBitmap(
+				BitmapFactory.decodeResource(mRes, R.drawable.snake_body), 5 * 2 , 5 * 2, true);
+		
 		this.postInvalidate();
 	}
 
@@ -55,26 +71,22 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 
 	}
 
+	public void pauseGame(){
+		gameEngine.pauseGame();
+		gameState = GameState.PAUSED;
+	}
+	
+	public void startGame(){
+		gameEngine.startGame();
+		gameState = GameState.RUNNING;
+	}
+	
 	@Override
 	public void onDraw(Canvas canvas) {
 		if (this.snakeBody != null) {
-			int c = 0;
 			for (REPoint reP : this.snakeBody) {
-				switch (c++ % 4) {
-					case 0:
-						paint.setColor(Color.YELLOW);
-						break;
-					case 1:
-						paint.setColor(Color.BLUE);
-						break;
-					case 2:
-						paint.setColor(Color.GREEN);
-						break;
-					case 3:
-						paint.setColor(Color.BLACK);
-						break;
-				}
-				canvas.drawCircle(reP.x, reP.y, reP.radius, this.paint);
+				canvas.drawBitmap(bodySeg, 
+						reP.x - reP.radius, reP.y - reP.radius,null);
 			}
 		}
 		if (this.items != null) {
@@ -99,4 +111,5 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		this.postInvalidate();
 		return null;
 	}
+
 }
