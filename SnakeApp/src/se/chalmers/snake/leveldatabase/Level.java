@@ -105,8 +105,8 @@ class Level implements LevelIC {
 	}
 
 	@Override
-	public int getSpeed(List<Integer> collectTime) {
-		return 1;
+	public float getSpeed(List<Integer> collectTime) {
+		return (float) 1.0;
 	}
 
 	@Override
