@@ -46,29 +46,27 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		mRes = context.getResources();
 		this.paint = new Paint();
 		this.paint.setStyle(Paint.Style.FILL);
-		this.gameEngine = gameEngine;
-
+		addGameEngine(gameEngine);
 		this.setBackgroundResource(R.drawable.spelplan_bg);
 		
-		gameEngine.addObserver(GameEngineIC.GameEngineEvent.START_GAME, this);
-		gameEngine.addObserver(GameEngineIC.GameEngineEvent.PAUSE_GAME, this);
-		gameEngine.addObserver(GameEngineIC.GameEngineEvent.UPDATE, this);
-		this.snakeBody = gameEngine.getPlayerBody();
-		this.items = gameEngine.getItems();
-		this.walls = gameEngine.getObstacles();
 
 		bodySeg = Bitmap.createScaledBitmap(
 				BitmapFactory.decodeResource(mRes, R.drawable.snake_body), 5 * 2 , 5 * 2, true);
 		
 		this.postInvalidate();
 	}
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		this.gameEngine.restartGame();
-		this.gameEngine.startGame();
-		return super.onTouchEvent(event);
-
+	
+	public void addGameEngine(GameEngineIC gameEngine){
+		this.gameEngine = gameEngine;
+		
+		gameEngine.addObserver(GameEngineIC.GameEngineEvent.START_GAME, this);
+		gameEngine.addObserver(GameEngineIC.GameEngineEvent.PAUSE_GAME, this);
+		gameEngine.addObserver(GameEngineIC.GameEngineEvent.UPDATE, this);
+		
+		this.snakeBody = gameEngine.getPlayerBody();
+		this.items = gameEngine.getItems();
+		this.walls = gameEngine.getObstacles();
+		
 	}
 
 	public void pauseGame(){
