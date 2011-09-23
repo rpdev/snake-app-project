@@ -6,27 +6,27 @@
 	android:layout_height="fill_parent"
 	android:background="@drawable/spelplan_bg">
     
-    <RelativeLayout 
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    <RelativeLayout android:id="@+id/gameViewHolder" 
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+    />
     
     
-    </RelativeLayout>
-    
-    
-    <RelativeLayout android:id="@+id/menu_buttons" 
+    <RelativeLayout android:id="@+id/backgroundImage" 
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:background="@drawable/snake_bg">
 		
-		<LinearLayout
+		<LinearLayout android:id="@+id/menu_buttons" 
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_centerInParent="true"
-			android:paddingTop="15dip"
+			android:padding="15dip"
 			android:gravity="center_horizontal"
 			android:orientation="vertical" 
+			android:visibility="gone"
 			>			
+			<!-- android:background="#7Fffffff" -->
 			
 			<Button 
 			android:id="@+id/newGame_button" 
@@ -34,19 +34,23 @@
       			android:layout_height="wrap_content"
       			android:text="New Game"
       			android:layout_marginBottom="5dip"
+				android:visibility="gone"
+			></Button>
+			
+			<Button 
+			android:id="@+id/resumeGame_button" 
+      			android:layout_width="fill_parent"
+      			android:layout_height="wrap_content"
+      			android:text="Resume"
+      			android:visibility="gone"
+      			android:layout_marginBottom="5dip"
 			></Button>
 			
 			<Button android:id="@+id/help_button" 
       			android:layout_width="fill_parent"
       			android:layout_height="wrap_content"
       			android:text="Help"
-      			android:layout_marginBottom="5dip"
-			></Button>
-			
-			<Button android:id="@+id/pause_button" 
-      			android:layout_width="fill_parent"
-      			android:layout_height="wrap_content"
-      			android:text="Pause"
+				android:visibility="gone"
       			android:layout_marginBottom="5dip"
 			></Button>
 			
@@ -54,11 +58,32 @@
       			android:layout_width="fill_parent"
       			android:layout_height="wrap_content"
       			android:text="Highscore"
+				android:visibility="gone"
+      			android:layout_marginBottom="5dip"
+			></Button>
+			
+			<TextView android:id="@+id/helpText" 
+      			android:layout_width="fill_parent"
+      			android:layout_height="wrap_content"
+      			android:visibility="gone"
+			/>
+			
+			<TextView android:id="@+id/highscoreText" 
+      			android:layout_width="fill_parent"
+      			android:layout_height="wrap_content"
+      			android:visibility="gone"
+			/>
+			
+			<Button android:id="@+id/back_button" 
+      			android:layout_width="fill_parent"
+      			android:layout_height="wrap_content"
+      			android:text="Back"
+				android:visibility="gone"
       			android:layout_marginBottom="5dip"
 			></Button>
 			
 		</LinearLayout>
 	
 	</RelativeLayout>
-	
+
 </FrameLayout>
