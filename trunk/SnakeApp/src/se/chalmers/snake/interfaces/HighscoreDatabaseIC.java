@@ -19,4 +19,9 @@ public interface HighscoreDatabaseIC {
 	 */
 	public boolean addPlayerToHighscore(String playerName, int points, String level);
 
+	/**
+	 * Returns the highscoreList as a string
+	 * @return
+	 */
+	public String toString();
 }
