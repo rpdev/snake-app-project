@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
-import java.util.ArrayList;
 import java.util.List;
 import se.chalmers.snake.R;
 import se.chalmers.snake.interfaces.GameEngineIC;
@@ -29,6 +28,7 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	private Paint paint;
 	private List<REPoint> snakeBody;
 	private List<REPoint> items;
+	private List<REPoint> walls;
 
 	public GameView(Context context, GameEngineIC gameEngine) {
 		super(context);
@@ -37,24 +37,28 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		this.gameEngine = gameEngine;
 
 		this.setBackgroundResource(R.drawable.spelplan_bg);
+		
+		gameEngine.addObserver(GameEngineIC.GameEngineEvent.START_GAME, this);
+		gameEngine.addObserver(GameEngineIC.GameEngineEvent.PAUSE_GAME, this);
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.UPDATE, this);
 		this.snakeBody = gameEngine.getPlayerBody();
 		this.items = gameEngine.getItems();
+		this.walls = gameEngine.getObstacles();
 		this.postInvalidate();
 	}
 
-	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		this.gameEngine.pauseGame();
+		this.gameEngine.restartGame();
+		this.gameEngine.startGame();
 		return super.onTouchEvent(event);
+
 	}
 
 	@Override
 	public void onDraw(Canvas canvas) {
 		if (this.snakeBody != null) {
 			int c = 0;
-
 			for (REPoint reP : this.snakeBody) {
 				switch (c++ % 4) {
 					case 0:
@@ -69,18 +73,24 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 					case 3:
 						paint.setColor(Color.BLACK);
 						break;
-
 				}
-
 				canvas.drawCircle(reP.x, reP.y, reP.radius, this.paint);
 			}
-			if (this.items != null) {
-				paint.setColor(Color.RED);
-				for (REPoint reP : this.items) {
-					canvas.drawCircle(reP.x, reP.y, reP.radius, this.paint);
-				}
+		}
+		if (this.items != null) {
+			paint.setColor(Color.RED);
+			for (REPoint reP : this.items) {
+				canvas.drawCircle(reP.x, reP.y, reP.radius, this.paint);
 			}
 		}
+
+		if (this.walls != null) {
+			paint.setColor(Color.BLACK);
+			for (REPoint reP : this.walls) {
+				canvas.drawCircle(reP.x, reP.y, reP.radius, this.paint);
+			}
+		}
+
 	}
 
 	public Void observerNotify(EnumObservable<GameEngineEvent, Void, Void> observable, GameEngineEvent event, Void arg) {

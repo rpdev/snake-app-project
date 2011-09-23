@@ -15,7 +15,7 @@ import se.chalmers.snake.util.EnumObservable;
  */
 public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Void, Void> implements GameEngineIC {
 
-	public static final int UPDATE_FREQUENCY = 10;
+	public static final int UPDATE_FREQUENCY = 16;
 	private final ControlResourcesIC controlResources;
 	private final Oscillator oscillator;
 	private final MotionDetectorIC motionDetector;
@@ -24,8 +24,6 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 
 	public GameEngine(ControlResourcesIC controlResources) {
 		super(GameEngineIC.GameEngineEvent.class);
-
-
 		this.controlResources = controlResources;
 		this.motionDetector = controlResources.getMotionDetector();
 		this.isRun = false;
@@ -59,10 +57,6 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 				this.fireObserver(GameEngineEvent.PLAYER_LOSE);
 			}
 		}
-		/*
-		System.out.println(" -- STEP -- ");
-		System.out.println(this.currentLevel.playerBody);
-		*/
 	}
 
 	@Override
@@ -91,12 +85,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 
 	@Override
 	public synchronized boolean restartGame() {
-		if (this.currentLevel != null) {
-			this.loadLevel(this.getLevelName());
-			return true;
-		} else {
-			return false;
-		}
+		return this.loadLevel(this.getLevelName());
 	}
 
 	@Override
@@ -107,7 +96,6 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 			try {
 				this.currentLevel = new LevelEngine(level, this.controlResources.getScreenSize());
 			} catch (Exception ex) {
-				ex.printStackTrace();
 				return false;
 			}
 			this.fireObserver(GameEngineEvent.NEW_GAME);
@@ -151,9 +139,9 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	}
 
 	@Override
-	public List<REPoint> getStaticElement() {
+	public List<REPoint> getObstacles() {
 		if (this.currentLevel != null) {
-			return this.currentLevel.getStaticElement();
+			return this.currentLevel.getObstacles();
 		} else {
 			return new ArrayList<REPoint>(0);
 		}

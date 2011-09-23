@@ -66,11 +66,11 @@ public interface LevelIC {
 	/**
 	 * Get the speed increase after collected item, this value
 	 * can differ between collected items. The value is between
-	 * 1 - 100.
+	 * 0.1 - 50.
 	 * @param collectTime
 	 * @return
 	 */
-	public int getSpeed(List<Integer> collectTime);
+	public float getSpeed(List<Integer> collectTime);
 	
 	
 	/**

@@ -137,7 +137,7 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 	 * And no point to be read more that in the beginning of each level.
 	 * @return 
 	 */
-	public List<REPoint> getStaticElement();
+	public List<REPoint> getObstacles();
 	
 	/**
 	 * Get the Level's metadata, contains, original elements data, image data and more.
