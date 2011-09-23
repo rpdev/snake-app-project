@@ -110,7 +110,7 @@ public class TestGameEngine {
 
 							@Override
 							public int getBodyGrowth(int collectTime, int totalCollected) {
-									return 3;
+									return 10;
 							}
 						};
 					}
@@ -165,7 +165,11 @@ public class TestGameEngine {
 								return alge;
 							}
 						}
-						return angle -= 0.02;
+						angle -= 0.02;
+						if(angle<0) angle += Math.PI*2;
+						if(angle>Math.PI*2) angle -= Math.PI*2;
+						
+						return angle;
 						//return angle;
 					}
 

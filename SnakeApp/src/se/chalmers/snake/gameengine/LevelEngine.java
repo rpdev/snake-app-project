@@ -55,9 +55,7 @@ class LevelEngine {
 		this.playerBody = new PlayerBody(gameFiledSize, startPoint, this.level.getStartAngle(), (int)(this.playerBodyWidth*this.fixScal), level.getSnakeStartLength(), 0);
 		
 		this.obstacles = Collections.unmodifiableList(this.listStaticElement());
-		System.out.println(Arrays.toString(this.obstacles.toArray()));
 		this.score = 0;
-
 		/**
 		 * create a source of possible locations of items to be place at.
 		 */

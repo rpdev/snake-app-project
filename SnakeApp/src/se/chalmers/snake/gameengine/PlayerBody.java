@@ -66,8 +66,9 @@ class PlayerBody implements Iterable<REPoint> {
 		this.bodySegmentRadius = bodySegmentRadius;
 		this.bodySegmentRadius2 = 2 * this.bodySegmentRadius;
 		this.bufferBodySegment = startBufferSegNumber;
-		this.segFromFrist = (int)(3+2*(bodySegmentRadius/this.bodySpaceSize));
 		
+
+		this.segFromFrist = (int) (1+((bodySegmentRadius*5)/this.bodySpaceSize));
 		this.initBody(startPosition, startAngle, startSegNumber - 1);
 	}
 
@@ -234,7 +235,6 @@ class PlayerBody implements Iterable<REPoint> {
 
 		}
 		return false;
-
 	}
 
 	synchronized boolean isCollisionWith(REPoint point) {
@@ -245,7 +245,7 @@ class PlayerBody implements Iterable<REPoint> {
 			float yy = Math.abs(body.y - point.y);
 			int rr = point.radius + this.bodySegmentRadius;
 			if (xx < rr && yy < rr && Math.sqrt(xx * xx + yy * yy) < rr) {
-				return true;
+				return false;
 			}
 		}
 		return false;

@@ -13,9 +13,14 @@ public interface MotionDetectorIC {
 	public enum ReferenceSurface{
 		/**
 		 * This will return the angle to which correspond to the highest point
-		 * in the flat surface. That the top of the screen will be the zero point.
+		 * in the flat surface. That the right of the screen will be the zero point.
 		 */
-		FLAT_TOP
+		FLAT_TOP,
+		/**
+		 * This will return the angle to which correspond to the lowest point
+		 * in the flat surface. That the right of the screen will be the zero point.
+		 */
+		FLAT_LOWER
 	}
 	
 	
@@ -37,12 +42,12 @@ public interface MotionDetectorIC {
 	
 	/**
 	 * Get the angle the MotionDetector as get from the System.
-	 * @return Return 0 to 359 or -1 if no angle are detect or is lower that sensitivity level.
+	 * @return Return 0 to 360.
 	 */
 	public int getAngleByDegrees();
 	/**
 	 * Get the angle the MotionDetector as get from the System.
-	 * @return Return 0 to 2*PI or -1 if no angle are detect or is lower that sensitivity level.
+	 * @return Return 0 to 2*PI.
 	 */
 	public double getAngleByRadians();
 	
