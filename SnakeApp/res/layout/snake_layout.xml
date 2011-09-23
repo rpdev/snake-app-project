@@ -25,17 +25,7 @@
 			android:gravity="center_horizontal"
 			android:orientation="vertical" 
 			android:visibility="gone"
-			>			
-			<!-- android:background="#7Fffffff" -->
-			
-			<Button 
-			android:id="@+id/newGame_button" 
-      			android:layout_width="fill_parent"
-      			android:layout_height="wrap_content"
-      			android:text="New Game"
-      			android:layout_marginBottom="5dip"
-				android:visibility="gone"
-			></Button>
+			>
 			
 			<Button 
 			android:id="@+id/resumeGame_button" 
@@ -46,6 +36,14 @@
       			android:layout_marginBottom="5dip"
 			></Button>
 			
+			<Button 
+			android:id="@+id/newGame_button" 
+      			android:layout_width="fill_parent"
+      			android:layout_height="wrap_content"
+      			android:text="New Game"
+      			android:layout_marginBottom="5dip"
+				android:visibility="gone"
+			></Button>
 			<Button android:id="@+id/help_button" 
       			android:layout_width="fill_parent"
       			android:layout_height="wrap_content"
@@ -65,23 +63,31 @@
 			<TextView android:id="@+id/helpText" 
       			android:layout_width="fill_parent"
       			android:layout_height="wrap_content"
+      			android:text="@string/help_text"
+      			style="@style/customText"
       			android:visibility="gone"
 			/>
 			
-			<TextView android:id="@+id/highscoreText" 
+			<TextView android:id="@+id/highscoreText"
       			android:layout_width="fill_parent"
       			android:layout_height="wrap_content"
+      			style="@style/customText"
       			android:visibility="gone"
 			/>
-			
-			<Button android:id="@+id/back_button" 
+			<RelativeLayout 
       			android:layout_width="fill_parent"
+      			android:layout_height="wrap_content"
+			>
+			<Button android:id="@+id/back_button" 
+      			android:layout_width="wrap_content"
       			android:layout_height="wrap_content"
       			android:text="Back"
 				android:visibility="gone"
       			android:layout_marginBottom="5dip"
+				android:layout_centerInParent="true"
+				android:gravity="center_horizontal"
 			></Button>
-			
+			</RelativeLayout>
 		</LinearLayout>
 	
 	</RelativeLayout>
