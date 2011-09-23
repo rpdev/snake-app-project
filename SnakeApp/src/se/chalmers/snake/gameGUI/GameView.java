@@ -43,6 +43,12 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		this.postInvalidate();
 	}
 
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		this.gameEngine.pauseGame();
+		return super.onTouchEvent(event);
+	}
 
 	@Override
 	public void onDraw(Canvas canvas) {

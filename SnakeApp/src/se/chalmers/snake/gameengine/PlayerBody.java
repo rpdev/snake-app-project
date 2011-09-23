@@ -98,22 +98,11 @@ class PlayerBody implements Iterable<REPoint> {
 	private PBFPoint nextPoint(PBFPoint oldPoint, double angle, float length) {
 		float newX = (float) (oldPoint.x + length * Math.cos(angle));
 		float newY = (float) (oldPoint.y + length * Math.sin(angle));
-		if (newX <= 0) {
-			newX = this.gameSize.x - newX;
-		} else if (newX > this.gameSize.x) {
-			newX = newX - this.gameSize.x;
-		}
-		if (newY <= 0) {
-			newY = this.gameSize.y - newY;
-		} else if (newY > this.gameSize.y) {
-			newY = newY - this.gameSize.y;
-		}
-		return new PBFPoint(newX, newY, angle);
+		return new PBFPoint((this.gameSize.x + newX) % this.gameSize.x, (this.gameSize.y + newY) % this.gameSize.y, angle);
 	}
 
 	public synchronized void step(double angle, int length) {
 		this.lengthSincLastAddSegment += length;
-
 		while (length >= this.bodySpaceSize) {
 			this.step(angle);
 			length -= this.bodySpaceSize;
@@ -121,21 +110,23 @@ class PlayerBody implements Iterable<REPoint> {
 		if (length == 0) {
 			return;
 		}
-
 		PBFPoint oldPoint = null;
 		Iterator<PBFPoint> it = this.seg.iterator();
 		float dy = 0;
 		float dx = 0;
+		
+		
 		float jumpStep = length;
 		while (it.hasNext()) {
 			PBFPoint point = it.next();
+			
 			if (oldPoint != null) {
 				float XP = oldPoint.x - point.x;
-				float XM = ((point.x < oldPoint.x) ? (oldPoint.x - this.gameSize.x - point.x) : this.gameSize.x-XP);
 				float YP = oldPoint.y - point.y;
-				float YM = ((point.y < oldPoint.y) ? (oldPoint.y - this.gameSize.y - point.y) : this.gameSize.y-YP);
+				float XM = ((point.x < oldPoint.x) ? (XP-this.gameSize.x) : XP+this.gameSize.x);
+				float YM = ((point.y < oldPoint.y) ? (YP-this.gameSize.y) : YP+this.gameSize.y);
 				dx = Math.abs(XP) < Math.abs(XM) ? XP : XM;
-				dy = Math.abs(YP) < Math.abs(YM) ? YP : YM;
+				dy = Math.abs(YP) < Math.abs(YM) ? YP : YM;				
 				point.angle = Math.atan2(dy, dx);
 				double space = Math.sqrt(Math.pow(dy, 2) + Math.pow(dx, 2));
 				jumpStep = (float) (length - this.bodySpaceSize + space);
@@ -145,7 +136,6 @@ class PlayerBody implements Iterable<REPoint> {
 			} else {
 				oldPoint = new PBFPoint(point);
 			}
-
 			point.x += jumpStep * Math.cos(angle);
 			point.y += jumpStep * Math.sin(angle);
 			point.x = (this.gameSize.x + point.x) % this.gameSize.x;

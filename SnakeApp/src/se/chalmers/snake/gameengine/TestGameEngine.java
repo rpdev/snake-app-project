@@ -107,7 +107,11 @@ public class TestGameEngine {
 
 							@Override
 							public int getBodyGrowth(int collectTime, int totalCollected) {
-								return 5;
+								if(totalCollected<4) {
+									return 5;
+								} else {
+									return 0;
+								}
 							}
 						};
 					}
@@ -128,7 +132,7 @@ public class TestGameEngine {
 			public MotionDetectorIC getMotionDetector() {
 				return new MotionDetectorIC() {
 
-					private double angle = Math.PI / 2+1;
+					private double angle = Math.PI;
 
 					@Override
 					public void start() {
@@ -157,7 +161,10 @@ public class TestGameEngine {
 					@Override
 					public double getAngleByRadians() {
 						if (TestGameEngine.motionDetector != null) {
-							return TestGameEngine.motionDetector.getAngleByRadians();
+							double alge = TestGameEngine.motionDetector.getAngleByRadians();
+							if(alge!=0.0) {
+								return alge;
+							}
 						}
 						return angle -= 0.02;
 						//return angle;
