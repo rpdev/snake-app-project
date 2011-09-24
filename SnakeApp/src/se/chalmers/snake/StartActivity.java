@@ -3,6 +3,7 @@ package se.chalmers.snake;
 import android.app.Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.SensorManager;
 import se.chalmers.snake.gameengine.TestGameEngine;
 import se.chalmers.snake.interfaces.util.XYPoint;
@@ -19,7 +20,7 @@ import se.chalmers.snake.gameGUI.GameView;
 import se.chalmers.snake.highscoreDatabase.HighscoreDatabase;
 import se.chalmers.snake.interfaces.GameEngineIC;
 import se.chalmers.snake.interfaces.GameEngineIC.GameEngineEvent;
-import se.chalmers.snake.motiondetector.MotionDetector;
+import se.chalmers.snake.mastercontroller.ControlResources;
 import se.chalmers.snake.util.EnumObservable;
 import se.chalmers.snake.util.EnumObserver;
 
@@ -33,7 +34,9 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ControlResources.make(this);
 		setContentView(R.layout.snake_layout);
+
 
 		highData = new HighscoreDatabase();
 
@@ -186,13 +189,11 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 	private View.OnClickListener newGameListener = new View.OnClickListener() {
 
 		public void onClick(View v) {
+			/*
 			FrameLayout spelplan = (FrameLayout) StartActivity.this.findViewById(R.id.spelplan);
-			XYPoint xyPoint = new XYPoint(spelplan.getWidth(), spelplan.getHeight());
 
-			SensorManager mSensorManager = (SensorManager) StartActivity.this.getSystemService(Context.SENSOR_SERVICE);
-			gameEngineIC = TestGameEngine.getGameEngine(xyPoint, null);
-			gameEngineIC = TestGameEngine.getGameEngine(xyPoint, new MotionDetector(mSensorManager));
 			if (gameView == null) {
+				gameEngineIC = ControlResources.get().getGameEngine();
 				gameView = new GameView(StartActivity.this, gameEngineIC);
 				gameEngineIC.addObserver(GameEngineIC.GameEngineEvent.PLAYER_LOSE, StartActivity.this);
 				gameHolder = (RelativeLayout) findViewById(R.id.gameViewHolder);
@@ -204,6 +205,12 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 			}
 			gameEngineIC.startGame();
 			hide();
+			*/
+
+			
+			Intent gameIntent = new Intent(StartActivity.this, GameActivity.class);
+			StartActivity.this.startActivity(gameIntent);
+			
 		}
 	};
 	private View.OnClickListener resumeGameListener = new View.OnClickListener() {
@@ -232,33 +239,35 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 			show();
 		}
 	};
-
+	/*
 	@Override
 	public boolean onKeyDown(int keycode, KeyEvent event) {
-		if (keycode == KeyEvent.KEYCODE_MENU) {
-
-			gameView.pauseGame();
-			switchToPauseMenu();
-			show();
-		}
-		return super.onKeyDown(keycode, event);
+	if (keycode == KeyEvent.KEYCODE_MENU) {
+	
+	gameView.pauseGame();
+	switchToPauseMenu();
+	show();
 	}
+	return super.onKeyDown(keycode, event);
+	}
+	 */
 
 	/**
 	 * This will block the Back Button in case the game is run and only show the menu.
 	 * If the back button are press in puase mode the will work as normal. and return/exit app.
 	 */
+	/*
 	@Override
 	public void onBackPressed() {
-		if (this.gameView.isRun()) {
-			this.gameView.pauseGame();
-			switchToPauseMenu();
-			show();
-		} else {
-			super.onBackPressed();
-		}
+	if (this.gameView.isRun()) {
+	this.gameView.pauseGame();
+	switchToPauseMenu();
+	show();
+	} else {
+	super.onBackPressed();
 	}
-
+	}
+	 */
 	@Override
 	public Void observerNotify(
 			  EnumObservable<GameEngineEvent, Void, Void> observable,

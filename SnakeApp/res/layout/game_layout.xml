@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/game_layout"	
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="@drawable/spelplan_bg">
+    
+	<RelativeLayout android:id="@+id/game_view_holder" 
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+    />
+    
+    
+	<RelativeLayout  android:layout_width="fill_parent" android:layout_height="fill_parent">
+		
+		<LinearLayout android:id="@+id/game_menu_button" 
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:padding="15dip"
+			android:gravity="center_horizontal"
+			android:orientation="vertical" 
+			android:visibility="gone"
+			>
+			
+			<Button 
+			android:id="@+id/game_menu_button_resume" 
+      			android:layout_width="fill_parent"
+      			android:layout_height="wrap_content"
+      			android:text="Resume"
+      			android:visibility="gone"
+      			android:layout_marginBottom="5dip"
+			/>
+			<Button 
+			android:id="@+id/game_menu_button_menu" 
+      			android:layout_width="fill_parent"
+      			android:layout_height="wrap_content"
+      			android:text="Exit"
+      			android:visibility="gone"
+      			android:layout_marginBottom="5dip"
+			/>
+
+		</LinearLayout>
+	
+	</RelativeLayout>
+
+</FrameLayout>
