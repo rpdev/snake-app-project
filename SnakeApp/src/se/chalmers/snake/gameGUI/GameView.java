@@ -106,7 +106,6 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	
 	public void restartGame() {
 		this.gameEngine.restartGame();
-		this.gameEngine.startGame();
 	}
 
 }

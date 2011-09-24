@@ -10,12 +10,16 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import se.chalmers.snake.gameGUI.GameView;
+import se.chalmers.snake.interfaces.GameEngineIC;
+import se.chalmers.snake.interfaces.GameEngineIC.GameEngineEvent;
 import se.chalmers.snake.mastercontroller.ControlResources;
+import se.chalmers.snake.util.EnumObservable;
+import se.chalmers.snake.util.EnumObserver;
 
 /**
  * This GameActivity will run the Game in select mode and has a in arg with select level name and scores.
  */
-public class GameActivity extends Activity {
+public class GameActivity extends Activity implements EnumObserver<GameEngineIC.GameEngineEvent, Void, Void> {
 
 	public static final String LEVEL = "se.chalmers.snake.GameActivity.level";
 	private GameView gameView;
@@ -24,6 +28,7 @@ public class GameActivity extends Activity {
 	private Button buttonMenu;
 	private Button buttonRestart;
 	private Button buttonStart;
+	private GameEngineIC gameEngine;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -32,7 +37,7 @@ public class GameActivity extends Activity {
 		ControlResources.make(this);
 
 		this.setContentView(R.layout.game_layout);
-		//<editor-fold defaultstate="collapsed" desc="Pause Menu">
+		//<editor-fold defaultstate="collapsed" desc="Menu">
 
 		this.menu = (LinearLayout) this.findViewById(R.id.game_menu_button);
 		this.buttonResume = (Button) this.findViewById(R.id.game_menu_button_resume);
@@ -50,6 +55,7 @@ public class GameActivity extends Activity {
 			public void onClick(View view) {
 				GameActivity.this.hide();
 				GameActivity.this.gameView.restartGame();
+				GameActivity.this.gameView.startGame();
 			}
 		});
 
@@ -66,16 +72,19 @@ public class GameActivity extends Activity {
 
 			public void onClick(View view) {
 				GameActivity.this.hide();
-				GameActivity.this.gameView.restartGame();
+				if (GameActivity.this.gameEngine.getStatus() != GameEngineIC.GameEngineStatus.NEW_LEVEL) {
+					GameActivity.this.gameView.restartGame();
+				}
+				GameActivity.this.gameView.startGame();
 			}
 		});
 
 
 		//</editor-fold>
 
-
-		this.gameView = new GameView(this, ControlResources.get().getGameEngine());
-
+		this.gameEngine = ControlResources.get().getGameEngine();
+		this.gameView = new GameView(this, this.gameEngine);
+		this.gameEngine.addObserver(GameEngineEvent.PLAYER_LOSE, this);
 		RelativeLayout layout = ((RelativeLayout) this.findViewById(R.id.game_view_holder));
 		layout.addView(this.gameView);
 
@@ -88,15 +97,20 @@ public class GameActivity extends Activity {
 		this.showPauseMenu();
 		super.onPause();
 	}
-	
+
 	public void showPauseMenu() {
 		if (this.gameView.isRun()) {
 			this.gameView.pauseGame();
 		}
-		this.menu.setVisibility(View.VISIBLE);
-		this.buttonResume.setVisibility(View.VISIBLE);
+
+
+		if (GameActivity.this.gameEngine.getStatus() != GameEngineIC.GameEngineStatus.LEVEL_END) {
+					this.buttonResume.setVisibility(View.VISIBLE);
+		}
+		
 		this.buttonMenu.setVisibility(View.VISIBLE);
 		this.buttonRestart.setVisibility(View.VISIBLE);
+		this.menu.setVisibility(View.VISIBLE);
 
 	}
 
@@ -105,9 +119,10 @@ public class GameActivity extends Activity {
 			this.gameView.pauseGame();
 		}
 
-		this.menu.setVisibility(View.VISIBLE);
+
 		this.buttonStart.setVisibility(View.VISIBLE);
 		this.buttonMenu.setVisibility(View.VISIBLE);
+		this.menu.setVisibility(View.VISIBLE);
 
 	}
 
@@ -140,5 +155,11 @@ public class GameActivity extends Activity {
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	}
+
+	public Void observerNotify(EnumObservable<GameEngineEvent, Void, Void> observable, GameEngineEvent event, Void arg) {
+		System.out.println("Event " + event);
+		this.showPauseMenu();
+		return null;
 	}
 }
