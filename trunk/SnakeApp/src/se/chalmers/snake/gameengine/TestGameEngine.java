@@ -2,14 +2,17 @@ package se.chalmers.snake.gameengine;
 
 import java.util.ArrayList;
 import java.util.List;
+import se.chalmers.snake.highscoreDatabase.HighscoreDatabase;
 import se.chalmers.snake.interfaces.ControlResourcesIC;
 import se.chalmers.snake.interfaces.GameEngineIC;
+import se.chalmers.snake.interfaces.HighscoreDatabaseIC;
 import se.chalmers.snake.interfaces.LevelDatabaseIC;
 import se.chalmers.snake.interfaces.LevelIC;
 import se.chalmers.snake.interfaces.MotionDetectorIC;
 import se.chalmers.snake.interfaces.SystemEventIC;
 import se.chalmers.snake.interfaces.util.REPoint;
 import se.chalmers.snake.interfaces.util.XYPoint;
+import se.chalmers.snake.util.Storage;
 
 /**
  *
@@ -196,6 +199,16 @@ public class TestGameEngine {
 					}
 				};
 			}
+
+			public HighscoreDatabaseIC getHighscoreDatabase() {
+				throw new UnsupportedOperationException("Not supported yet.");
+			}
+
+			public Storage getStorage() {
+				throw new UnsupportedOperationException("Not supported yet.");
+			}
+
+
 		};
 	}
 
