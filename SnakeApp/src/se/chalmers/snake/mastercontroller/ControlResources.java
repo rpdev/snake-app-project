@@ -25,21 +25,11 @@ public class ControlResources {
 	private MotionDetectorIC motionDetectorIC;
 	private GameEngineIC gameEngineIC;
 	private XYPoint screenSize;
-	private SystemEventIC systemEventIC;
 	private Storage storage;
 	private HighscoreDatabaseIC highscoreDatabase;
 
 	private ControlResources(Activity currentActivity, SensorManager sensorManager, XYPoint screenSize) {
 		this.motionDetectorIC = new MotionDetector(sensorManager);
-		this.systemEventIC = new SystemEventIC() {
-
-			public void systemInterrupt() {
-				if (ControlResources.this.gameEngineIC != null) {
-					ControlResources.this.gameEngineIC.pauseGame();
-				}
-			}
-		};
-
 		this.highscoreDatabase = new HighscoreDatabase();
 		this.storage = new Storage(currentActivity);
 		//this.gameEngineIC = new GameEngine(this);
@@ -83,9 +73,6 @@ public class ControlResources {
 		return this.gameEngineIC;
 	}
 
-	public SystemEventIC getSystemEventController() {
-		return this.systemEventIC;
-	}
 
 	public Storage getStorage() {
 		return this.storage;

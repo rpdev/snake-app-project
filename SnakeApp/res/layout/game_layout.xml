@@ -6,15 +6,12 @@
 	android:layout_height="fill_parent"
 	android:background="@drawable/spelplan_bg">
     
-	<RelativeLayout android:id="@+id/game_view_holder" 
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-    />
+	<RelativeLayout android:id="@+id/game_view_holder"  android:layout_width="fill_parent" android:layout_height="fill_parent" />
     
     
 	<RelativeLayout  android:layout_width="fill_parent" android:layout_height="fill_parent">
-		
-		<LinearLayout android:id="@+id/game_menu_button" 
+		<LinearLayout
+			android:id="@+id/game_menu_button"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_centerInParent="true"
@@ -25,24 +22,39 @@
 			>
 			
 			<Button 
+			android:id="@+id/game_menu_button_start" 
+      			android:layout_width="fill_parent"
+      			android:layout_height="wrap_content"
+      			android:text="Start"
+      			android:layout_marginBottom="5dip"
+					android:visibility="gone"
+			/>
+			
+			<Button 
 			android:id="@+id/game_menu_button_resume" 
       			android:layout_width="fill_parent"
       			android:layout_height="wrap_content"
       			android:text="Resume"
-      			android:visibility="gone"
       			android:layout_marginBottom="5dip"
+					android:visibility="gone"
+			/>
+			<Button 
+			android:id="@+id/game_menu_button_restart" 
+      			android:layout_width="fill_parent"
+      			android:layout_height="wrap_content"
+      			android:text="Restart"
+      			android:layout_marginBottom="5dip"
+					android:visibility="gone"
 			/>
 			<Button 
 			android:id="@+id/game_menu_button_menu" 
       			android:layout_width="fill_parent"
       			android:layout_height="wrap_content"
       			android:text="Exit"
-      			android:visibility="gone"
       			android:layout_marginBottom="5dip"
+					android:visibility="gone"
 			/>
-
 		</LinearLayout>
-	
 	</RelativeLayout>
 
 </FrameLayout>
