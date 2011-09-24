@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Snake</string>
+    <string name="sorry">Sorry, you didn\'t make it to the highscore :(</string>
     <string name="help_text">To pause the game press the menu button.\nTo control the snake you have to \"luta\" the phone lol.</string>
 </resources>
