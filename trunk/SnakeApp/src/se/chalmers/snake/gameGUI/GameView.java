@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.view.MotionEvent;
 import android.view.View;
 import java.util.List;
 import se.chalmers.snake.R;
@@ -29,7 +28,7 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	private List<REPoint> items;
 	private List<REPoint> walls;
 	private Resources mRes;
-	private static Bitmap bodySeg;
+	private Bitmap bodySeg;
 
 	
 	public GameView(Context context, GameEngineIC gameEngine) {
@@ -40,22 +39,18 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		this.addGameEngine(gameEngine);
 		this.setBackgroundResource(R.drawable.spelplan_bg);
 		
-		int playerBodyWidth = this.gameEngine.getLevelMetaData().getPlayerBodyWidth();
-		
+		int playerBodyWidth = this.gameEngine.getPlayerHead().radius;
 		this.bodySeg = Bitmap.createScaledBitmap(
 				BitmapFactory.decodeResource(this.mRes, R.drawable.snake_body), playerBodyWidth * 2 ,playerBodyWidth * 2, true);
-		
 		this.postInvalidate();
 	}
 	
 	private void addGameEngine(GameEngineIC gameEngine){
-		this.gameEngine = gameEngine;
-		
+		this.gameEngine = gameEngine;		
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.START_GAME, this);
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.PAUSE_GAME, this);
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.UPDATE, this);
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.PLAYER_LOSE, this);
-		
 		this.snakeBody = gameEngine.getPlayerBody();
 		this.items = gameEngine.getItems();
 		this.walls = gameEngine.getObstacles();
@@ -64,12 +59,14 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 
 	public void pauseGame(){
 		this.gameEngine.pauseGame();
-		// See gameEngine.isRun();
 	}
 	
 	public void startGame(){
 		this.gameEngine.startGame();
-		// See gameEngine.isRun();
+	}
+	
+	public boolean isRun() {
+		return this.gameEngine.isRun();
 	}
 	
 	@Override

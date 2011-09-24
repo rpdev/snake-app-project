@@ -46,14 +46,14 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	 * Driv the game 1 step further on.
 	 */
 	private void step() {
-		
+
 		if (this.currentLevel != null) {
 			double newAngle = this.motionDetector.getAngleByRadians();
-		
+
 			if (0 <= newAngle && newAngle <= PI_TIMES_2) {
 				double P = this.currentAngle - newAngle;
-				double M = ((newAngle < this.currentAngle) ? -PI_TIMES_2:PI_TIMES_2) + P;
-				newAngle += ((Math.abs(P) < Math.abs(M) ? P: M))*0.65;
+				double M = ((newAngle < this.currentAngle) ? -PI_TIMES_2 : PI_TIMES_2) + P;
+				newAngle += ((Math.abs(P) < Math.abs(M) ? P : M)) * 0.65;
 				if (this.currentLevel.step(newAngle)) {
 					this.currentAngle = newAngle;
 					if (this.currentLevel.hasReachedGoal()) {
@@ -140,6 +140,15 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 			return this.currentLevel.getPlayerBody();
 		} else {
 			return new ArrayList<REPoint>(0);
+		}
+	}
+
+	@Override
+	public REPoint getPlayerHead() {
+		if (this.currentLevel != null) {
+			return this.currentLevel.getPlayerHead();
+		} else {
+			return null;
 		}
 	}
 

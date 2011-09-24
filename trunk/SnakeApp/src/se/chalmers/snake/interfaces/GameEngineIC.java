@@ -124,6 +124,13 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 	 * @return Return a list of GamePoints, or a empty list if no player body exist.
 	 */
 	public List<REPoint> getPlayerBody();
+	
+	
+	/**
+	 * This will return the first point in the player body call head.
+	 * @return Return a REPoint or null in case the player body not exist.
+	 */
+	public REPoint getPlayerHead();
 
 	/**
 	 * This will return a list of all item the player will try to collect in the game.

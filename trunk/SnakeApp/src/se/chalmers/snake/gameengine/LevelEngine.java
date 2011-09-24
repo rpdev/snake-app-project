@@ -261,4 +261,14 @@ class LevelEngine {
 			}
 		}
 	}
+	
+	
+	/**
+	 * Get the first REPoint in the Player Body Call Head.
+	 * @return 
+	 */
+	REPoint getPlayerHead() {
+		return this.playerBody.getHead();
+	}
+	
 }
