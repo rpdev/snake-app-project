@@ -33,22 +33,25 @@ public class REPoint extends XYPoint implements Serializable, Cloneable {
 	};
 	public final REType type;
 	public final int radius;
+	public final double angle;
 
-	public REPoint(REType type, int xPoint, int yPoint, int radius) {
+	public REPoint(REType type, int xPoint, int yPoint, int radius, double angle) {
 		super(xPoint, yPoint);
 		if (type != null && radius >= 0) {
 			this.type = type;
 			this.radius = radius;
+			this.angle = angle;
 		} else {
 			throw new NullPointerException("Null Error, or value out of rang.");
 		}
 	}
 	
-	public REPoint(REType type, XYPoint xyPoint, int radius) {
+	public REPoint(REType type, XYPoint xyPoint, int radius, double angle) {
 		super(xyPoint);
 		if (type != null && radius >= 0) {
 			this.type = type;
 			this.radius = radius;
+			this.angle = angle;
 		} else {
 			throw new NullPointerException("Null Error, or value out of rang.");
 		}
@@ -70,6 +73,14 @@ public class REPoint extends XYPoint implements Serializable, Cloneable {
 		return this.radius;
 	}
 
+	/**
+	 * Return the angle this REPoint are face on.
+	 * @return 
+	 */
+	public double getAngle() {
+		return this.angle;
+	}
+	
 	/**
 	 * Calculating the distance between two points, the calculating refer to the midpoint of each Point
 	 * @param gp A point

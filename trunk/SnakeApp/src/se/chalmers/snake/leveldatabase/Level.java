@@ -175,7 +175,7 @@ class Level implements LevelIC {
 						//Integer.parseInt(e.getAttribute(ID)),
 						Integer.parseInt(e.getAttribute(X)),
 						Integer.parseInt(e.getAttribute(Y)),
-						radius
+						radius,0
 						)
 				);
 			}
@@ -193,16 +193,16 @@ class Level implements LevelIC {
 						//Integer.parseInt(e.getAttribute(ID)),
 						Integer.parseInt(e.getAttribute(X)),
 						Integer.parseInt(e.getAttribute(Y)),
-						radius
+						radius, 0
 						)
 				);
 			}
 		}
 		REPoint snakeHead = tmpSnake.removeFirst(), snakeTail = tmpSnake.removeLast();
-		snake.add(new REPoint(REType.HEADSEG, snakeHead.x, snakeHead.y, radius));
+		snake.add(new REPoint(REType.HEADSEG, snakeHead.x, snakeHead.y, radius,0));
 		for(REPoint r : tmpSnake)
 			snake.add(r);
-		snake.add(new REPoint(REType.TAILSEG, snakeTail.x, snakeTail.y, radius));
+		snake.add(new REPoint(REType.TAILSEG, snakeTail.x, snakeTail.y, radius,0));
 	}
 	
 	/**

@@ -175,12 +175,12 @@ class PlayerBody implements Iterable<REPoint> {
 	 */
 	public REPoint getHead() {
 		PBFPoint floatPoint = this.seg.getFirst();
-		return new REPoint(REPoint.REType.HEADSEG, (int) floatPoint.x, (int) floatPoint.y, this.bodySegmentRadius);
+		return new REPoint(REPoint.REType.HEADSEG, (int) floatPoint.x, (int) floatPoint.y, this.bodySegmentRadius, floatPoint.angle);
 	}
 
 	public REPoint getTail() {
 		PBFPoint floatPoint = this.seg.getLast();
-		return new REPoint(REPoint.REType.TAILSEG, (int) floatPoint.x, (int) floatPoint.y, this.bodySegmentRadius);
+		return new REPoint(REPoint.REType.TAILSEG, (int) floatPoint.x, (int) floatPoint.y, this.bodySegmentRadius, floatPoint.angle);
 	}
 
 	/**
@@ -195,12 +195,12 @@ class PlayerBody implements Iterable<REPoint> {
 		while (it.hasNext()) {
 			PBFPoint point = it.next();
 			if (isFirst == true) {
-				rList.add(new REPoint(REPoint.REType.HEADSEG, (int) point.x, (int) point.y, this.bodySegmentRadius));
+				rList.add(new REPoint(REPoint.REType.HEADSEG, (int) point.x, (int) point.y, this.bodySegmentRadius,point.angle));
 				isFirst = false;
 			} else if (it.hasNext()) {
-				rList.add(new REPoint(REPoint.REType.BODYSEG, (int) point.x, (int) point.y, this.bodySegmentRadius));
+				rList.add(new REPoint(REPoint.REType.BODYSEG, (int) point.x, (int) point.y, this.bodySegmentRadius,point.angle));
 			} else {
-				rList.add(new REPoint(REPoint.REType.TAILSEG, (int) point.x, (int) point.y, this.bodySegmentRadius));
+				rList.add(new REPoint(REPoint.REType.TAILSEG, (int) point.x, (int) point.y, this.bodySegmentRadius,point.angle));
 			}
 		}
 		return rList;

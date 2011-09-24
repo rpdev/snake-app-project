@@ -17,11 +17,11 @@ class LevelEngine {
 	private class LEIPoint extends REPoint {
 		private int time = 0;
 		private LEIPoint(XYPoint xyPoint, int radius) {
-			super(REPoint.REType.ITEM, xyPoint, radius);
+			super(REPoint.REType.ITEM, xyPoint, radius,0);
 
 		}
 		private LEIPoint(int x, int y, int radius) {
-			super(REPoint.REType.ITEM,x, y, radius);
+			super(REPoint.REType.ITEM,x, y, radius,0);
 		}
 	}
 	private int score;
@@ -181,7 +181,7 @@ class LevelEngine {
 	private List<REPoint> listStaticElement() {
 		ArrayList<REPoint> alRE = new ArrayList<REPoint>();
 		for (REPoint rsp : this.level.getObstacles()) {
-				alRE.add(new REPoint(REPoint.REType.WALL, (int) (this.xScal * rsp.x), (int) (this.yScal * rsp.y), (int) (this.fixScal * rsp.radius)));
+				alRE.add(new REPoint(REPoint.REType.WALL, (int) (this.xScal * rsp.x), (int) (this.yScal * rsp.y), (int) (this.fixScal * rsp.radius),0));
 		}
 		return alRE;
 	}
@@ -254,7 +254,7 @@ class LevelEngine {
 		int countY = gameSize.y / itemSize3;
 		for (int x = 0; x < countX; x++) {
 			for (int y = 0; y < countY; y++) {
-				REPoint point = new REPoint(REPoint.REType.ITEM, startX + x * itemSize3, startY + y * itemSize3, itemSize2);
+				REPoint point = new REPoint(REPoint.REType.ITEM, startX + x * itemSize3, startY + y * itemSize3, itemSize2,0);
 				if (!this.isStaticElementCollision(point)) {
 					this.allPossibleItems.add(point);
 				}
