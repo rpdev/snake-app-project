@@ -240,9 +240,6 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 			gameView.pauseGame();
 			switchToPauseMenu();
 			show();
-//			findViewById(R.id.menu_buttons).setVisibility(View.VISIBLE);
-//			findViewById(R.id.menu_buttons).requestFocus();
-//			gameView.setVisibility(View.INVISIBLE);
 	 }
 	 return super.onKeyDown(keycode,event);  
 	}
@@ -252,7 +249,6 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 			EnumObservable<GameEngineEvent, Void, Void> observable,
 			GameEngineEvent event, Void arg) {
 		highData.addPlayerToHighscore("Auto", 5);
-		
 		return null;
 	}
 	
