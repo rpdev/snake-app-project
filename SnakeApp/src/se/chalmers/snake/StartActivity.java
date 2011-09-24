@@ -196,8 +196,8 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 				gameHolder.addView(gameView);
 			}
 			else {
-				gameView.addGameEngine(gameEngineIC);
-				gameEngineIC.addObserver(GameEngineIC.GameEngineEvent.PLAYER_LOSE, StartActivity.this);
+				//gameView.addGameEngine(gameEngineIC);
+				//gameEngineIC.addObserver(GameEngineIC.GameEngineEvent.PLAYER_LOSE, StartActivity.this);
 			}
 			gameEngineIC.startGame();
 			hide();

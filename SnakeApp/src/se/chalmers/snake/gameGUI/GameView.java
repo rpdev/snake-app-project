@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package se.chalmers.snake.gameGUI;
 
 import android.content.Context;
@@ -34,29 +30,25 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	private List<REPoint> walls;
 	private Resources mRes;
 	private static Bitmap bodySeg;
-	//Bör implementeras på GameEngine
-	public static enum GameState{
-		PAUSED,
-		RUNNING
-	};
-	public GameState gameState;
+
 	
 	public GameView(Context context, GameEngineIC gameEngine) {
 		super(context);
-		mRes = context.getResources();
+		this.mRes = context.getResources();
 		this.paint = new Paint();
 		this.paint.setStyle(Paint.Style.FILL);
-		addGameEngine(gameEngine);
+		this.addGameEngine(gameEngine);
 		this.setBackgroundResource(R.drawable.spelplan_bg);
 		
-
-		bodySeg = Bitmap.createScaledBitmap(
-				BitmapFactory.decodeResource(mRes, R.drawable.snake_body), 5 * 2 , 5 * 2, true);
+		int playerBodyWidth = this.gameEngine.getLevelMetaData().getPlayerBodyWidth();
+		
+		this.bodySeg = Bitmap.createScaledBitmap(
+				BitmapFactory.decodeResource(this.mRes, R.drawable.snake_body), playerBodyWidth * 2 ,playerBodyWidth * 2, true);
 		
 		this.postInvalidate();
 	}
 	
-	public void addGameEngine(GameEngineIC gameEngine){
+	private void addGameEngine(GameEngineIC gameEngine){
 		this.gameEngine = gameEngine;
 		
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.START_GAME, this);
@@ -71,13 +63,13 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	}
 
 	public void pauseGame(){
-		gameEngine.pauseGame();
-		gameState = GameState.PAUSED;
+		this.gameEngine.pauseGame();
+		// See gameEngine.isRun();
 	}
 	
 	public void startGame(){
-		gameEngine.startGame();
-		gameState = GameState.RUNNING;
+		this.gameEngine.startGame();
+		// See gameEngine.isRun();
 	}
 	
 	@Override

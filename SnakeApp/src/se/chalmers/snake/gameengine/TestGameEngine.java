@@ -74,7 +74,7 @@ public class TestGameEngine {
 							@Override
 							public List<REPoint> getObstacles() {
 								ArrayList<REPoint> item = new ArrayList<REPoint>();
-								item.add(new REPoint(REPoint.REType.WALL, 125, 175, 20));
+								item.add(new REPoint(REPoint.REType.WALL, 125, 175, 20,0));
 								
 								
 								return item;
