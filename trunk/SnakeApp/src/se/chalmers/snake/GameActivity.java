@@ -1,6 +1,8 @@
 package se.chalmers.snake;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -20,57 +22,103 @@ public class GameActivity extends Activity {
 	private LinearLayout menu;
 	private Button buttonResume;
 	private Button buttonMenu;
-	
+	private Button buttonRestart;
+	private Button buttonStart;
 
-	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		ControlResources.make(this);
-		
-		this.setContentView(R.layout.game_layout);
-		this.menu = (LinearLayout) this.findViewById(R.id.game_menu_button);
 
-		//Instantiate buttons
+		this.setContentView(R.layout.game_layout);
+		//<editor-fold defaultstate="collapsed" desc="Pause Menu">
+
+		this.menu = (LinearLayout) this.findViewById(R.id.game_menu_button);
 		this.buttonResume = (Button) this.findViewById(R.id.game_menu_button_resume);
 		this.buttonResume.setOnClickListener(new View.OnClickListener() {
+
 			public void onClick(View view) {
 				GameActivity.this.hide();
 				GameActivity.this.gameView.startGame();
 			}
 		});
-		
-		//Instantiate buttons
+
+		this.buttonRestart = (Button) this.findViewById(R.id.game_menu_button_restart);
+		this.buttonRestart.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View view) {
+				GameActivity.this.hide();
+				GameActivity.this.gameView.restartGame();
+			}
+		});
+
 		this.buttonMenu = (Button) this.findViewById(R.id.game_menu_button_menu);
 		this.buttonMenu.setOnClickListener(new View.OnClickListener() {
+
 			public void onClick(View view) {
 				GameActivity.this.finish();
 			}
 		});
-		
-		
+
+		this.buttonStart = (Button) this.findViewById(R.id.game_menu_button_start);
+		this.buttonStart.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View view) {
+				GameActivity.this.hide();
+				GameActivity.this.gameView.restartGame();
+			}
+		});
+
+
+		//</editor-fold>
+
 
 		this.gameView = new GameView(this, ControlResources.get().getGameEngine());
-		
+
 		RelativeLayout layout = ((RelativeLayout) this.findViewById(R.id.game_view_holder));
 		layout.addView(this.gameView);
-		ControlResources.get().getGameEngine().startGame();
+
+
+		this.showStartMenu();
+	}
+
+	@Override
+	public void onPause() {
+		this.showPauseMenu();
+		super.onPause();
 	}
 	
 	public void showPauseMenu() {
-		this.gameView.pauseGame();
+		if (this.gameView.isRun()) {
+			this.gameView.pauseGame();
+		}
 		this.menu.setVisibility(View.VISIBLE);
 		this.buttonResume.setVisibility(View.VISIBLE);
 		this.buttonMenu.setVisibility(View.VISIBLE);
+		this.buttonRestart.setVisibility(View.VISIBLE);
+
 	}
-	
+
+	public void showStartMenu() {
+		if (this.gameView.isRun()) {
+			this.gameView.pauseGame();
+		}
+
+		this.menu.setVisibility(View.VISIBLE);
+		this.buttonStart.setVisibility(View.VISIBLE);
+		this.buttonMenu.setVisibility(View.VISIBLE);
+
+	}
 
 	public void hide() {
 		this.menu.setVisibility(View.GONE);
+		this.buttonResume.setVisibility(View.GONE);
+		this.buttonMenu.setVisibility(View.GONE);
+		this.buttonRestart.setVisibility(View.GONE);
+		this.buttonStart.setVisibility(View.GONE);
 	}
-	
-	
+
 	@Override
 	public void onBackPressed() {
 		if (this.gameView.isRun()) {
@@ -79,12 +127,18 @@ public class GameActivity extends Activity {
 			super.onBackPressed();
 		}
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keycode, KeyEvent event) {
 		if (keycode == KeyEvent.KEYCODE_MENU) {
 			this.showPauseMenu();
 		}
 		return super.onKeyDown(keycode, event);
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
 }

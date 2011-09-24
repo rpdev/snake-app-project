@@ -58,17 +58,6 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 
 	}
 
-	public void pauseGame(){
-		this.gameEngine.pauseGame();
-	}
-
-	public void startGame(){
-		this.gameEngine.startGame();
-	}
-	
-	public boolean isRun() {
-		return this.gameEngine.isRun();
-	}
 
 	@Override
 	public void onDraw(Canvas canvas) {
@@ -101,6 +90,23 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 			this.postInvalidate();
 		
 		return null;
+	}
+
+	public void pauseGame(){
+		this.gameEngine.pauseGame();
+	}
+
+	public void startGame(){
+		this.gameEngine.startGame();
+	}
+	
+	public boolean isRun() {
+		return this.gameEngine.isRun();
+	}
+	
+	public void restartGame() {
+		this.gameEngine.restartGame();
+		this.gameEngine.startGame();
 	}
 
 }
