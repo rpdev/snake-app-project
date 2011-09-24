@@ -62,6 +62,7 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.START_GAME, this);
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.PAUSE_GAME, this);
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.UPDATE, this);
+		gameEngine.addObserver(GameEngineIC.GameEngineEvent.PLAYER_LOSE, this);
 		
 		this.snakeBody = gameEngine.getPlayerBody();
 		this.items = gameEngine.getItems();
@@ -103,7 +104,8 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 
 	}
 
-	public Void observerNotify(EnumObservable<GameEngineEvent, Void, Void> observable, GameEngineEvent event, Void arg) {
+	public Void observerNotify(EnumObservable<GameEngineEvent, Void, Void> observable, 
+			GameEngineEvent event, Void arg) {
 		this.snakeBody = this.gameEngine.getPlayerBody();
 		this.items = this.gameEngine.getItems();
 		this.postInvalidate();
