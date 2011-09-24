@@ -29,7 +29,7 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 	private GameView gameView;
 	private HighscoreDatabase highData;
 	private GameEngineIC gameEngineIC;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,8 +38,8 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 		highData = new HighscoreDatabase();
 
 		//Instantiate layouts
-		background = (RelativeLayout)findViewById(R.id.backgroundImage);
-		menu = (LinearLayout)findViewById(R.id.menu_buttons);
+		background = (RelativeLayout) findViewById(R.id.backgroundImage);
+		menu = (LinearLayout) findViewById(R.id.menu_buttons);
 
 		//Instantiate buttons
 		newGame = (Button) findViewById(R.id.newGame_button);
@@ -51,7 +51,7 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 		helpText = (TextView) findViewById(R.id.helpText);
 		highscoreText = (TextView) findViewById(R.id.highscoreText);
 		back = (Button) findViewById(R.id.back_button);
-		
+
 		switchToStartMenu();
 		show();
 		newGame.setOnClickListener(newGameListener);
@@ -62,14 +62,11 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 
 
 	}
-	
 	/**
 	 * 
 	 * Takes care of the Menu
 	 * 
 	 */
-	
-
 	private RelativeLayout background;
 	private LinearLayout menu;
 	//Buttons
@@ -83,29 +80,30 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 	private TextView highscoreText;
 	//Info
 	private boolean hidden;
-	private enum MenuState{
+
+	private enum MenuState {
 		//menuState possibilities
+
 		onStartMenu,
 		onPauseMenu,
 		onHighscoreMenu,
 		onHelpMenu
 	};
-	private MenuState menuState; 
-	private MenuState previousMenuState; 
-	
+	private MenuState menuState;
+	private MenuState previousMenuState;
 
-	public void show(){
+	public void show() {
 		menu.setVisibility(View.VISIBLE);
 		hidden = false;
 	}
-	
-	public void hide(){
+
+	public void hide() {
 		menu.setVisibility(View.GONE);
 		background.setBackgroundColor(0x00000000);
 		hidden = true;
 	}
-	
-	public void switchToStartMenu(){
+
+	public void switchToStartMenu() {
 		previousMenuState = menuState;
 		menuState = MenuState.onStartMenu;
 		//These components should be present
@@ -120,8 +118,8 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 		helpText.setVisibility(View.GONE);
 		highscoreText.setVisibility(View.GONE);
 	}
-	
-	public void switchToPauseMenu(){
+
+	public void switchToPauseMenu() {
 		previousMenuState = menuState;
 		menuState = MenuState.onPauseMenu;
 		//These components should be present
@@ -136,8 +134,8 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 		highscoreText.setVisibility(View.GONE);
 		back.setVisibility(View.GONE);
 	}
-	
-	public void switchToHighscoreMenu(){
+
+	public void switchToHighscoreMenu() {
 		previousMenuState = menuState;
 		menuState = MenuState.onHighscoreMenu;
 		//These components should be present
@@ -151,8 +149,8 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 		newGame.setVisibility(View.GONE);
 		helpText.setVisibility(View.GONE);
 	}
-	
-	public void switchToHelpMenu(){
+
+	public void switchToHelpMenu() {
 		previousMenuState = menuState;
 		menuState = MenuState.onHelpMenu;
 		//These components should be present
@@ -166,46 +164,45 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 		newGame.setVisibility(View.GONE);
 		highscoreText.setVisibility(View.GONE);
 	}
-	
 	private OnClickListener backListener = new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
-			switch(previousMenuState){
-			case onStartMenu: switchToStartMenu(); break;
-			case onPauseMenu: switchToPauseMenu(); break;
-			default : break;
+			switch (previousMenuState) {
+				case onStartMenu:
+					switchToStartMenu();
+					break;
+				case onPauseMenu:
+					switchToPauseMenu();
+					break;
+				default:
+					break;
 			}
-			
+
 		}
 	};
-
 	private View.OnClickListener newGameListener = new View.OnClickListener() {
 
 		public void onClick(View v) {
 			FrameLayout spelplan = (FrameLayout) StartActivity.this.findViewById(R.id.spelplan);
 			XYPoint xyPoint = new XYPoint(spelplan.getWidth(), spelplan.getHeight());
-			
-			SensorManager mSensorManager = (SensorManager)StartActivity.this.getSystemService(Context.SENSOR_SERVICE);
-			gameEngineIC = TestGameEngine.getGameEngine(xyPoint,null);
-			gameEngineIC = TestGameEngine.getGameEngine(xyPoint,new MotionDetector(mSensorManager));
-			if(gameView == null){
-				gameView = new GameView(StartActivity.this,gameEngineIC);
+
+			SensorManager mSensorManager = (SensorManager) StartActivity.this.getSystemService(Context.SENSOR_SERVICE);
+			gameEngineIC = TestGameEngine.getGameEngine(xyPoint, null);
+			gameEngineIC = TestGameEngine.getGameEngine(xyPoint, new MotionDetector(mSensorManager));
+			if (gameView == null) {
+				gameView = new GameView(StartActivity.this, gameEngineIC);
 				gameEngineIC.addObserver(GameEngineIC.GameEngineEvent.PLAYER_LOSE, StartActivity.this);
-				gameHolder = (RelativeLayout)findViewById(R.id.gameViewHolder);
+				gameHolder = (RelativeLayout) findViewById(R.id.gameViewHolder);
 				gameHolder.addView(gameView);
 			}
-			else {
-				//gameView.addGameEngine(gameEngineIC);
-				//gameEngineIC.addObserver(GameEngineIC.GameEngineEvent.PLAYER_LOSE, StartActivity.this);
-			}
+
 			gameEngineIC.startGame();
 			hide();
 		}
 	};
-
 	private View.OnClickListener resumeGameListener = new View.OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			gameView.startGame();
@@ -213,18 +210,16 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 			hide();
 		}
 	};
-
 	private View.OnClickListener helpListener = new View.OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			switchToHelpMenu();
 			show();
 		}
 	};
-
 	private View.OnClickListener highscoreListener = new View.OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			highscoreText.setText(highData.toString());
@@ -234,22 +229,36 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 	};
 
 	@Override
-	public boolean onKeyDown(int keycode, KeyEvent event ) {
-	 if(keycode == KeyEvent.KEYCODE_MENU){
+	public boolean onKeyDown(int keycode, KeyEvent event) {
+		if (keycode == KeyEvent.KEYCODE_MENU) {
 
 			gameView.pauseGame();
 			switchToPauseMenu();
 			show();
-	 }
-	 return super.onKeyDown(keycode,event);  
+		}
+		return super.onKeyDown(keycode, event);
+	}
+
+	/**
+	 * This will block the Back Button in case the game is run and only show the menu.
+	 * If the back button are press in puase mode the will work as normal. and return/exit app.
+	 */
+	@Override
+	public void onBackPressed() {
+		if (this.gameView.isRun()) {
+			this.gameView.pauseGame();
+			switchToPauseMenu();
+			show();
+		} else {
+			super.onBackPressed();
+		}
 	}
 
 	@Override
 	public Void observerNotify(
-			EnumObservable<GameEngineEvent, Void, Void> observable,
-			GameEngineEvent event, Void arg) {
+			  EnumObservable<GameEngineEvent, Void, Void> observable,
+			  GameEngineEvent event, Void arg) {
 		highData.addPlayerToHighscore("Auto", 5);
 		return null;
 	}
-	
 }
