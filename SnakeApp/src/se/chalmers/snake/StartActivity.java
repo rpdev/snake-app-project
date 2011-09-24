@@ -52,7 +52,9 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 		highscoreText = (TextView) findViewById(R.id.highscoreText);
 		back = (Button) findViewById(R.id.back_button);
 
+
 		switchToStartMenu();
+
 		show();
 		newGame.setOnClickListener(newGameListener);
 		resumeGame.setOnClickListener(resumeGameListener);
@@ -196,7 +198,10 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 				gameHolder = (RelativeLayout) findViewById(R.id.gameViewHolder);
 				gameHolder.addView(gameView);
 			}
-
+			else {
+				gameView.addGameEngine(gameEngineIC);
+//				gameEngineIC.addObserver(GameEngineIC.GameEngineEvent.PLAYER_LOSE, StartActivity.this);
+			}
 			gameEngineIC.startGame();
 			hide();
 		}
