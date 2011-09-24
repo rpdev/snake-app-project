@@ -23,9 +23,13 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	private LevelEngine currentLevel = null;
 	private boolean isRun = false;
 	private double currentAngle;
+	private GameEngineStatus currentStatus;
+	
+	
 
 	public GameEngine(ControlResourcesIC controlResources) {
 		super(GameEngineIC.GameEngineEvent.class);
+		this.currentStatus = GameEngineStatus.NO_LEVEL_LOAD;
 		this.controlResources = controlResources;
 		this.motionDetector = controlResources.getMotionDetector();
 		this.isRun = false;
@@ -33,7 +37,6 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 
 		// Config the Oscillator to make 10 fps
 		this.oscillator = new Oscillator(1000 / GameEngine.UPDATE_FREQUENCY, new Runnable() {
-
 			@Override
 			public void run() {
 				GameEngine.this.step();
@@ -58,6 +61,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 					this.currentAngle = newAngle;
 					if (this.currentLevel.hasReachedGoal()) {
 						this.pauseGame();
+						this.currentStatus = GameEngineStatus.LEVEL_END;
 						this.fireObserver(GameEngineEvent.LEVEL_END);
 					} else {
 						this.fireObserver(GameEngineEvent.UPDATE);
@@ -65,6 +69,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 
 				} else {
 					this.pauseGame();
+					this.currentStatus = GameEngineStatus.LEVEL_END;
 					this.fireObserver(GameEngineEvent.PLAYER_LOSE);
 				}
 			}
@@ -75,6 +80,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	@Override
 	public synchronized boolean startGame() {
 		if (this.currentLevel != null) {
+			this.currentStatus = GameEngineStatus.RUNNING;
 			this.fireObserver(GameEngineEvent.START_GAME);
 			this.oscillator.start();
 			this.isRun = true;
@@ -86,8 +92,9 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 
 	@Override
 	public synchronized boolean pauseGame() {
-		if (this.currentLevel != null) {
+		if (this.currentLevel != null && this.isRun==true) {
 			this.oscillator.stop();
+			this.currentStatus = GameEngineStatus.PAUSE;
 			this.fireObserver(GameEngineEvent.PAUSE_GAME);
 			this.isRun = false;
 			return true;
@@ -100,6 +107,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	public synchronized boolean restartGame() {
 		return this.loadLevel(this.getLevelName());
 	}
+	
 
 	@Override
 	public synchronized boolean loadLevel(String name) {
@@ -112,6 +120,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 			} catch (Exception ex) {
 				return false;
 			}
+			this.currentStatus = GameEngineStatus.NEW_LEVEL;
 			this.fireObserver(GameEngineEvent.NEW_GAME);
 			return true;
 		} else {
@@ -192,5 +201,9 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 
 	public boolean isRun() {
 		return this.isRun;
+	}
+
+	public GameEngineStatus getStatus() {
+		return this.currentStatus;
 	}
 }

@@ -42,6 +42,13 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 		PLAYER_LOSE
 	}
 	
+	public static enum GameEngineStatus {
+		NO_LEVEL_LOAD,
+		NEW_LEVEL,
+		RUNNING,
+		PAUSE,
+		LEVEL_END
+	}
 
 
 	
@@ -70,6 +77,12 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 	 * @return True if this action are allow and a load level exist.
 	 */
 	public boolean restartGame();
+	
+	/**
+	 * Return the current status of the GameEngine
+	 * @return 
+	 */
+	public GameEngineStatus getStatus();
 	
 	/**
 	 * Load select level, this will reset the GameEngine to default state.
