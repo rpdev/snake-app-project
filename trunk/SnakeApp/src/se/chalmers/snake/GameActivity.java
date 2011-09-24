@@ -17,7 +17,7 @@ import se.chalmers.snake.util.EnumObservable;
 import se.chalmers.snake.util.EnumObserver;
 
 /**
- * This GameActivity will run the Game in select mode and has a in arg with select level name and scores.
+ * This GameActivity will run the Game 
  */
 public class GameActivity extends Activity implements EnumObserver<GameEngineIC.GameEngineEvent, Void, Void> {
 

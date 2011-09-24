@@ -95,7 +95,7 @@ public class TestGameEngine {
 
 							@Override
 							public float getSpeed(List<Integer> collectTime) {
-								return (float) 2.5;
+								return (float) 2.0;
 							}
 
 							@Override
