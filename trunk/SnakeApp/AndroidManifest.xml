@@ -33,14 +33,5 @@
 		</activity>
 		
 		
-		<activity android:name="MotionDetectorActivity"
-                  android:label="Snake MotionDetectorActivity"
-						android:taskAffinity="se.chalmers.snake.motiondetector"
-						>
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
-		</activity>
 	</application>
 </manifest> 
