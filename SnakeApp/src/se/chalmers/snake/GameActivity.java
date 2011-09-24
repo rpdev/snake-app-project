@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import se.chalmers.snake.gameGUI.GameView;
 import se.chalmers.snake.interfaces.GameEngineIC;
 import se.chalmers.snake.interfaces.GameEngineIC.GameEngineEvent;
+import se.chalmers.snake.interfaces.util.XYPoint;
 import se.chalmers.snake.mastercontroller.ControlResources;
 import se.chalmers.snake.util.EnumObservable;
 import se.chalmers.snake.util.EnumObserver;
@@ -34,9 +35,10 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		ControlResources.make(this);
+		
 
 		this.setContentView(R.layout.game_layout);
+		ControlResources.make(this);
 		//<editor-fold defaultstate="collapsed" desc="Menu">
 
 		this.menu = (LinearLayout) this.findViewById(R.id.game_menu_button);
@@ -83,6 +85,7 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 		//</editor-fold>
 
 		this.gameEngine = ControlResources.get().getGameEngine();
+		this.gameEngine.loadLevel("");
 		this.gameView = new GameView(this, this.gameEngine);
 		this.gameEngine.addObserver(GameEngineEvent.PLAYER_LOSE, this);
 		RelativeLayout layout = ((RelativeLayout) this.findViewById(R.id.game_view_holder));

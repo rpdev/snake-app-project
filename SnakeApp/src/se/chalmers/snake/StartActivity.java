@@ -34,8 +34,10 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		ControlResources.make(this);
 		setContentView(R.layout.snake_layout);
+				
+		ControlResources.make(this);
+		
 
 
 		highData = new HighscoreDatabase();
