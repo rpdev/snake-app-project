@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.view.View;
 import java.util.List;
 import se.chalmers.snake.R;
+import se.chalmers.snake.StartActivity;
 import se.chalmers.snake.interfaces.GameEngineIC;
 import se.chalmers.snake.interfaces.GameEngineIC.GameEngineEvent;
 import se.chalmers.snake.interfaces.util.REPoint;
@@ -38,14 +39,14 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		this.paint.setStyle(Paint.Style.FILL);
 		this.addGameEngine(gameEngine);
 		this.setBackgroundResource(R.drawable.spelplan_bg);
-		
+
 		int playerBodyWidth = this.gameEngine.getPlayerHead().radius;
 		this.bodySeg = Bitmap.createScaledBitmap(
 				BitmapFactory.decodeResource(this.mRes, R.drawable.snake_body), playerBodyWidth * 2 ,playerBodyWidth * 2, true);
 		this.postInvalidate();
 	}
-	
-	private void addGameEngine(GameEngineIC gameEngine){
+
+	public void addGameEngine(GameEngineIC gameEngine){
 		this.gameEngine = gameEngine;		
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.START_GAME, this);
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.PAUSE_GAME, this);
@@ -54,13 +55,13 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		this.snakeBody = gameEngine.getPlayerBody();
 		this.items = gameEngine.getItems();
 		this.walls = gameEngine.getObstacles();
-		
+
 	}
 
 	public void pauseGame(){
 		this.gameEngine.pauseGame();
 	}
-	
+
 	public void startGame(){
 		this.gameEngine.startGame();
 	}
@@ -68,7 +69,7 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	public boolean isRun() {
 		return this.gameEngine.isRun();
 	}
-	
+
 	@Override
 	public void onDraw(Canvas canvas) {
 		if (this.snakeBody != null) {
@@ -95,9 +96,10 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 
 	public Void observerNotify(EnumObservable<GameEngineEvent, Void, Void> observable, 
 			GameEngineEvent event, Void arg) {
-		this.snakeBody = this.gameEngine.getPlayerBody();
-		this.items = this.gameEngine.getItems();
-		this.postInvalidate();
+			this.snakeBody = this.gameEngine.getPlayerBody();
+			this.items = this.gameEngine.getItems();
+			this.postInvalidate();
+		
 		return null;
 	}
 
