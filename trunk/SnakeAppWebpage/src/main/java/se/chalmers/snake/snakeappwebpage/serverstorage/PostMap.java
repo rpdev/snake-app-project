@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,10 +18,12 @@ import javax.persistence.Temporal;
  *
  */
 @Entity
-public class PostMap implements Serializable {
+public class PostMap extends SelfPersistence implements Serializable {
 
 	@ManyToOne
+	@Column(nullable=true)
 	private UserAccount userAccount;
+
 	public static enum Status {
 		PUBLIC,
 		DELETE,
@@ -103,5 +106,16 @@ public class PostMap implements Serializable {
 			return false;
 		}
 		return true;
+	}
+	
+
+	@Override
+	SelfPersistence trackPersistence(EntityManager entityManager) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	boolean trackDestroy(EntityManager entityManager, SelfPersistence removeObj) {
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 }
