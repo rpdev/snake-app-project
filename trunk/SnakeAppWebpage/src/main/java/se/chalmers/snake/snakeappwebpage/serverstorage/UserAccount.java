@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 /**
- *
+ * User Account for a user.
  */
 @Entity
 public class UserAccount extends SelfPersistence implements Serializable {
@@ -31,7 +31,7 @@ public class UserAccount extends SelfPersistence implements Serializable {
 	@Column(nullable = false)
 	private String userDescription;
 	@OneToMany(mappedBy = "userAccount")
-	private List<Map> maps;
+	private List<PostMap> maps;
 	
 	
 	//</editor-fold>

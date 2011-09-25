@@ -5,7 +5,8 @@
     <class>se.chalmers.snake.snakeappwebpage.serverstorage.UserAccount</class>
     <class>se.chalmers.snake.snakeappwebpage.serverstorage.MapComment</class>
     <class>se.chalmers.snake.snakeappwebpage.serverstorage.PublicMap</class>
-    <class>se.chalmers.snake.snakeappwebpage.serverstorage.Map</class>
+    <class>se.chalmers.snake.snakeappwebpage.serverstorage.SnakeMap</class>
+    <class>se.chalmers.snake.snakeappwebpage.serverstorage.PostMap</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/snakeappweb"/>
