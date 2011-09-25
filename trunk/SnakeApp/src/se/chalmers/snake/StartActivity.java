@@ -36,7 +36,6 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.snake_layout);
 				
-		ControlResources.make(this);
 		
 
 
@@ -208,7 +207,9 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 			gameEngineIC.startGame();
 			hide();
 			*/
-
+			
+			// This call most be down after first rend of screen but before some recuses nead this.
+			ControlResources.make(StartActivity.this, R.id.spelplan);
 			
 			Intent gameIntent = new Intent(StartActivity.this, GameActivity.class);
 			StartActivity.this.startActivity(gameIntent);

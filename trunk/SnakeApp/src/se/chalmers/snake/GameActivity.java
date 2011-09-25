@@ -38,7 +38,6 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 		
 
 		this.setContentView(R.layout.game_layout);
-		ControlResources.make(this);
 		//<editor-fold defaultstate="collapsed" desc="Menu">
 
 		this.menu = (LinearLayout) this.findViewById(R.id.game_menu_button);

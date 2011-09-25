@@ -3,6 +3,7 @@ package se.chalmers.snake.mastercontroller;
 import android.app.Activity;
 import android.content.Context;
 import android.hardware.SensorManager;
+import android.view.View;
 import se.chalmers.snake.gameengine.TestGameEngine;
 import se.chalmers.snake.highscoreDatabase.HighscoreDatabase;
 import se.chalmers.snake.interfaces.GameEngineIC;
@@ -34,15 +35,15 @@ public class ControlResources {
 		this.gameEngine = TestGameEngine.getGameEngine(screenSize, this.motionDetector);	
 	}
 
-	public static void make(Activity currentActivity) {
+	public static void make(Activity currentActivity, int mainViewID) {
 		if (ControlResources.controlResources == null) {
+			currentActivity.findViewById(mainViewID).getHeight();
 			try {
-				/*
-				View view = ((ViewGroup) currentActivity.findViewById(android.R.id.content)).getChildAt(0);
-				XYPoint screenSize = new XYPoint(view.getWidth(), view.getHeight());
-				*/
-				
-				XYPoint screenSize = new XYPoint(currentActivity.getWindowManager().getDefaultDisplay().getWidth(), currentActivity.getWindowManager().getDefaultDisplay().getHeight());
+
+				View mainView = currentActivity.findViewById(mainViewID);
+				XYPoint screenSize = new XYPoint(mainView.getWidth(), mainView.getHeight());
+
+				//XYPoint screenSize = new XYPoint(currentActivity.getWindowManager().getDefaultDisplay().getWidth(), currentActivity.getWindowManager().getDefaultDisplay().getHeight());
 				SensorManager sensorManager = (SensorManager) currentActivity.getSystemService(Context.SENSOR_SERVICE);
 				ControlResources.controlResources = new ControlResources(currentActivity, sensorManager, screenSize);
 			} catch (Exception ex) {}
