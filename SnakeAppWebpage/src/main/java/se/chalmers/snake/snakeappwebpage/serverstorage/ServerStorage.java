@@ -54,7 +54,7 @@ public class ServerStorage {
 	//</editor-fold>
 	
 	//<editor-fold defaultstate="collapsed" desc="Secure Hash Functions">
-	public static String SHAHashString(String str) {
+	public static String SHA1HashString(String str) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA");
 			if (str != null) {
