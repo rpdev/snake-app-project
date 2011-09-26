@@ -76,7 +76,7 @@ public class HighscoreActivity extends Activity {
 		this.youDidntMakeIt.setVisibility(View.VISIBLE);
 		this.skipButton.setVisibility(View.VISIBLE);
 		//skipbutton should be renamed
-		this.skipButton.setText("" + points);
+		this.skipButton.setText("Exit");
 		//These elements shouldn't
 		this.inputName.setVisibility(View.GONE);
 		this.youMadeIt.setVisibility(View.GONE);
