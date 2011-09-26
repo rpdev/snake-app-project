@@ -91,7 +91,6 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 		RelativeLayout layout = ((RelativeLayout) this.findViewById(R.id.game_view_holder));
 		layout.addView(this.gameView);
 
-
 		this.showStartMenu();
 	}
 
