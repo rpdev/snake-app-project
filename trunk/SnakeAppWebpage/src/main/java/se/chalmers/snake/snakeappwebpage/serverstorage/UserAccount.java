@@ -19,9 +19,10 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class UserAccount extends SelfPersistence implements Serializable {
+	private static final long serialVersionUID = 1525476798595928312L;
 
-	public static final Class<UserAccount> PORTOTYPE = UserAccount.class;
-	private static final long serialVersionUID = 1L;
+
+	
 	//<editor-fold defaultstate="collapsed" desc="Variable Declaration">
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,6 +39,7 @@ public class UserAccount extends SelfPersistence implements Serializable {
 	private List<PostMap> maps;
 
 	//</editor-fold>
+
 	public UserAccount() {
 		this.userName = "";
 		this.userPassword = "";
@@ -145,7 +147,6 @@ public class UserAccount extends SelfPersistence implements Serializable {
 	}
 	//</editor-fold>
 	//<editor-fold defaultstate="collapsed" desc="Track Method">
-
 	/**
 	 * {@inheritDoc}
 	 * @param entityManager
@@ -170,7 +171,6 @@ public class UserAccount extends SelfPersistence implements Serializable {
 			}
 			return false;
 		}
-
 	}
 
 	/**
