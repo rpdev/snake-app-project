@@ -1,6 +1,7 @@
 package se.chalmers.snake;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -161,7 +162,10 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 
 	public Void observerNotify(EnumObservable<GameEngineEvent, Void, Void> observable, GameEngineEvent event, Void arg) {
 		System.out.println("Event " + event);
-		this.showPauseMenu();
+		Intent highscoreIntent = new Intent(GameActivity.this, HighscoreActivity.class);
+		highscoreIntent.putExtra("points", 5);
+		GameActivity.this.startActivity(highscoreIntent);
+		this.finish();
 		return null;
 	}
 }
