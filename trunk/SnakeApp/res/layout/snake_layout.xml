@@ -85,13 +85,6 @@
 					android:layout_centerInParent="true"
 					android:gravity="center_horizontal">
 				
-					<TextView android:id="@+id/sorryText" 
-	    	  			android:layout_width="fill_parent"
-      					android:layout_height="wrap_content"
-      					android:text="@string/sorry"
-      					style="@style/customText"
-						android:visibility="gone"
-					/>
 					<Button android:id="@+id/back_button" 
 	      				android:layout_width="wrap_content"
       					android:layout_height="wrap_content"
@@ -103,39 +96,7 @@
 				
 				</LinearLayout> 
 				
-				<LinearLayout android:id="@+id/submit_highscore"
-    	  			android:layout_width="fill_parent"
-      				android:layout_height="wrap_content"
-					android:orientation="vertical" 
-      				android:visibility="gone">
-					
-					<EditText android:id="@+id/input"
-        				android:layout_width="fill_parent"
-        				android:layout_height="wrap_content"/>
-					
-					<LinearLayout 
-    	  			android:layout_width="fill_parent"
-      				android:layout_height="wrap_content"
-					android:orientation="horizontal" 
-					android:layout_centerInParent="true"
-					android:gravity="center_horizontal">
-					
-						<Button android:id="@+id/skip" 
-      						android:layout_width="wrap_content"
-      						android:layout_height="wrap_content"
-      						android:text="Skip"
-							android:visibility="gone"
-						/>
-					
-						<Button android:id="@+id/submit" 
-      						android:layout_width="wrap_content"
-      						android:layout_height="wrap_content"
-      						android:text="Submit"
-							android:visibility="gone"
-						/>
-					
-					</LinearLayout>			
-				</LinearLayout> 
+				
 			</RelativeLayout>
 		</LinearLayout>
 	
