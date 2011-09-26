@@ -4,77 +4,92 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
- *
+ * A Comment by a user for a public map on the page.
+ * The Comment is normal show in the page for select public maps.
  */
 @Entity
-public class MapComment implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
+public class MapComment extends SelfPersistence implements Serializable {
+
+	private static final long serialVersionUID = -8555087314540355004L;
 	//<editor-fold defaultstate="collapsed" desc="Variable Declaration">
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-
-	
 	@Temporal(javax.persistence.TemporalType.DATE)
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private Date publicDate;
-	
 	@OneToOne
-	@JoinColumn
+	@Column(nullable = true)
 	private UserAccount userAccount;
-	
-	@Column(nullable=false,length=512)
+	@Column(nullable = false, length = 512)
 	private String message;
 	//</editor-fold>
-	
+
+	public MapComment() {
+		this.publicDate = new Date();
+		this.userAccount = null;
+		this.message = "";
+	}
+
+	public MapComment(UserAccount user, String message) {
+		this.userAccount = user;
+		if (message != null) {
+			this.message = message;
+		} else {
+			this.message = "";
+		}
+		this.publicDate = new Date();
+	}
+
 	//<editor-fold defaultstate="collapsed" desc="Get and Set">
 	public long getId() {
 		return id;
 	}
-	/*
-	 * public void setId(long id) {
-	 * this.id = id;
-	 * }
-	 */
-	
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	public Date getPublicDate() {
 		return publicDate;
 	}
-	/*
-	 * public void setCurrentDate(Date currentDate) {
-	 * this.currentDate = currentDate;
-	 * }
-	 */
-	
+
+	public void setPublicDate(Date publicDate) {
+		if (publicDate != null) {
+			this.publicDate = publicDate;
+		}
+	}
+
 	public String getMessage() {
-		return message;
+		return this.message;
 	}
-	/*
-	 * public void setMessage(String message) {
-	 * this.message = message;
-	 * }
-	 */
-	
+
+	public void setMessage(String message) {
+		if (message != null) {
+			this.message = message;
+		} else {
+			this.message = "";
+		}
+	}
+
 	public UserAccount getUserAccount() {
-		return userAccount;
+		return this.userAccount;
 	}
-	/*
-	 * public void setUserAccount(UserAccount userAccount) {
-	 * this.userAccount = userAccount;
-	 * }
-	 */
+
+	public void setUserAccount(UserAccount userAccount) {
+		this.userAccount = userAccount;
+	}
+
 	//</editor-fold>
-	
-	
+	//<editor-fold defaultstate="collapsed" desc="Object Override">
 	@Override
 	public int hashCode() {
 		int hash = 0;
@@ -84,7 +99,6 @@ public class MapComment implements Serializable {
 
 	@Override
 	public boolean equals(Object object) {
-		// TODO: Warning - this method won't work in the case the id fields are not set
 		if (!(object instanceof MapComment)) {
 			return false;
 		}
@@ -95,5 +109,28 @@ public class MapComment implements Serializable {
 		return true;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "MapComment{" + "id=" + id + ", publicDate=" + publicDate + ", userAccount=" + userAccount + ", message=" + message + '}';
+	}
+	//</editor-fold>
+	//<editor-fold defaultstate="collapsed" desc="Track Method">
+	@Override
+	SelfPersistence trackPersistence(EntityManager entityManager) {
+		if (this.userAccount != null) {
+			this.userAccount.trackPersistence(entityManager);
+		}
+		return entityManager.merge(this);
+	}
+
+	@Override
+	boolean trackDestroy(EntityManager entityManager, SelfPersistence removeObj) {
+		if(removeObj == this) {
+			this.userAccount = null;
+			entityManager.remove(this);
+			return true;
+		}
+		return false;
+	}
+	//</editor-fold>
 }
