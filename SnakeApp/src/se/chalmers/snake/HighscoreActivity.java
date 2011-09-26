@@ -30,7 +30,7 @@ public class HighscoreActivity extends Activity {
 			points = extras.getInt("points");
 		}
 		
-		setObjects();
+		this.setObjects();
 		
 		if(highscoreDatabase == null){
 			highscoreDatabase = new HighscoreDatabase();
