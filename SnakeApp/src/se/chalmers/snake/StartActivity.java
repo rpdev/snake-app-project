@@ -257,7 +257,7 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 
 	/**
 	 * This will block the Back Button in case the game is run and only show the menu.
-	 * If the back button are press in puase mode the will work as normal. and return/exit app.
+	 * If the back button are press in pause mode the will work as normal. and return/exit app.
 	 */
 	/*
 	@Override
