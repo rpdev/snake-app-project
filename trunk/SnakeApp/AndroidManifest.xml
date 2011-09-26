@@ -18,8 +18,13 @@
 		<activity
 		android:name="GameActivity"
 		android:label="@string/app_name"
-		android:screenOrientation="nosensor" android:configChanges="keyboardHidden|orientation"
-></activity>
+		android:screenOrientation="nosensor" 
+		android:configChanges="keyboardHidden|orientation"
+		/>
+		<activity
+		android:name="HighscoreActivity"
+		android:label="@string/app_name"
+		/>
 		
 	<!-- TEST CASE -->
 		<activity android:name="DrawTestActivity"
