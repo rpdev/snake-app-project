@@ -6,7 +6,9 @@
 	android:layout_height="fill_parent"
 	android:background="@drawable/spelplan_bg">
     
-	<RelativeLayout android:id="@+id/game_view_holder"  android:layout_width="fill_parent" android:layout_height="fill_parent" />
+	<RelativeLayout android:id="@+id/game_view_holder"  
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent" />
     
     
 	<RelativeLayout  android:layout_width="fill_parent" android:layout_height="fill_parent">
