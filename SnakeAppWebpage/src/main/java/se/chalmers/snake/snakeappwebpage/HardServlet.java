@@ -23,7 +23,7 @@ public class HardServlet extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		try {
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+			request.getRequestDispatcher("index.xhtml").forward(request, response);
 			
 			
 		} finally {			

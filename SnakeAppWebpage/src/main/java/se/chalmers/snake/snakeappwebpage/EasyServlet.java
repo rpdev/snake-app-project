@@ -1,12 +1,7 @@
 package se.chalmers.snake.snakeappwebpage;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.annotation.WebServlet;
 import se.chalmers.snake.snakeappwebpage.lib.HttpServletBuilder;
-import se.chalmers.snake.snakeappwebpage.serverstorage.ServerStorage;
-import se.chalmers.snake.snakeappwebpage.serverstorage.UserAccount;
 
 @WebServlet(name = "EasyServlet", urlPatterns = {"/EasyServlet"})
 public class EasyServlet extends HttpServletBuilder {
@@ -21,9 +16,7 @@ public class EasyServlet extends HttpServletBuilder {
 	protected void pageRequest(HttpMeta httpMeta, HttpOutput httpOutput) throws Exception {
 		if (httpMeta.isMethodPostGet()) {
 			httpMeta.setContentType("text/html;charset=UTF-8");
-			//httpOutput.getWriter().println(""+ServerStorage.size(UserAccount.PORTOTYPE));
-			(new UserAccount()).persistence();
-			UserAccount p1 = new UserAccount();
+			httpOutput.forward("index.xhtml");
 
 			
 		}
