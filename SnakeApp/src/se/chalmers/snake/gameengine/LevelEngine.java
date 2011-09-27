@@ -1,7 +1,6 @@
 package se.chalmers.snake.gameengine;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +14,7 @@ import se.chalmers.snake.interfaces.util.XYPoint;
 class LevelEngine {
 
 	private class LEIPoint extends REPoint {
+		private static final long serialVersionUID = 5037544644353660074L;
 		private int time = 0;
 		private LEIPoint(XYPoint xyPoint, int radius) {
 			super(REPoint.REType.ITEM, xyPoint, radius,0);
