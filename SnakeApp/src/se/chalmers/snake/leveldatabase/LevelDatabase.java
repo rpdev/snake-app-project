@@ -46,6 +46,7 @@ public class LevelDatabase implements LevelDatabaseIC {
 		else{
 			if(defaultLevel == null)
 				defaultLevel = new LevelDefault();
+			
 			return defaultLevel;
 		}
 	}
