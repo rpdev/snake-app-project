@@ -25,12 +25,14 @@ public class ControlResources {
 	private GameEngineIC gameEngine;
 	private XYPoint screenSize;
 	private Storage storage;
+	private LevelDatabaseIC levelDatabase;
 	private HighscoreDatabaseIC highscoreDatabase;
 
 	private ControlResources(Activity currentActivity, SensorManager sensorManager, XYPoint screenSize) {
 		this.motionDetector = new MotionDetector(sensorManager);
 		this.highscoreDatabase = new HighscoreDatabase();
 		this.storage = new Storage(currentActivity);
+		levelDatabase = new LevelDatabase(currentActivity);
 		//this.gameEngineIC = new GameEngine(this);
 		this.gameEngine = TestGameEngine.getGameEngine(screenSize, this.motionDetector);	
 	}
@@ -39,7 +41,6 @@ public class ControlResources {
 		if (ControlResources.controlResources == null) {
 			currentActivity.findViewById(mainViewID).getHeight();
 			try {
-
 				View mainView = currentActivity.findViewById(mainViewID);
 				XYPoint screenSize = new XYPoint(mainView.getWidth(), mainView.getHeight());
 				SensorManager sensorManager = (SensorManager) currentActivity.getSystemService(Context.SENSOR_SERVICE);
@@ -57,7 +58,7 @@ public class ControlResources {
 	}
 
 	public LevelDatabaseIC getLevelDatabase() {
-		return LevelDatabase.getInstance();
+		return levelDatabase;
 	}
 
 	public MotionDetectorIC getMotionDetector() {
