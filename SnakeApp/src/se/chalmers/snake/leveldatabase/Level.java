@@ -39,12 +39,19 @@ class Level implements LevelIC {
 	 * @param data Data package.
 	 */
 	Level(Data data) {
-		loadMap(data.getInputSteam());
+		InputStream is = data.getInputSteam(); 
+		loadMap(is);
 		mapSize = new XYPoint(
 				Integer.parseInt(values.get(Settings.MAPSIZEX)),
 				Integer.parseInt(values.get(Settings.MAPSIZEY)
 		));
 		items = Integer.parseInt(values.get(Settings.COLLECTIBLE));
+		try {
+			is.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
