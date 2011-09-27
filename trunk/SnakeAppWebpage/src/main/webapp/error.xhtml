@@ -5,6 +5,9 @@ Written by Martin S. Please do not change anything :)
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
+        <script type="text/javascript"  
+                src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"/>
+        <script type="text/javascript" src="js/Menu.js" />
         <link rel="stylesheet" href="default.css" type="text/css"/>
         <title>Snake Android App Website</title>
     </head>
@@ -13,13 +16,35 @@ Written by Martin S. Please do not change anything :)
         <div id="topcontainer">
             <!-- The top right div where the logo is shown -->
             <div id="snakebend">
-
+<div id="login">
+                    <p>
+                    <form action="login" method="POST">
+                    <table>
+                        <tr>
+                            <td colspan="2"><input type="text" id="username" placeholder="Username" /></td>
+                        <input type="hidden" value="login" />
+                        </tr>
+                        <tr>
+                            <td colspan="2"><input type="password" id="password" /></td>
+                            <td><input type="submit" value="Login" /></td>
+                        </tr>
+                    </table>
+                    </form>
+                    </p>
+                </div>
             </div>
             <!-- The big div in the middle -->
             <div id="topmainbar">
-                <div id="login">
-
+                <div id="topmenu">
+                    <p>
+                        <a href="index.xhtml"><img src="img/menu/homebutton_normal.png" id="homebutton" /></a>
+                        <a href="editor.xhtml"><img src="img/menu/editorbutton_normal.png" id="editorbutton" /></a>
+                        <a href="download.xhtml"><img src="img/menu/downloadbutton_normal.png" id="downloadbutton" /></a>
+                        <a href="faq.xhtml"><img src="img/menu/faqbutton_normal.png" id="faqbutton" /></a>
+                        <a href="browsemaps.xhtml"><img src="img/menu/browsemapsbutton_normal.png" id="browsemapsbutton" /></a>
+                    </p>
                 </div>
+                
             </div>
             <!-- The top "edge" of the frame -->
             <div id="topedge">
@@ -30,26 +55,26 @@ Written by Martin S. Please do not change anything :)
         <div id="maincontainer">
             <div id="leftsidecontainer">
                 <!-- The div where the menu bar is located -->
-                
+                <div id="menubar">
+                    <div id="snakeleft">
+
+                    </div>
+                </div>
             </div>
             <!-- The main div. This is where content is shown -->
             <div id="maindiv">
-                <div id="topmenu">
-                    <p>
-                        <a href="index.xhtml">Main</a> | <a href="editor.xhtml">Editor</a> | <a href="download.xhtml">Download</a> | <a href="faq.xhtml">FAQ</a> | <a href="browsemaps.xhtml">Browse Maps</a>	
-                    </p>
-                </div>
+                
 
                 <div id="maindivtop">
                     <p>
-                        ERROR
+                        Error
                     </p>
                 </div>
                 <div id="maindivmain">
 
                     <div id="content">
-                        <p style="text-align:center;">
-                            This page could not be found. Please try again later!
+                        <p style="text-align: center;">
+                            ERROR
                         </p>
                     </div>
                 </div>
