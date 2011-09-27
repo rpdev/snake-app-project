@@ -41,6 +41,7 @@ public class UserAccount extends SelfPersistence implements Serializable {
 	//</editor-fold>
 
 	public UserAccount() {
+		this.id = 0;
 		this.userName = "";
 		this.userPassword = "";
 		this.userMail = "";
@@ -50,6 +51,7 @@ public class UserAccount extends SelfPersistence implements Serializable {
 
 	public UserAccount(String name, String email, String password) {
 		if (name != null && email != null && password != null) {
+			this.id = 0;
 			this.userName = name;
 			this.userMail = email;
 			this.userPassword = ServerStorage.SHA1HashString(password);
@@ -65,7 +67,9 @@ public class UserAccount extends SelfPersistence implements Serializable {
 	}
 
 	public void setId(long newID) {
+		if(this.id==0) {
 		this.id = newID;
+		}
 	}
 
 	public String getUserDescription() {
@@ -93,11 +97,12 @@ public class UserAccount extends SelfPersistence implements Serializable {
 	}
 
 	public String getUserName() {
-		return userName;
+		return this.userName;
 	}
 
 	public void setUserName(String userName) {
-		if (this.userName == null) {
+		// Allow only name set if no name are set before.
+		if (this.userName.length()==0 && userName!=null) {
 			this.userName = userName;
 		}
 	}
@@ -120,6 +125,11 @@ public class UserAccount extends SelfPersistence implements Serializable {
 		}
 	}
 	//</editor-fold>
+	
+	public boolean passwordEquals(String password) {
+		return this.userPassword.equals(ServerStorage.SHA1HashString(password));
+	}
+	
 	//<editor-fold defaultstate="collapsed" desc="Object Override">
 
 	@Override
