@@ -31,7 +31,8 @@ public class HighscoreActivity extends Activity {
 		}
 		
 		this.setObjects();
-		
+		storage = new Storage(this);
+		highscoreDatabase = storage.getObject("highscore");
 		if(highscoreDatabase == null){
 			highscoreDatabase = new HighscoreDatabase();
 		}
@@ -76,7 +77,7 @@ public class HighscoreActivity extends Activity {
 		this.youDidntMakeIt.setVisibility(View.VISIBLE);
 		this.skipButton.setVisibility(View.VISIBLE);
 		//skipbutton should be renamed
-		this.skipButton.setText("Exit");
+//		this.skipButton.setText("Exit");
 		//These elements shouldn't
 		this.inputName.setVisibility(View.GONE);
 		this.youMadeIt.setVisibility(View.GONE);
@@ -84,7 +85,10 @@ public class HighscoreActivity extends Activity {
 	}
 	
 	private void savePoints(String name, int points){
-		
+		highscoreDatabase.addPlayerToHighscore(name, points);
+		storage.storeObject("highscore", highscoreDatabase);
+		if(storage.getObject("highscore") == null)
+			submitButton.setText("FAIL");
 	}
 
 	private View.OnClickListener skipListener = new View.OnClickListener() {
@@ -99,7 +103,8 @@ public class HighscoreActivity extends Activity {
 		
 		@Override
 		public void onClick(View v) {
-			HighscoreActivity.this.savePoints("",0);			
+			String name = inputName.getText().toString();
+			HighscoreActivity.this.savePoints(name,points);			
 		}
 	};
 }

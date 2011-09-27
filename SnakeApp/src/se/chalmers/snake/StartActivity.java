@@ -23,12 +23,14 @@ import se.chalmers.snake.interfaces.GameEngineIC.GameEngineEvent;
 import se.chalmers.snake.mastercontroller.ControlResources;
 import se.chalmers.snake.util.EnumObservable;
 import se.chalmers.snake.util.EnumObserver;
+import se.chalmers.snake.util.Storage;
 
 public class StartActivity extends Activity implements EnumObserver<GameEngineIC.GameEngineEvent, Void, Void> { // implements SensorEventListener
 
 	private RelativeLayout gameHolder;
 	private GameView gameView;
 	private HighscoreDatabase highData;
+	private Storage storage;
 	private GameEngineIC gameEngineIC;
 
 	@Override
@@ -37,10 +39,8 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 		setContentView(R.layout.snake_layout);
 				
 		
-
-
-		highData = new HighscoreDatabase();
-
+		storage = new Storage(this);
+		
 		//Instantiate layouts
 		background = (RelativeLayout) findViewById(R.id.backgroundImage);
 		menu = (LinearLayout) findViewById(R.id.menu_buttons);
@@ -237,7 +237,11 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 
 		@Override
 		public void onClick(View v) {
-			highscoreText.setText(highData.toString());
+			highData = storage.getObject("highscore");
+			if(highData == null)
+				highscoreText.setText("Error, could not find highscore file.");
+			else
+				highscoreText.setText(highData.toString());
 			switchToHighscoreMenu();
 			show();
 		}
