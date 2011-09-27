@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import se.chalmers.snake.gamegui.GameView;
+import se.chalmers.snake.gameguiold.GameView;
 import se.chalmers.snake.interfaces.GameEngineIC;
 import se.chalmers.snake.interfaces.GameEngineIC.GameEngineEvent;
 import se.chalmers.snake.interfaces.util.XYPoint;
