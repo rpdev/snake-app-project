@@ -127,6 +127,10 @@ public class TestGameEngine {
 					public int[] getLevelListByLevel() {
 						return null;
 					}
+
+					public LevelIC getDefaultLevel() {
+						return this.getByName("");
+					}
 				};
 			}
 
