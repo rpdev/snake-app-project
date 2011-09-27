@@ -13,7 +13,9 @@ import javax.persistence.Temporal;
 
 /**
  * A Comment by a user for a public map on the page.
- * The Comment is normal show in the page for select public maps.
+ * The Comment will be del for while the PostMap that own the Comment is remove.
+ * ( The PostMap will normal never be remove from the database and only mark as DELETE )
+ * 
  */
 @Entity
 public class MapComment extends SelfPersistence implements Serializable {
@@ -34,6 +36,7 @@ public class MapComment extends SelfPersistence implements Serializable {
 	//</editor-fold>
 
 	public MapComment() {
+		this.id=0;
 		this.publicDate = new Date();
 		this.userAccount = null;
 		this.message = "";
@@ -41,6 +44,7 @@ public class MapComment extends SelfPersistence implements Serializable {
 
 	public MapComment(UserAccount user, String message) {
 		this.userAccount = user;
+		this.id=0;
 		if (message != null) {
 			this.message = message;
 		} else {
@@ -55,7 +59,9 @@ public class MapComment extends SelfPersistence implements Serializable {
 	}
 
 	public void setId(long id) {
+		if(this.id==0) {
 		this.id = id;
+		}
 	}
 
 	public Date getPublicDate() {
@@ -85,6 +91,7 @@ public class MapComment extends SelfPersistence implements Serializable {
 	}
 
 	public void setUserAccount(UserAccount userAccount) {
+		
 		this.userAccount = userAccount;
 	}
 
