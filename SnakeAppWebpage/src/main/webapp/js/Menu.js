@@ -9,7 +9,7 @@ $(document).ready(function(){
             var src = "img/menu/homebutton_normal.png";
             $(this).attr("src", src);
         }),
-        $("#editorbutton").hover(
+    $("#editorbutton").hover(
         function() {
             var src = "img/menu/editorbutton_hover.png";
             $(this).attr("src", src);
@@ -18,7 +18,7 @@ $(document).ready(function(){
             var src = "img/menu/editorbutton_normal.png";
             $(this).attr("src", src);
         }),
-        $("#downloadbutton").hover(
+    $("#downloadbutton").hover(
         function() {
             var src = "img/menu/downloadbutton_hover.png";
             $(this).attr("src", src);
@@ -27,7 +27,7 @@ $(document).ready(function(){
             var src = "img/menu/downloadbutton_normal.png";
             $(this).attr("src", src);
         }),
-        $("#faqbutton").hover(
+    $("#faqbutton").hover(
         function() {
             var src = "img/menu/faqbutton_hover.png";
             $(this).attr("src", src);
@@ -36,7 +36,7 @@ $(document).ready(function(){
             var src = "img/menu/faqbutton_normal.png";
             $(this).attr("src", src);
         }),
-        $("#browsemapsbutton").hover(
+    $("#browsemapsbutton").hover(
         function() {
             var src = "img/menu/browsemapsbutton_hover.png";
             $(this).attr("src", src);
@@ -44,5 +44,8 @@ $(document).ready(function(){
         function() {
             var src = "img/menu/browsemapsbutton_normal.png";
             $(this).attr("src", src);
-        })
+        }),
+    $('#bitethis').click(function() {
+        alert('TROLOLOLOLOLOLOLOLOLOLO');
+    });
 })
