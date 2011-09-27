@@ -16,7 +16,22 @@ Written by Martin S. Please do not change anything :)
         <div id="topcontainer">
             <!-- The top right div where the logo is shown -->
             <div id="snakebend">
-
+<div id="login">
+                    <p>
+                    <form action="login" method="POST">
+                    <table>
+                        <tr>
+                            <td colspan="2"><input type="text" id="username" placeholder="Username" /></td>
+                        <input type="hidden" value="login" />
+                        </tr>
+                        <tr>
+                            <td colspan="2"><input type="password" id="password" /></td>
+                            <td><input type="submit" value="Login" /></td>
+                        </tr>
+                    </table>
+                    </form>
+                    </p>
+                </div>
             </div>
             <!-- The big div in the middle -->
             <div id="topmainbar">
@@ -26,12 +41,10 @@ Written by Martin S. Please do not change anything :)
                         <a href="editor.xhtml"><img src="img/menu/editorbutton_normal.png" id="editorbutton" /></a>
                         <a href="download.xhtml"><img src="img/menu/downloadbutton_normal.png" id="downloadbutton" /></a>
                         <a href="faq.xhtml"><img src="img/menu/faqbutton_normal.png" id="faqbutton" /></a>
-                        <a href="brosemaps.xhtml"><img src="img/menu/browsemapsbutton_normal.png" id="browsemapsbutton" /></a>
+                        <a href="browsemaps.xhtml"><img src="img/menu/browsemapsbutton_normal.png" id="browsemapsbutton" /></a>
                     </p>
                 </div>
-                <div id="login">
-
-                </div>
+                
             </div>
             <!-- The top "edge" of the frame -->
             <div id="topedge">
@@ -60,17 +73,11 @@ Written by Martin S. Please do not change anything :)
                 <div id="maindivmain">
 
                     <div id="content">
-                        <p>Byta texten färg?<br />
-                            Är det möjligt och på något snyggt sätt flytta menyn in i ormens kropp?
-                        </p>
-                        <p>This is a cool site :)
-                            <br /><br />
-                            <b>Saker att g�ra:</b><br />
-                            Snygga till menydiven<br />
-                            Skapa inloggningformul�r<br />
-                            Skapa tillf�lliga mallar till alla sektioner<br />
-                            Snygga till allt<br />
-                            Skapa en error sida<br />
+                        <p>
+                            <b>Saker att göra:</b><br />
+                            Skapa registrationssida<br />
+                            Skapa tillfälliga mallar till alla sektioner<br />
+                            Skapa en error sida - Få den att funka också bara!<br />
                             Fler sektioner?<br />
                             <br />
                             <img src="img/snake_bite.jpg" id="bitethis" />
