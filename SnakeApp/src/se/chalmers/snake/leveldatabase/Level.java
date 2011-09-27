@@ -1,7 +1,7 @@
 package se.chalmers.snake.leveldatabase;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.LinkedList;
@@ -19,8 +19,8 @@ import org.xml.sax.SAXException;
 
 import se.chalmers.snake.interfaces.LevelIC;
 import se.chalmers.snake.interfaces.util.REPoint;
-import se.chalmers.snake.interfaces.util.XYPoint;
 import se.chalmers.snake.interfaces.util.REPoint.REType;
+import se.chalmers.snake.interfaces.util.XYPoint;
 import se.chalmers.snake.leveldatabase.LevelDatabase.Data;
 
 /**
@@ -39,7 +39,7 @@ class Level implements LevelIC {
 	 * @param data Data package.
 	 */
 	Level(Data data) {
-		loadMap(data.file);
+		loadMap(data.getInputSteam());
 		mapSize = new XYPoint(
 				Integer.parseInt(values.get(Settings.MAPSIZEX)),
 				Integer.parseInt(values.get(Settings.MAPSIZEY)
@@ -123,7 +123,7 @@ class Level implements LevelIC {
 	 * Initiate the reading mechanism
 	 * @param file File to be read.
 	 */
-	private void loadMap(File file){
+	private void loadMap(InputStream file){
 		try {
 			DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc = db.parse(file);
