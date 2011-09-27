@@ -15,6 +15,7 @@ public class LevelDatabase implements LevelDatabaseIC {
 	private final AssetManager am;
 	private final HashMap<String, Data> levelnames = new HashMap<String, Data>();
 	private final HashMap<Integer, Data> levelvalues = new HashMap<Integer, Data>();
+	private LevelIC defaultLevel = null;
 	
 	public LevelDatabase(Activity activty){
 		am = activty.getAssets();
@@ -27,12 +28,33 @@ public class LevelDatabase implements LevelDatabaseIC {
 	
 	@Override
 	public LevelIC getByLevel(int level) {
-		return new Level(levelvalues.get(level));
+		Data data = levelvalues.get(level);
+		if(data != null)
+			return new Level(data);
+		else{
+			if(defaultLevel == null)
+				defaultLevel = new LevelDefault();
+			return defaultLevel;
+		}
 	}
 
 	@Override
 	public LevelIC getByName(String name) {
-		return new Level(levelnames.get(name));
+		Data data = levelnames.get(name);
+		if(data != null)
+			return new Level(data);
+		else{
+			if(defaultLevel == null)
+				defaultLevel = new LevelDefault();
+			return defaultLevel;
+		}
+	}
+	
+	@Override
+	public LevelIC getDefaultLevel(){
+		if(defaultLevel == null)
+			defaultLevel = new LevelDefault();
+		return defaultLevel;
 	}
 
 	@Override

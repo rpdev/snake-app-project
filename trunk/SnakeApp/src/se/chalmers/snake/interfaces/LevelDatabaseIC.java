@@ -30,4 +30,11 @@ public interface LevelDatabaseIC {
 	 * @return
 	 */
 	public int[] getLevelListByLevel();
+
+	/**
+	 * Return the default level that contains no obstacles and where
+	 * the goal is to catch 10 items.
+	 * @return
+	 */
+	public LevelIC getDefaultLevel();
 }
