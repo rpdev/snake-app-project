@@ -42,7 +42,7 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 
 		int playerBodyWidth = this.gameEngine.getPlayerHead().radius;
 		this.bodySeg = Bitmap.createScaledBitmap(
-				BitmapFactory.decodeResource(this.mRes, R.drawable.snake_body), playerBodyWidth * 2 ,playerBodyWidth * 2, true);
+				BitmapFactory.decodeResource(this.mRes, R.drawable.snake_body1), playerBodyWidth * 2 ,playerBodyWidth * 2, true);
 		this.postInvalidate();
 	}
 
