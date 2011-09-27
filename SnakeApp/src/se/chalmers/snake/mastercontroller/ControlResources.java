@@ -50,6 +50,7 @@ public class ControlResources {
 	}
 
 	public static ControlResources get() {
+
 		if (ControlResources.controlResources != null) {
 			return ControlResources.controlResources;
 		} else {
