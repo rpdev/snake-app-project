@@ -15,7 +15,7 @@ import se.chalmers.snake.util.EnumObservable;
  */
 public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Void, Void> implements GameEngineIC {
 
-	public static final int UPDATE_FREQUENCY = 16;
+	public static final int UPDATE_FREQUENCY = 13;
 	private static final double PI_TIMES_2 = Math.PI * 2;
 	private final ControlResourcesIC controlResources;
 	private final Oscillator oscillator;
@@ -111,15 +111,17 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 
 	@Override
 	public synchronized boolean loadLevel(String name) {
+		
 		LevelIC level = this.controlResources.getLevelDatabase().getByName(name);
-		System.out.println(level);
+		
+		
 		if (level != null) {
 			this.pauseGame();
 			try {	
 				this.currentLevel = new LevelEngine(level, this.controlResources.getScreenSize());
 				this.currentAngle = this.currentLevel.getLevelData().getStartAngle();
 			} catch (Exception ex) {
-				
+				ex.printStackTrace();
 				return false;
 			}
 			this.currentStatus = GameEngineStatus.NEW_LEVEL;

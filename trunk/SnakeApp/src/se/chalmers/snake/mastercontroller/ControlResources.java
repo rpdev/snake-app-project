@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.hardware.SensorManager;
 import android.view.View;
+import se.chalmers.snake.gameengine.GameEngine;
 import se.chalmers.snake.gameengine.TestGameEngine;
 import se.chalmers.snake.highscoreDatabase.HighscoreDatabase;
+import se.chalmers.snake.interfaces.ControlResourcesIC;
 import se.chalmers.snake.interfaces.GameEngineIC;
 import se.chalmers.snake.interfaces.HighscoreDatabaseIC;
 import se.chalmers.snake.interfaces.LevelDatabaseIC;
@@ -18,7 +20,7 @@ import se.chalmers.snake.util.Storage;
 /**
  *
  */
-public class ControlResources {
+public class ControlResources implements ControlResourcesIC{
 
 	private static ControlResources controlResources = null;
 	private MotionDetectorIC motionDetector;
@@ -32,9 +34,9 @@ public class ControlResources {
 		this.motionDetector = new MotionDetector(sensorManager);
 		this.highscoreDatabase = new HighscoreDatabase();
 		this.storage = new Storage(currentActivity);
-		levelDatabase = new LevelDatabase(currentActivity);
-		//this.gameEngineIC = new GameEngine(this);
-		this.gameEngine = TestGameEngine.getGameEngine(screenSize, this.motionDetector);	
+		this.levelDatabase = new LevelDatabase(currentActivity);
+		this.screenSize = screenSize;
+		this.gameEngine = new GameEngine(this);
 	}
 
 	public static void make(Activity currentActivity, int mainViewID) {
@@ -48,7 +50,6 @@ public class ControlResources {
 			} catch (Exception ex) {}
 		}
 	}
-
 	public static ControlResources get() {
 
 		if (ControlResources.controlResources != null) {

@@ -43,7 +43,7 @@ public class LevelDefault implements LevelIC {
 
 	@Override
 	public double getStartAngle() {
-		return 90d;
+		return Math.PI/2;
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class LevelDefault implements LevelIC {
 
 	@Override
 	public int getPlayerBodyWidth() {
-		return 2*RADIUS;
+		return RADIUS;
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class LevelDefault implements LevelIC {
 
 	@Override
 	public float getSpeed(List<Integer> collectTime) {
-		return 1;
+		return 3.0f;
 	}
 
 	@Override
