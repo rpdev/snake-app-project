@@ -4,11 +4,11 @@
 
 
 body{
-	background-image: url(bg.jpg);
+	background-image: url(img/bg.jpg);
 }
 
 #snakebend{ 
-	background-image: url(snakebody_bend.png);
+	background-image: url(img/snakebody_bend.png);
 	width: 116px;
 	height: 118px;
 	float: left;
@@ -27,7 +27,7 @@ body{
  #topmenu a:hover { color: red; text-decoration: underline; }
 
 #topmainbar{
-	background-image: url(snakebody_top.png);
+	background-image: url(img/snakebody_top.png);
 	height: 120px;
 	width: 802px;
 	float: left;
@@ -39,7 +39,7 @@ body{
 
 
 #topedge{
-	background-image: url(snakebody_head.png);
+	background-image: url(img/snakebody_head.png);
 	height: 240px;
 	width: 150px;
 	float: left;
@@ -56,7 +56,7 @@ body{
 	width: 137px;
 	height:577px;
 	margin-top: -134px;
-	background-image: url(snakebody_left.png);	
+	background-image: url(img/snakebody_left.png);	
 }
 
 #topcontainer{
@@ -72,7 +72,7 @@ body{
 }
 
 #maindivtop{
-	background-image: url(maindivtop.png);
+	background-image: url(img/maindivtop.png);
 	width: 800px;
 	height: 50px;
 }
@@ -89,7 +89,7 @@ body{
 #content p { color: green; margin-left: 15px; margin-top: 0px; font-size: 17px; margin-bottom: 0px;}
 
 #maindivbottom{
-	background-image: url(maindivbottom.png);
+	background-image: url(img/maindivbottom.png);
 	width: 800px;
 	height: 110px;
 }
