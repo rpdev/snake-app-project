@@ -6,14 +6,14 @@ import android.graphics.Paint;
 import android.view.View;
 
 
-public class BodySegment extends View{
+public class DrawableUnit extends View{
 	
 	private final float x;
     private final float y;
     private final int r;
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     
-    public BodySegment(Context context, float x, float y, int r) {
+    public DrawableUnit(Context context, float x, float y, int r) {
         super(context);
         mPaint.setColor(0xFFFF0000);
         this.x = x;
