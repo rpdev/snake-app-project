@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/game_layout"	
+	android:id="@+id/highscore_layout"	
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:background="#00CC00">
     
     
-	<RelativeLayout  
+	<RelativeLayout  android:id="@+id/losewin_background"
+	android:background="@drawable/youwon"
 	android:layout_width="fill_parent" 
 	android:layout_height="fill_parent">
 	
