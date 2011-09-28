@@ -30,6 +30,8 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	private List<REPoint> walls;
 	private Resources mRes;
 	private Bitmap bodySeg;
+	private Bitmap apple;
+	private Bitmap obstacle;
 
 	
 	public GameView(Context context, GameEngineIC gameEngine) {
@@ -41,8 +43,11 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		this.setBackgroundResource(R.drawable.spelplan_bg);
 
 		int playerBodyWidth = this.gameEngine.getPlayerHead().radius;
+		int appleWidth = this.gameEngine.getItems().get(0).radius;
 		this.bodySeg = Bitmap.createScaledBitmap(
 				BitmapFactory.decodeResource(this.mRes, R.drawable.snake_body), playerBodyWidth * 2 ,playerBodyWidth * 2, true);
+		this.apple = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(mRes, R.drawable.apple),
+				appleWidth * 2, appleWidth * 2, true);
 		this.postInvalidate();
 	}
 
@@ -70,7 +75,7 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		if (this.items != null) {
 			paint.setColor(Color.RED);
 			for (REPoint reP : this.items) {
-				canvas.drawCircle(reP.x, reP.y, reP.radius, this.paint);
+				canvas.drawBitmap(apple, reP.x - reP.radius, reP.y - reP.radius, null);
 			}
 		}
 
@@ -85,10 +90,10 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 
 	public Void observerNotify(EnumObservable<GameEngineEvent, Void, Void> observable, 
 			GameEngineEvent event, Void arg) {
-			this.snakeBody = this.gameEngine.getPlayerBody();
-			this.items = this.gameEngine.getItems();
-			this.postInvalidate();
-		
+		this.snakeBody = this.gameEngine.getPlayerBody();
+		this.items = this.gameEngine.getItems();
+		this.postInvalidate();
+
 		return null;
 	}
 
