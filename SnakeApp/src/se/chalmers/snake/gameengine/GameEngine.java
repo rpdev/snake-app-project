@@ -15,7 +15,7 @@ import se.chalmers.snake.util.EnumObservable;
  */
 public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Void, Void> implements GameEngineIC {
 
-	public static final int UPDATE_FREQUENCY = 13;
+	public static final int UPDATE_FREQUENCY = 16;
 	private static final double PI_TIMES_2 = Math.PI * 2;
 	private final ControlResourcesIC controlResources;
 	private final Oscillator oscillator;
@@ -60,17 +60,21 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 				if (this.currentLevel.step(newAngle)) {
 					this.currentAngle = newAngle;
 					if (this.currentLevel.hasReachedGoal()) {
+						System.out.println("GameEngine Run - Level End - Goal");
 						this.pauseGame();
 						this.currentStatus = GameEngineStatus.LEVEL_END;
 						this.fireObserver(GameEngineEvent.LEVEL_END);
 					} else {
 						this.fireObserver(GameEngineEvent.UPDATE);
+						
 					}
 
 				} else {
 					this.pauseGame();
+					System.out.println("GameEngine Run - Level End - Player Lose");
 					this.currentStatus = GameEngineStatus.LEVEL_END;
 					this.fireObserver(GameEngineEvent.PLAYER_LOSE);
+					
 				}
 			}
 		} else {

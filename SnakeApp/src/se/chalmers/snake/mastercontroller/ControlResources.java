@@ -5,7 +5,6 @@ import android.content.Context;
 import android.hardware.SensorManager;
 import android.view.View;
 import se.chalmers.snake.gameengine.GameEngine;
-import se.chalmers.snake.gameengine.TestGameEngine;
 import se.chalmers.snake.highscoreDatabase.HighscoreDatabase;
 import se.chalmers.snake.interfaces.ControlResourcesIC;
 import se.chalmers.snake.interfaces.GameEngineIC;
