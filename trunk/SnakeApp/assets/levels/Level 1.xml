@@ -1,63 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<SnakeAppMap>
-<LEVELNAME>Level 1</LEVELNAME>
-<LEVELDESCRIPTION>Catch all apples</LEVELDESCRIPTION>
-<LEVELDIFFICULY>1</LEVELDIFFICULY>
-<MAPSIZEX>45</MAPSIZEX>
-<MAPSIZEY>45</MAPSIZEY>
-<COLLECTIBLE>10</COLLECTIBLE>
-<CIRCLERADIE>5</CIRCLERADIE>
-<Square>
-<Square id="44" x="44" y="0"/>
-<Square id="89" x="44" y="1"/>
-<Square id="134" x="44" y="2"/>
-<Square id="179" x="44" y="3"/>
-<Square id="224" x="44" y="4"/>
-<Square id="269" x="44" y="5"/>
-<Square id="314" x="44" y="6"/>
-<Square id="359" x="44" y="7"/>
-<Square id="404" x="44" y="8"/>
-<Square id="449" x="44" y="9"/>
-<Square id="494" x="44" y="10"/>
-<Square id="539" x="44" y="11"/>
-<Square id="584" x="44" y="12"/>
-<Square id="629" x="44" y="13"/>
-<Square id="674" x="44" y="14"/>
-<Square id="719" x="44" y="15"/>
-<Square id="764" x="44" y="16"/>
-<Square id="809" x="44" y="17"/>
-<Square id="854" x="44" y="18"/>
-<Square id="899" x="44" y="19"/>
-<Square id="944" x="44" y="20"/>
-<Square id="989" x="44" y="21"/>
-<Square id="1034" x="44" y="22"/>
-<Square id="1079" x="44" y="23"/>
-<Square id="1124" x="44" y="24"/>
-<Square id="1169" x="44" y="25"/>
-<Square id="1214" x="44" y="26"/>
-<Square id="1259" x="44" y="27"/>
-<Square id="1304" x="44" y="28"/>
-<Square id="1349" x="44" y="29"/>
-<Square id="1394" x="44" y="30"/>
-<Square id="1439" x="44" y="31"/>
-<Square id="1484" x="44" y="32"/>
-<Square id="1529" x="44" y="33"/>
-<Square id="1574" x="44" y="34"/>
-<Square id="1619" x="44" y="35"/>
-<Square id="1664" x="44" y="36"/>
-<Square id="1709" x="44" y="37"/>
-<Square id="1754" x="44" y="38"/>
-<Square id="1799" x="44" y="39"/>
-<Square id="1844" x="44" y="40"/>
-<Square id="1889" x="44" y="41"/>
-<Square id="1934" x="44" y="42"/>
-<Square id="1979" x="44" y="43"/>
-<Square id="2024" x="44" y="44"/>
-</Square>
-<Snake>
-<Snake id="1641" x="21" y="36"/>
-<Snake id="1686" x="21" y="37"/>
-<Snake id="1731" x="21" y="38"/>
-<Snake id="1776" x="21" y="39"/>
-</Snake>
-</SnakeAppMap>
+<snakeappmap id="1002"> <!-- id is the database id for this level and are only use for the editor -->
+	<name>Level 1</name> <!-- The level name to be display -->
+	<level>1</level>
+	<description>This is my First Level</description> <!-- The description of the level -->
+	<difficuly>3</difficuly> <!-- difficuly of this level, value is 1=Easy,2=Normal,3=Hard,4=Vary Hard -->
+	<map x="300" y="400" /> <!-- define the reference frame for the x y grid. -->
+	
+	<gamespeed type="simple">3.4</gamespeed> <!-- The game speed, the type is what type of algorithm that will 
+	 be use, "simple" is algorithm that only return the given value as constant.-->
+	<growthspeed type="simple">2</growthspeed> <!-- How much the player will growth for each collect item,
+	The type is same as for 'gamespeed' -->
+	<levelgoal type="greater">9999</levelgoal> <!-- How many item the player most collect for end the level 
+	The type is same as for 'gamespeed' -->
+	
+	<item type="simple" r="5">1</item> <!-- how big and many item that to be show on the map at same time
+	The type is same as for 'gamespeed' and the 'r' is the radius of each item in the game. -->
+	
+	
+	<player x="150" y="200" r="10" a="90" s="4" /> <!-- Define players start point
+	'r' is radius, 'a' is angle given in degrees and 's' is how long the player will start with -->
+	<obstacles> <!-- The list of obstacles-->
+		<item x="10" y="10" r="5" />
+		<item x="15" y="10" r="5" />
+		<item x="20" y="10" r="5" />
+	</obstacles>
+</snakeappmap>

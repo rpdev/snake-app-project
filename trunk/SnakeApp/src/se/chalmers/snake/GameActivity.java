@@ -36,7 +36,7 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		
+
 
 		this.setContentView(R.layout.game_layout);
 		//<editor-fold defaultstate="collapsed" desc="Menu">
@@ -85,17 +85,13 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 		//</editor-fold>
 
 		this.gameEngine = ControlResources.get().getGameEngine();
-		if(this.gameEngine.loadLevel("Level 1")) {
+		this.gameEngine.loadLevel("Level 1");
 		this.gameView = new GameView(this, this.gameEngine);
 		this.gameEngine.addObserver(GameEngineEvent.PLAYER_LOSE, this);
 		RelativeLayout layout = ((RelativeLayout) this.findViewById(R.id.game_view_holder));
 		layout.addView(this.gameView);
-
 		this.showStartMenu();
-		} else {
-			this.finish();
-			
-		}
+
 	}
 
 	@Override
@@ -111,9 +107,9 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 
 
 		if (GameActivity.this.gameEngine.getStatus() != GameEngineIC.GameEngineStatus.LEVEL_END) {
-					this.buttonResume.setVisibility(View.VISIBLE);
+			this.buttonResume.setVisibility(View.VISIBLE);
 		}
-		
+
 		this.buttonMenu.setVisibility(View.VISIBLE);
 		this.buttonRestart.setVisibility(View.VISIBLE);
 		this.menu.setVisibility(View.VISIBLE);
