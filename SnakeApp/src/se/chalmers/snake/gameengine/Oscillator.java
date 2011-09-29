@@ -27,7 +27,7 @@ class Oscillator {
 	}
 	
 	/**
-	 * S
+	 * Start the Oscillator and this will call a method in a regular intervall
 	 */
 	public synchronized void start() {
 		if (this.timer==null && this.calls!=null) {
@@ -42,6 +42,9 @@ class Oscillator {
 		}
 	}
 
+	/**
+	 * Stop the Oscillator.
+	 */
 	public synchronized void stop() {
 		if(this.timer!=null) {
 			this.timer.cancel();

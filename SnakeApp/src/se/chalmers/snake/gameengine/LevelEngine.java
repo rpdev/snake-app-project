@@ -40,6 +40,11 @@ class LevelEngine {
 	private boolean isRunning;
 	private int stepLength;
 
+	/**
+	 * Load a new level into this class.
+	 * @param level The level
+	 * @param gameFiledSize the Game Map Size
+	 */
 	LevelEngine(LevelIC level, XYPoint gameFiledSize) {
 		this.level = level;
 		this.calcScal(gameFiledSize);
@@ -72,13 +77,9 @@ class LevelEngine {
 	}
 
 	/**
-	 * Get a list of all items on the game filed.
+	 * Return the size each item has in the game.
 	 * @return 
 	 */
-	List<LEIPoint> getItem() {
-		return this.items;
-	}
-
 	int getItemsRadius() {
 		return this.itemsRadius;
 	}
@@ -111,7 +112,6 @@ class LevelEngine {
 				this.playerBody.addSeg(this.level.getBodyGrowth(item.time, this.itemsCollect.size() + 1));
 				itPoint.remove();
 				addsItemCount += this.level.getAddItems(this.itemsCollect.size(), this.items.size() + addsItemCount);
-				//this.addItems(this.level.getAddItems(this.itemsCollect.size(), this.items.size()));
 			}
 		}
 
@@ -119,6 +119,10 @@ class LevelEngine {
 		return true;
 	}
 
+	/**
+	 * Test if the player has reached the goal of this map.
+	 * @return 
+	 */
 	boolean hasReachedGoal() {
 		return this.level.hasReachedGoal(this.itemsCollect);
 	}
@@ -139,6 +143,10 @@ class LevelEngine {
 		return this.playerBody.get();
 	}
 
+	/**
+	 * Get a list of all items on the game map.
+	 * @return 
+	 */
 	List<REPoint> getItemsList() {
 		ArrayList al = null;
 		synchronized (this.items) {
@@ -147,7 +155,10 @@ class LevelEngine {
 		}
 		return al;
 	}
-
+	/**
+	 * Get the current score of this map.
+	 * @return 
+	 */
 	int getScore() {
 		//return this.score;
 		return this.itemsCollect.size();
@@ -230,6 +241,11 @@ class LevelEngine {
 		}
 	}
 
+	/**
+	 * Test if static element are collision with the player.
+	 * @param point
+	 * @return 
+	 */
 	private boolean isStaticElementCollision(REPoint point) {
 		for (REPoint ePoint : this.obstacles) {
 			if (point.isCollideWith(ePoint)) {

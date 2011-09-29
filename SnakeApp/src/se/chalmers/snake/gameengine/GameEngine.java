@@ -11,7 +11,7 @@ import se.chalmers.snake.interfaces.util.XYPoint;
 import se.chalmers.snake.util.EnumObservable;
 
 /**
- *
+ * Make a new GameEngine of this game call "Snake App"
  */
 public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Void, Void> implements GameEngineIC {
 
@@ -26,7 +26,11 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	private GameEngineStatus currentStatus;
 	
 	
-
+	/**
+	 * The gameEngine nead a ControlResourcesIC class for get some metadata from the system and 
+	 * link recuses.
+	 * @param controlResources 
+	 */
 	public GameEngine(ControlResourcesIC controlResources) {
 		super(GameEngineIC.GameEngineEvent.class);
 		this.currentStatus = GameEngineStatus.NO_LEVEL_LOAD;
@@ -35,7 +39,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 		this.isRun = false;
 		this.currentAngle = 0;
 
-		// Config the Oscillator to make 10 fps
+		// Config the Oscillator to make 16 fps
 		this.oscillator = new Oscillator(1000 / GameEngine.UPDATE_FREQUENCY, new Runnable() {
 			@Override
 			public void run() {
@@ -115,17 +119,13 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 
 	@Override
 	public synchronized boolean loadLevel(String name) {
-		
 		LevelIC level = this.controlResources.getLevelDatabase().getByName(name);
-		
-		
 		if (level != null) {
 			this.pauseGame();
 			try {	
 				this.currentLevel = new LevelEngine(level, this.controlResources.getScreenSize());
 				this.currentAngle = this.currentLevel.getLevelData().getStartAngle();
 			} catch (Exception ex) {
-				ex.printStackTrace();
 				return false;
 			}
 			this.currentStatus = GameEngineStatus.NEW_LEVEL;
@@ -207,10 +207,12 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	}
 	//</editor-fold>
 
+	@Override
 	public boolean isRun() {
 		return this.isRun;
 	}
 
+	@Override
 	public GameEngineStatus getStatus() {
 		return this.currentStatus;
 	}
