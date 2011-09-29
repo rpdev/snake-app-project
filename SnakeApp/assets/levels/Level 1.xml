@@ -1,27 +1,27 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <snakeappmap id="1002"> <!-- id is the database id for this level and are only use for the editor -->
-	<name>Level 1</name> <!-- The level name to be display -->
+	<name>My FirstLevel</name> <!-- The level name to be display -->
 	<level>1</level>
 	<description>This is my First Level</description> <!-- The description of the level -->
 	<difficuly>3</difficuly> <!-- difficuly of this level, value is 1=Easy,2=Normal,3=Hard,4=Vary Hard -->
 	<map x="300" y="400" /> <!-- define the reference frame for the x y grid. -->
 	
-	<gamespeed type="simple">3.4</gamespeed> <!-- The game speed, the type is what type of algorithm that will 
+	<gamespeed type="simple">4</gamespeed> <!-- The game speed, the type is what type of algorithm that will 
 	 be use, "simple" is algorithm that only return the given value as constant.-->
 	<growthspeed type="simple">2</growthspeed> <!-- How much the player will growth for each collect item,
 	The type is same as for 'gamespeed' -->
 	<levelgoal type="greater">9999</levelgoal> <!-- How many item the player most collect for end the level 
 	The type is same as for 'gamespeed' -->
 	
-	<item type="simple" r="5">1</item> <!-- how big and many item that to be show on the map at same time
+	<item type="simple" r="10">1</item> <!-- how big and many item that to be show on the map at same time
 	The type is same as for 'gamespeed' and the 'r' is the radius of each item in the game. -->
 	
 	
-	<player x="150" y="200" r="10" a="90" s="4" /> <!-- Define players start point
+	<player x="150" y="200" r="15" a="90" s="4" /> <!-- Define players start point
 	'r' is radius, 'a' is angle given in degrees and 's' is how long the player will start with -->
 	<obstacles> <!-- The list of obstacles-->
-		<item x="10" y="10" r="5" />
-		<item x="15" y="10" r="5" />
-		<item x="20" y="10" r="5" />
+		<item x="10" y="10" r="10" />
+		<item x="15" y="10" r="10" />
+		<item x="20" y="10" r="10" />
 	</obstacles>
 </snakeappmap>

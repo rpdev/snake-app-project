@@ -2,6 +2,7 @@ package se.chalmers.snake.leveldatabase;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
@@ -17,8 +18,8 @@ import se.chalmers.snake.leveldatabase.LevelDatabase.LevelDatabaseData;
  *
  */
 class XMLLevel implements LevelIC {
-	private static final double DEG_TO_RAD = Math.PI/180.0;
-	
+
+	private static final double DEG_TO_RAD = Math.PI / 180.0;
 	private final int mapID;
 	private final int level;
 	private final String name;
@@ -30,6 +31,7 @@ class XMLLevel implements LevelIC {
 	private final CRFunc items;
 	private final REPoint player;
 	private final int playerLength;
+	private final List<REPoint> obstacles;
 
 	private static class XML {
 
@@ -50,6 +52,7 @@ class XMLLevel implements LevelIC {
 		private static final String Y = "y";
 		private static final String ANGLE = "a";
 		private static final String PLAYER_LENGTH = "s";
+		private static final String OBSTACLES = "obstacles";
 	}
 
 	private static class XR {
@@ -115,7 +118,6 @@ class XMLLevel implements LevelIC {
 		public String toString() {
 			return "CFunc{" + "type=" + type + ", i=" + i + '}';
 		}
-		
 	}
 
 	private static class CRFunc extends CFunc {
@@ -134,20 +136,20 @@ class XMLLevel implements LevelIC {
 
 		@Override
 		public String toString() {
-			return "CRFunc{" + "radius=" + radius + ", type=" + type + ", i=" + i +'}';
+			return "CRFunc{" + "radius=" + radius + ", type=" + type + ", i=" + i + '}';
 		}
-		
-		
 	}
 
+	/**
+	 * Load A Level by a XML file, 
+	 * @param rowData
+	 * @throws IOException Will be throw if the file not can be read as a Level.
+	 */
 	public XMLLevel(LevelDatabaseData rowData) throws IOException {
 		try {
-
 			Document xmlDoc = DocumentBuilderFactory.newInstance().
 					  newDocumentBuilder().parse(rowData.getInputSteam());
-
 			Element rootDoc = xmlDoc.getDocumentElement();
-
 			if (rootDoc.getNodeName().equals(XML.ROOT)) { // Root Node Exist.
 				this.mapID = XR.attributeInt(rootDoc, XML.ROOT_ID);
 				this.level = XR.attributeInt(rootDoc, XML.LEVEL);
@@ -155,13 +157,13 @@ class XMLLevel implements LevelIC {
 				this.description = XR.val(XR.find(rootDoc, XML.DESCRIPTION));
 				Node map = XR.find(rootDoc, XML.MAPSIZE);
 				this.mapSize = new XYPoint(XR.attributeInt(map, "x"), XR.attributeInt(map, "y"));
-				
+
 				this.speed = new CFunc(XR.find(rootDoc, XML.GAMESPEED));
-				
+
 				this.growth = new CFunc(XR.find(rootDoc, XML.GROWTHSPEED));
-				
+
 				this.goal = new CFunc(XR.find(rootDoc, XML.GOAL));
-				
+
 				this.items = new CRFunc(XR.find(rootDoc, XML.ITEMS));
 				//<player x="150" y="200" r="10" a="90" s="4" />
 				Node playerNode = XR.find(rootDoc, XML.PLAYER);
@@ -169,54 +171,67 @@ class XMLLevel implements LevelIC {
 						  XR.attributeInt(playerNode, XML.X),
 						  XR.attributeInt(playerNode, XML.Y),
 						  XR.attributeInt(playerNode, XML.RADIUS),
-						  XR.attributeInt(playerNode, XML.ANGLE)*XMLLevel.DEG_TO_RAD);
+						  XR.attributeInt(playerNode, XML.ANGLE) * XMLLevel.DEG_TO_RAD);
 				this.playerLength = XR.attributeInt(playerNode, XML.PLAYER_LENGTH);
 
 
+				//<obstacles>...</obstacles>
+				NodeList obstaclesNode = XR.find(rootDoc, XML.OBSTACLES).getChildNodes();
+				List<REPoint> obstaclesPoints = new ArrayList<REPoint>(obstaclesNode.getLength());
+				for (int i = 0; i < obstaclesNode.getLength(); i++) {
+					Node obstacle = obstaclesNode.item(i);
+					if (obstacle != null) {
+						obstaclesPoints.add(new REPoint(REPoint.REType.WALL,
+								  XR.attributeInt(obstacle, XML.X),
+								  XR.attributeInt(obstacle, XML.Y),
+								  XR.attributeInt(obstacle, XML.RADIUS),
+								  0));
+					}
+				}
+				this.obstacles = Collections.unmodifiableList(obstaclesPoints);
 			} else {
 				throw new Exception("Root Node is not '" + XML.ROOT + "'");
 			}
 		} catch (Exception ex) {
 			throw new IOException("Can not read select level, " + ex.getMessage());
 		}
-		//System.out.println(this.toString());
 	}
-
+	//<editor-fold defaultstate="collapsed" desc="LevelIC Override">
 	@Override
 	public String getLevelName() {
 		return this.name;
 	}
-
+	
 	@Override
 	public String getLevelDescription() {
 		return this.description;
 	}
-
+	
 	@Override
 	public int getLevel() {
 		return this.level;
 	}
-
+	
 	@Override
 	public XYPoint getMapSize() {
 		return this.mapSize;
 	}
-
+	
 	@Override
 	public int getSnakeStartLength() {
 		return this.playerLength;
 	}
-
+	
 	@Override
 	public XYPoint getSnakeHeadStartLocation() {
 		return this.player;
 	}
-
+	
 	@Override
 	public double getStartAngle() {
 		return this.player.angle;
 	}
-
+	
 	@Override
 	public int getPlayerBodyWidth() {
 		return this.player.radius;
@@ -224,39 +239,37 @@ class XMLLevel implements LevelIC {
 	
 	@Override
 	public List<REPoint> getObstacles() {
-		return new ArrayList<REPoint>(0);
+		return this.obstacles;
 	}
-
-
+	
 	@Override
 	public int getItemsRadius() {
 		return this.items.radius;
 	}
-
+	
 	@Override
 	public float getSpeed(List<Integer> collectTime) {
 		return this.speed.calc(collectTime.size());
 	}
-
+	
 	@Override
 	public boolean hasReachedGoal(List<Integer> collectTime) {
 		return this.goal.calc(collectTime.size()) > 0;
 	}
-
+	
 	@Override
 	public int getAddItems(int totalCollected, int totalItemInGame) {
 		return (int) this.items.calc(totalCollected);
 	}
-
+	
 	@Override
 	public int getBodyGrowth(int collectTime, int totalCollected) {
 		return (int) this.growth.calc(totalCollected);
 	}
-
+	//</editor-fold>
+	
 	@Override
 	public String toString() {
 		return "XMLLevel{" + "mapID=" + mapID + ", level=" + level + ", name=" + name + ", description=" + description + ", mapSize=" + mapSize + ", speed=" + speed + ", growth=" + growth + ", goal=" + goal + ", items=" + items + ", player=" + player + ", playerLength=" + playerLength + '}';
 	}
-	
-	
 }
