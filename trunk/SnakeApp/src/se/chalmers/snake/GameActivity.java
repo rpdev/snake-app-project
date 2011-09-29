@@ -85,13 +85,17 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 		//</editor-fold>
 
 		this.gameEngine = ControlResources.get().getGameEngine();
-		this.gameEngine.loadLevel("");
+		if(this.gameEngine.loadLevel("Level 1")) {
 		this.gameView = new GameView(this, this.gameEngine);
 		this.gameEngine.addObserver(GameEngineEvent.PLAYER_LOSE, this);
 		RelativeLayout layout = ((RelativeLayout) this.findViewById(R.id.game_view_holder));
 		layout.addView(this.gameView);
 
 		this.showStartMenu();
+		} else {
+			this.finish();
+			
+		}
 	}
 
 	@Override
