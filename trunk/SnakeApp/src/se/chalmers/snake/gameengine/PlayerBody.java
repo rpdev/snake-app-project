@@ -10,11 +10,14 @@ import se.chalmers.snake.interfaces.util.XYPoint;
 
 /**
  * Make the player body, of this game, the player body is base on a LinkedList of REPoint.
+ * 
  */
 class PlayerBody implements Iterable<REPoint> {
 
+	/**
+	 * Private REPoint for the body.
+	 */
 	private class PBFPoint {
-
 		private float x, y;
 		private double angle;
 
@@ -46,6 +49,16 @@ class PlayerBody implements Iterable<REPoint> {
 	private int lengthSincLastAddSegment;
 	
 
+	/**
+	 * Make a new Player Body 
+	 * @param gameSize The Game map size, use for warp around the body on the egel.
+	 * @param startPosition The start pos of the body on the game map
+	 * @param startAngle The start angle the body will be place on, the angle give the dir outplace body part
+	 * @param bodySegmentRadius The radius for each body segment cirel.
+	 * @param startSegNumber How long the body will be on start
+	 * @param startBufferSegNumber How much will the body buffer, the buffer is body seg that will be put on the player 
+	 * while the player are has.
+	 */
 	public PlayerBody(XYPoint gameSize, XYPoint startPosition, double startAngle, int bodySegmentRadius, int startSegNumber, int startBufferSegNumber) {
 		if (!(gameSize != null && gameSize.x > 0 && gameSize.y > 0)) {
 			throw new IllegalArgumentException("The condition 'gameSize != null && gameSize.x > 0 && gameSize.y > 0' is not true.");
@@ -104,6 +117,11 @@ class PlayerBody implements Iterable<REPoint> {
 				  angle);
 	}
 
+	/**
+	 * Call this for move the body 1 step in given angle and length.
+	 * @param angle is on rad and has normal value 0 to 2*Math.PI
+	 * @param length 
+	 */
 	public synchronized void step(double angle, int length) {
 		this.lengthSincLastAddSegment += length;
 		while (length >= this.bodySpaceSize) {
@@ -145,7 +163,7 @@ class PlayerBody implements Iterable<REPoint> {
 			point.y = (float) ((this.gameSize.y + point.y + jumpStep * Math.sin(angle)) % this.gameSize.y);
 		} // End Loop
 		//Add new body segments.
-		if (this.bufferBodySegment > 0 && this.lengthSincLastAddSegment >= this.bodySpaceSize) {
+		if (this.bufferBodySegment > 0 && this.lengthSincLastAddSegment > this.bodySpaceSize) {
 			double mirrorAngle = angle > Math.PI ? angle - Math.PI : angle + Math.PI; // Get the Mirror angle.
 			PBFPoint newTail = this.nextPoint(this.seg.getLast(), mirrorAngle, this.bodySpaceSize);
 			this.bufferBodySegment--;
@@ -177,7 +195,12 @@ class PlayerBody implements Iterable<REPoint> {
 		PBFPoint floatPoint = this.seg.getFirst();
 		return new REPoint(REPoint.REType.HEADSEG, (int) floatPoint.x, (int) floatPoint.y, this.bodySegmentRadius, floatPoint.angle);
 	}
-
+	
+	/**
+	 * Get the tail of the player body,
+	 * 
+	 * @return 
+	 */
 	public REPoint getTail() {
 		PBFPoint floatPoint = this.seg.getLast();
 		return new REPoint(REPoint.REType.TAILSEG, (int) floatPoint.x, (int) floatPoint.y, this.bodySegmentRadius, floatPoint.angle);
@@ -237,15 +260,18 @@ class PlayerBody implements Iterable<REPoint> {
 		return false;
 	}
 
-	synchronized boolean isCollisionWith(REPoint point) {
-
-
+	/**
+	 * Test if a select point are collision with none of the bodyparts.
+	 * @param point
+	 * @return 
+	 */
+	public synchronized boolean isCollisionWith(REPoint point) {
 		for (PBFPoint body : this.seg) {
 			float xx = Math.abs(body.x - point.x);
 			float yy = Math.abs(body.y - point.y);
 			int rr = point.radius + this.bodySegmentRadius;
 			if (xx < rr && yy < rr && Math.sqrt(xx * xx + yy * yy) < rr) {
-				return false;
+				return true;
 			}
 		}
 		return false;
@@ -257,16 +283,28 @@ class PlayerBody implements Iterable<REPoint> {
 		return xx < this.bodySegmentRadius2 && yy < this.bodySegmentRadius2 && (Math.sqrt(xx * xx + yy * yy)) < (this.bodySegmentRadius2);
 	}
 
+	/**
+	 * Add a new number of seg to the player, the seg will be add while the player are move.
+	 * @param bodyGrowth 
+	 */
 	public void addSeg(int bodyGrowth) {
 		if (bodyGrowth > 0) {
 			this.bufferBodySegment += bodyGrowth;
 		}
 	}
 
+	/**
+	 * Return how many seg the player body is now.
+	 * @return 
+	 */
 	public int size() {
 		return this.seg.size();
 	}
 
+	/**
+	 * Return a Iterator<REPoint> for all bodysegment in the player body.
+	 * @return u
+	 */
 	@Override
 	public Iterator<REPoint> iterator() {
 		return this.get().iterator();
