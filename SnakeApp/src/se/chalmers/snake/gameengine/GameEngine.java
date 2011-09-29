@@ -24,8 +24,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	private boolean isRun = false;
 	private double currentAngle;
 	private GameEngineStatus currentStatus;
-	
-	
+
 	/**
 	 * The gameEngine nead a ControlResourcesIC class for get some metadata from the system and 
 	 * link recuses.
@@ -41,6 +40,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 
 		// Config the Oscillator to make 16 fps
 		this.oscillator = new Oscillator(1000 / GameEngine.UPDATE_FREQUENCY, new Runnable() {
+
 			@Override
 			public void run() {
 				GameEngine.this.step();
@@ -70,7 +70,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 						this.fireObserver(GameEngineEvent.LEVEL_END);
 					} else {
 						this.fireObserver(GameEngineEvent.UPDATE);
-						
+
 					}
 
 				} else {
@@ -78,7 +78,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 					System.out.println("GameEngine Run - Level End - Player Lose");
 					this.currentStatus = GameEngineStatus.LEVEL_END;
 					this.fireObserver(GameEngineEvent.PLAYER_LOSE);
-					
+
 				}
 			}
 		} else {
@@ -100,7 +100,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 
 	@Override
 	public synchronized boolean pauseGame() {
-		if (this.currentLevel != null && this.isRun==true) {
+		if (this.currentLevel != null && this.isRun == true) {
 			this.oscillator.stop();
 			this.currentStatus = GameEngineStatus.PAUSE;
 			this.fireObserver(GameEngineEvent.PAUSE_GAME);
@@ -115,17 +115,17 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	public synchronized boolean restartGame() {
 		return this.loadLevel(this.getLevelName());
 	}
-	
 
 	@Override
 	public synchronized boolean loadLevel(String name) {
 		LevelIC level = this.controlResources.getLevelDatabase().getByName(name);
 		if (level != null) {
 			this.pauseGame();
-			try {	
+			try {
 				this.currentLevel = new LevelEngine(level, this.controlResources.getScreenSize());
 				this.currentAngle = this.currentLevel.getLevelData().getStartAngle();
 			} catch (Exception ex) {
+				ex.printStackTrace();
 				return false;
 			}
 			this.currentStatus = GameEngineStatus.NEW_LEVEL;

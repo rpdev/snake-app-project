@@ -9,7 +9,7 @@ import se.chalmers.snake.interfaces.util.XYPoint;
 
 public class LevelDefault implements LevelIC {
 	private final XYPoint MAP_SIZE = new XYPoint(150, 200);
-	private final int RADIUS = 5, goal = 10;
+	private final int RADIUS = 5;
 	
 	@Override
 	public String getLevelName() {
@@ -68,7 +68,7 @@ public class LevelDefault implements LevelIC {
 
 	@Override
 	public boolean hasReachedGoal(List<Integer> collectTime) {
-		 return collectTime.size() >= goal;
+		 return false;
 	}
 
 	@Override

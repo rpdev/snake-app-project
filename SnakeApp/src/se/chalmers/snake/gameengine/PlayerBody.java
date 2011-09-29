@@ -61,16 +61,16 @@ class PlayerBody implements Iterable<REPoint> {
 	 */
 	public PlayerBody(XYPoint gameSize, XYPoint startPosition, double startAngle, int bodySegmentRadius, int startSegNumber, int startBufferSegNumber) {
 		if (!(gameSize != null && gameSize.x > 0 && gameSize.y > 0)) {
-			throw new IllegalArgumentException("The condition 'gameSize != null && gameSize.x > 0 && gameSize.y > 0' is not true.");
+			throw new IllegalArgumentException("The condition 'gameSize != null && gameSize.x > 0 && gameSize.y > 0' is not true, the value is "+gameSize+".");
 		}
 		if (!(startPosition.x > 0 && startPosition.x < gameSize.x)) {
-			throw new IllegalArgumentException("The condition 'startPosition.x>0 && startPosition.x<gameSize.x' is not true.");
+			throw new IllegalArgumentException("The condition 'startPosition.x>0 && startPosition.x<gameSize.x' is not true, the value is "+startPosition+".");
 		}
 		if (!(startPosition.y > 0 && startPosition.y < gameSize.y)) {
-			throw new IllegalArgumentException("The condition 'startPosition.y > 0 && startPosition.y < gameSize.y' is not true.");
+			throw new IllegalArgumentException("The condition 'startPosition.y > 0 && startPosition.y < gameSize.y' is not true, the value is "+startPosition+".");
 		}
 		if (!(bodySegmentRadius > 0 && startSegNumber > 1 && startAngle >= 0 && startAngle <= Math.PI * 2)) {
-			throw new IllegalArgumentException("The condition 'bodySegmentRadius > 0 && startSegNumber > 1 && startAngle >= 0 && startAngle <= Math.PI * 2' is not true.");
+			throw new IllegalArgumentException("The condition 'bodySegmentRadius > 0 && startSegNumber > 1 && startAngle >= 0 && startAngle <= Math.PI * 2' is not true, the value is "+startAngle+".");
 		}
 		
 		this.seg = new LinkedList<PBFPoint>();
