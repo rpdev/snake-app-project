@@ -75,9 +75,9 @@ public class LevelDatabase implements LevelDatabaseIC {
 			if (file.contains(".") && file.substring(file.lastIndexOf('.') + 1).equalsIgnoreCase("XML")) {
 				int level = Integer.parseInt(file.substring(file.indexOf(' '), file.indexOf('.')).trim());
 				String name = file.substring(0, file.lastIndexOf('.'));
-				LevelDatabaseData data = new LevelDatabaseData(PATH + "/" + file, name, level);
-				levelnames.put(name, data);
-				levelvalues.put(level, data);
+				LevelDatabaseData data = new LevelDatabaseData(this.PATH + "/" + file, name, level);
+				this.levelnames.put(name, data);
+				this.levelvalues.put(level, data);
 			}
 		}
 	}
@@ -95,10 +95,8 @@ public class LevelDatabase implements LevelDatabaseIC {
 
 		InputStream getInputSteam() {
 			try {
-				return am.open(fileName);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+				return LevelDatabase.this.am.open(fileName);
+			} catch (IOException e) {}
 			return null;
 		}
 	}

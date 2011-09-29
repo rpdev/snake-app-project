@@ -1,6 +1,7 @@
 package se.chalmers.snake.leveldatabase;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -146,9 +147,11 @@ class XMLLevel implements LevelIC {
 	 * @throws IOException Will be throw if the file not can be read as a Level.
 	 */
 	public XMLLevel(LevelDatabaseData rowData) throws IOException {
+		InputStream ioStream=null;
 		try {
+			ioStream = rowData.getInputSteam();
 			Document xmlDoc = DocumentBuilderFactory.newInstance().
-					  newDocumentBuilder().parse(rowData.getInputSteam());
+					  newDocumentBuilder().parse(ioStream);
 			Element rootDoc = xmlDoc.getDocumentElement();
 			if (rootDoc.getNodeName().equals(XML.ROOT)) { // Root Node Exist.
 				this.mapID = XR.attributeInt(rootDoc, XML.ROOT_ID);
@@ -194,6 +197,10 @@ class XMLLevel implements LevelIC {
 			}
 		} catch (Exception ex) {
 			throw new IOException("Can not read select level, " + ex.getMessage());
+		} finally {
+			if(ioStream!=null) {
+			ioStream.close();
+			}
 		}
 	}
 	//<editor-fold defaultstate="collapsed" desc="LevelIC Override">
