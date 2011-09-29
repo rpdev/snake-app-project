@@ -1,10 +1,13 @@
 package se.chalmers.snake;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +34,7 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 	private Button buttonRestart;
 	private Button buttonStart;
 	private GameEngineIC gameEngine;
+	private WakeLock wakeLock;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -84,6 +88,9 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 
 		//</editor-fold>
 
+		PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+		this.wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "GameActivityHold");
+		
 		this.gameEngine = ControlResources.get().getGameEngine();
 		this.gameEngine.loadLevel("Level 1");
 		this.gameView = new GameView(this, this.gameEngine);
@@ -97,9 +104,20 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 	@Override
 	public void onPause() {
 		this.showPauseMenu();
+		if(this.wakeLock!=null) {
+			this.wakeLock.release();
+		}
 		super.onPause();
 	}
 
+	@Override
+	public void onResume() {
+		if(this.wakeLock!=null) {
+			this.wakeLock.acquire();
+		}
+		super.onResume();
+	}
+	
 	public void showPauseMenu() {
 		if (this.gameView.isRun()) {
 			this.gameView.pauseGame();

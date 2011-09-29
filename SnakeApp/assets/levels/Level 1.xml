@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<snakeappmap id="1002"> <!-- id is the database id for this level and are only use for the editor -->
+<snakeappmap id="1"> <!-- id is the database id for this level and are only use for the editor -->
 	<name>My First Level</name> <!-- The level name to be display -->
 	<level>1</level>
 	<description>My First Level, Collect 25 Apples</description> <!-- The description of the level -->
-	<difficuly>3</difficuly> <!-- difficuly of this level, value is 1=Easy,2=Normal,3=Hard,4=Vary Hard -->
+	<difficuly>1</difficuly> <!-- difficuly of this level, value is 1=Easy,2=Normal,3=Hard,4=Vary Hard -->
 	<map x="300" y="400" /> <!-- define the reference frame for the x y grid. -->
 	
 	<gamespeed type="simple">3</gamespeed> <!-- The game speed, the type is what type of algorithm that will 
