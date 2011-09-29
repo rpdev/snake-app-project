@@ -216,4 +216,13 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	public GameEngineStatus getStatus() {
 		return this.currentStatus;
 	}
+
+	@Override
+	public int getItemRadius() {
+		if (this.currentLevel != null) {
+			return this.currentLevel.getItemsRadius();
+		} else {
+			return 0;
+		}
+	}
 }

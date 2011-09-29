@@ -150,6 +150,12 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 	 * @return 
 	 */
 	public List<REPoint> getItems();
+	
+	/**
+	 * Return the size of each item will have.
+	 * @return 
+	 */
+	public int getItemRadius();
 
 	/**
 	 * This will return a list of all walls in the game or other static item,
