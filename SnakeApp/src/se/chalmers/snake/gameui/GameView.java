@@ -31,6 +31,9 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	private Resources mRes;
 	private Bitmap bodySeg;
 	private Bitmap apple;
+	/**
+	 * This will not work, the obstacle can has diffrent size on a map.
+	 */
 	private Bitmap obstacle;
 
 	
