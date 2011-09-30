@@ -90,7 +90,7 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 
 		PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
 		this.wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "GameActivityHold");
-		
+
 		this.gameEngine = ControlResources.get().getGameEngine();
 		this.gameEngine.loadLevel("Level 1");
 		this.gameView = new GameView(this, this.gameEngine);
@@ -104,7 +104,7 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 	@Override
 	public void onPause() {
 		this.showPauseMenu();
-		if(this.wakeLock!=null) {
+		if (this.wakeLock != null) {
 			this.wakeLock.release();
 		}
 		super.onPause();
@@ -112,12 +112,21 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 
 	@Override
 	public void onResume() {
-		if(this.wakeLock!=null) {
+		if (this.wakeLock != null) {
 			this.wakeLock.acquire();
 		}
 		super.onResume();
 	}
-	
+
+	@Override
+	public void finish() {
+		if (this.wakeLock != null) {
+			this.wakeLock.release();
+		}
+		this.gameEngine.pauseGame(); // Force Stop of gameEngine on exit.
+		super.finish();
+	}
+
 	public void showPauseMenu() {
 		if (this.gameView.isRun()) {
 			this.gameView.pauseGame();

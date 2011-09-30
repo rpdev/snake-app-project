@@ -61,6 +61,7 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 
 	/**
 	 * Call this method for pause a game.
+	 * This most will be call on exit of the app to close recsusces that gameEngine has open or start.
 	 * @return True if this action are allow and a load level exist.
 	 */
 	public boolean pauseGame();
