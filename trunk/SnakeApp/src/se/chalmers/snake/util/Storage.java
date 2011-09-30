@@ -10,6 +10,7 @@ import java.lang.reflect.Type;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import java.io.Serializable;
 
 public class Storage {
 	private static final String PREFS_NAME = "SnakeApp";
@@ -58,7 +59,7 @@ public class Storage {
 	 * @param defaultValue Value to return if the key wasen't found, this can only be null for String's.
 	 * @return The fetched key's value or the default value if key not found.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "unchecked"})
 	public <T> T getPrimitive(Type type, String name, T defaultValue){
 		if(type == Boolean.class)
 			return (T) new Boolean(settings.getBoolean(name, (Boolean) defaultValue));
@@ -82,16 +83,13 @@ public class Storage {
 	 * @param value The actual value.
 	 * @return True if successful otherwise false.
 	 */
-	public <T> boolean storeObject(String name, T value){
+	public <T extends Serializable> boolean storeObject(String name, T value){
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(activity.openFileOutput(name, Context.MODE_PRIVATE));
 			oos.writeObject(value);
 			oos.close();
 			return true;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
 		}
 		return false;
 	}
@@ -105,18 +103,11 @@ public class Storage {
 	 * @return Object of the type <code>T</code> if successful otherwise null.
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T getObject(String name){
+	public <T extends Serializable> T getObject(String name){
 		try {
-			ObjectInputStream ois = new ObjectInputStream(activity.openFileInput(name));
+			ObjectInputStream ois = new ObjectInputStream(this.activity.openFileInput(name));
 			return (T) ois.readObject();
-		} catch (StreamCorruptedException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
 		}
 		return null;
 	}

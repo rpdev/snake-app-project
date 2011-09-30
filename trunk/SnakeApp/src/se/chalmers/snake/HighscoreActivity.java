@@ -3,15 +3,12 @@ package se.chalmers.snake;
 import se.chalmers.snake.highscoreDatabase.HighscoreDatabase;
 import se.chalmers.snake.util.Storage;
 import android.app.Activity;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import se.chalmers.snake.mastercontroller.ControlResources;
 
 public class HighscoreActivity extends Activity {
 
@@ -25,6 +22,7 @@ public class HighscoreActivity extends Activity {
 	private TextView youDidntMakeIt;
 	private EditText inputName;
 	
+	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		this.setContentView(R.layout.highscore_layout);
@@ -35,10 +33,10 @@ public class HighscoreActivity extends Activity {
 		}
 		
 		this.setObjects();
-		storage = new Storage(this);
-		highscoreDatabase = storage.getObject("highscore");
-		if(highscoreDatabase == null){
-			highscoreDatabase = new HighscoreDatabase();
+		this.storage = ControlResources.get().getStorage();
+		this.highscoreDatabase = storage.getObject("highscore");
+		if(this.highscoreDatabase == null){
+			this.highscoreDatabase = new HighscoreDatabase();
 		}
 		
 		if(checkIfEnoughPoints()){
@@ -89,9 +87,9 @@ public class HighscoreActivity extends Activity {
 	}
 	
 	private void savePoints(String name, int points){
-		highscoreDatabase.addPlayerToHighscore(name, points);
-		storage.storeObject("highscore", highscoreDatabase);
-		if(storage.getObject("highscore") == null)
+		this.highscoreDatabase.addPlayerToHighscore(name, points);
+		this.storage.storeObject("highscore", this.highscoreDatabase);
+		if(this.storage.getObject("highscore") == null)
 			submitButton.setText("FAIL");
 	}
 
