@@ -90,7 +90,8 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 		if (this.currentLevel != null) {
 			this.currentStatus = GameEngineStatus.RUNNING;
 			this.fireObserver(GameEngineEvent.START_GAME);
-			this.oscillator.start();
+			this.oscillator.start(); // Start the Oscillator
+			this.motionDetector.start(); // Start the Motion Detector.
 			this.isRun = true;
 			return true;
 		} else {
@@ -102,6 +103,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	public synchronized boolean pauseGame() {
 		if (this.currentLevel != null && this.isRun == true) {
 			this.oscillator.stop();
+			this.motionDetector.stop();
 			this.currentStatus = GameEngineStatus.PAUSE;
 			this.fireObserver(GameEngineEvent.PAUSE_GAME);
 			this.isRun = false;
