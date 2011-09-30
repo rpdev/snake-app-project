@@ -85,7 +85,7 @@ body{
     width: 800px;
 }
 
-#content a { color:#171151; text-decoration: none; }
+#content a { color: burlywood; text-decoration: none; }
 #content a:hover { color:#9e0b0f; text-decoration: underline; }
 #content p { color: white; margin-left: 15px; margin-top: 0px; font-size: 17px; margin-bottom: 0px;}
 
