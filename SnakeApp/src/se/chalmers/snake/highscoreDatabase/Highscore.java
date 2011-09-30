@@ -1,6 +1,9 @@
 package se.chalmers.snake.highscoreDatabase;
 
-public class Highscore {
+import java.io.Serializable;
+
+public final class Highscore implements Serializable {
+	private static final long serialVersionUID = 4611406553461997259L;
 	
 	private String playerName;
 	private int points;
