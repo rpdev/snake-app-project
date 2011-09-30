@@ -16,7 +16,6 @@ import android.widget.RelativeLayout;
 import se.chalmers.snake.gameui.GameView;
 import se.chalmers.snake.interfaces.GameEngineIC;
 import se.chalmers.snake.interfaces.GameEngineIC.GameEngineEvent;
-import se.chalmers.snake.interfaces.util.XYPoint;
 import se.chalmers.snake.mastercontroller.ControlResources;
 import se.chalmers.snake.util.EnumObservable;
 import se.chalmers.snake.util.EnumObserver;
@@ -104,7 +103,7 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 	@Override
 	public void onPause() {
 		this.showPauseMenu();
-		if (this.wakeLock != null) {
+		if (this.wakeLock != null && this.wakeLock.isHeld()) {
 			this.wakeLock.release();
 		}
 		super.onPause();
@@ -112,7 +111,7 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 
 	@Override
 	public void onResume() {
-		if (this.wakeLock != null) {
+		if (this.wakeLock != null ) {
 			this.wakeLock.acquire();
 		}
 		super.onResume();
@@ -120,7 +119,7 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 
 	@Override
 	public void finish() {
-		if (this.wakeLock != null) {
+		if (this.wakeLock != null && this.wakeLock.isHeld()) {
 			this.wakeLock.release();
 		}
 		this.gameEngine.pauseGame(); // Force Stop of gameEngine on exit.
