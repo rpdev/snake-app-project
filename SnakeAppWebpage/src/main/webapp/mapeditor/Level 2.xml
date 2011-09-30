@@ -17,7 +17,7 @@
 	The type is same as for 'gamespeed' and the 'r' is the radius of each item in the game. -->
 	
 	
-	<player x="150" y="200" r="15" a="90" s="4" /> <!-- Define players start point
+	<player x="150" y="200" r="14" a="90" s="4" /> <!-- Define players start point
 	'r' is radius, 'a' is angle given in degrees and 's' is how long the player will start with -->
 	<obstacles> <!-- The list of obstacles-->
 		<item x="75" y="75" r="50" />
