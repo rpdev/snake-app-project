@@ -18,7 +18,7 @@ import javax.persistence.criteria.CriteriaQuery;
 
 public class Database {
 
-	private static final String DATABASE_NAME = "snakeappweb_pu";
+	private static final String DATABASE_NAME = "snakeappweb_pu_test";
 	private static Database instance;
 	private final EntityManagerFactory emf;
 	private final EntityManager em;
@@ -55,13 +55,28 @@ public class Database {
 		return em.find(type, id);
 	}
 
-	public synchronized <T> void removeEnity(Class<T> type, Long... id) {
-		em.getTransaction().begin();
-		for (Long i : id) {
-
-			em.remove(em.find(type, i));
+	public void removeEnity(Class<?> type, Long... id) {
+		if (type == UserAcc.class) {
+			removeUser(id);
+		} else {
+			em.getTransaction().begin();
+			for (Long i : id) {
+				em.remove(em.find(type, i));
+			}
+			em.getTransaction().commit();
 		}
-		em.getTransaction().commit();
+	}
+
+	private void removeUser(Long... id) {
+		for (Long i : id) {
+			UserAcc ua = em.find(UserAcc.class, i);
+			for (Comment c : ua.getUserComments()) {
+				removeEnity(Comment.class, c.getId());
+			}
+			em.getTransaction().begin();
+			em.remove(ua);
+			em.getTransaction().commit();
+		}
 	}
 
 	public synchronized <T> List<T> getEntityList(Class<T> type) {

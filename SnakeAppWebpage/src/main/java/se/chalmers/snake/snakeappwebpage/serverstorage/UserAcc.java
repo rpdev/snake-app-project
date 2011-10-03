@@ -7,13 +7,11 @@ package se.chalmers.snake.snakeappwebpage.serverstorage;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -29,10 +27,9 @@ public class UserAcc implements Serializable {
 	private String userPassword;
 	@Column(nullable = false)
 	private String email;
-	@JoinColumn
-	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+	@OneToMany
 	private List<Comment> userComments = new ArrayList<Comment>();
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany
 	private List<SnakeMap> createMaps = new ArrayList<SnakeMap>();
 
 	public UserAcc() {

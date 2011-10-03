@@ -17,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -29,7 +30,7 @@ public class SnakeMap implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@OneToOne
+	@ManyToOne
 	private UserAcc userName;
 	@Enumerated(EnumType.STRING)
 	private STATUS status;
@@ -49,29 +50,29 @@ public class SnakeMap implements Serializable {
 	 * int x,y,r
 	 */
 	@JoinColumn
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	private REPoint snakeMeta;
 	@Column
 	private Integer snakeAngle;
 	@Column
 	private Integer snakeSize;
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany
 	private List<REPoint> obstacle;
 	@JoinColumn
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	private REPoint mapSize; // Only use x,y
 	/**
 	 * MPoint
 	 * String type ( short string max 16 char )
 	 * int value
 	 */
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	private MPoint gameSpeed;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	private MPoint growthspeed;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	private MPoint levelgoal;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	private MPoint itemPoint;
 	@Column
 	private Integer itemCount;
