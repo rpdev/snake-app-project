@@ -11,11 +11,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 public class Database {
 
@@ -52,23 +51,36 @@ public class Database {
 		return instance;
 	}
 
-	synchronized <T> T getEntity(Class<T> type, Long id) {
+	public synchronized <T> T getEntity(Class<T> type, Long id) {
 		return em.find(type, id);
 	}
 
-	public synchronized <T> List<T> getEntityList(Class<T> type){
-		CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<T> cq = builder.createQuery(type);
-        Root<T> r = cq.from(type);
-		return em.createNamedQuery("select t from "+type.getSimpleName()+" t", type).getResultList();
-	}
-	
-	public <T> void mergeObject(T object){
+	public synchronized <T> void removeEnity(Class<T> type, Long... id) {
 		em.getTransaction().begin();
-		em.merge(object);
+		for (Long i : id) {
+
+			em.remove(em.find(type, i));
+		}
 		em.getTransaction().commit();
 	}
-	
+
+	public synchronized <T> List<T> getEntityList(Class<T> type) {
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaQuery<T> cq = builder.createQuery(type);
+		TypedQuery<T> query = em.createQuery(cq);
+		return query.getResultList();
+	}
+
+	public <T> void mergeObject(T object) {
+		em.getTransaction().begin();
+		if (em.contains(object)) {
+			em.refresh(object);
+		} else {
+			em.persist(object);
+		}
+		em.getTransaction().commit();
+	}
+
 	synchronized void closeDatabase() {
 		em.close();
 		emf.close();
