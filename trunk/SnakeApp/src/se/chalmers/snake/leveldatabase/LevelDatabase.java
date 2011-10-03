@@ -21,7 +21,8 @@ public class LevelDatabase implements LevelDatabaseIC {
 		this.am = activty.getAssets();
 		try {
 			loadFiles(this.am.list(PATH));
-		} catch (IOException e) {}
+		} catch (IOException e) {
+		}
 	}
 
 	@Override
@@ -82,6 +83,26 @@ public class LevelDatabase implements LevelDatabaseIC {
 		}
 	}
 
+	@Override
+	public String getNextLevel(String level) {
+		if (this.levelnames.containsKey(level)) {
+			int levelID = this.levelnames.get(level).level+1;
+			if (this.levelvalues.containsKey(levelID)) {
+				return this.levelvalues.get(levelID).name;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public int getNextLevel(int level) {
+		if (this.levelvalues.containsKey(level + 1)) {
+			return level + 1;
+		} else {
+			return -1;
+		}
+	}
+
 	class LevelDatabaseData {
 
 		final String name, fileName;
@@ -96,7 +117,8 @@ public class LevelDatabase implements LevelDatabaseIC {
 		InputStream getInputSteam() {
 			try {
 				return LevelDatabase.this.am.open(fileName);
-			} catch (IOException e) {}
+			} catch (IOException e) {
+			}
 			return null;
 		}
 	}
