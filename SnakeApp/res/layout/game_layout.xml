@@ -44,6 +44,24 @@
 					android:visibility="gone"
 			/>
 			<Button 
+			android:id="@+id/game_menu_button_next_level" 
+      			android:layout_width="fill_parent"
+      			android:layout_height="wrap_content"
+      			android:text="Next Level"
+      			android:layout_marginBottom="5dip"
+					android:visibility="gone"
+			/>
+			
+			<Button 
+			android:id="@+id/game_menu_button_enter_highscore" 
+      			android:layout_width="fill_parent"
+      			android:layout_height="wrap_content"
+      			android:text="Highscore"
+      			android:layout_marginBottom="5dip"
+					android:visibility="gone"
+			/>
+			
+			<Button 
 			android:id="@+id/game_menu_button_restart" 
       			android:layout_width="fill_parent"
       			android:layout_height="wrap_content"
