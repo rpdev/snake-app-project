@@ -43,22 +43,30 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		this.paint.setStyle(Paint.Style.FILL);
 		this.addGameEngine(gameEngine);
 		this.setBackgroundResource(R.drawable.spelplan_bg);
+		this.initLevel();
+	}
 
+	/**
+	 * Methods that will be call for each new level.
+	 */
+	private void initLevel() {
 		int playerBodyWidth = this.gameEngine.getPlayerHead().radius;
 		int appleWidth = this.gameEngine.getItemRadius();
 		this.bodySeg = Bitmap.createScaledBitmap(
 				  BitmapFactory.decodeResource(this.mRes, R.drawable.snake_body), playerBodyWidth * 2, playerBodyWidth * 2, true);
 		this.apple = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(mRes, R.drawable.apple),
 				  appleWidth * 2, appleWidth * 2, true);
+		this.walls = this.gameEngine.getObstacles();
 		this.postInvalidate();
 	}
-
+	
 	public void addGameEngine(GameEngineIC gameEngine) {
 		this.gameEngine = gameEngine;
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.START_GAME, this);
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.PAUSE_GAME, this);
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.UPDATE, this);
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.PLAYER_LOSE, this);
+		gameEngine.addObserver(GameEngineIC.GameEngineEvent.NEW_GAME, this);
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.LEVEL_END, this);
 
 		this.snakeBody = gameEngine.getPlayerBody();
@@ -95,6 +103,11 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 			  GameEngineEvent event, Void arg) {
 		this.snakeBody = this.gameEngine.getPlayerBody();
 		this.items = this.gameEngine.getItems();
+		if(event == GameEngineEvent.NEW_GAME) {
+			
+			this.initLevel();
+		}
+		
 		this.postInvalidate();
 
 		return null;

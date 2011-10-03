@@ -110,7 +110,7 @@ class XMLLevel implements LevelIC {
 
 		public float calc(int x) {
 			if ("greater".equals(this.type)) {
-				return x > this.i ? 1 : 0;
+				return x >= this.i ? 1 : 0;
 			}
 			return i;
 		}

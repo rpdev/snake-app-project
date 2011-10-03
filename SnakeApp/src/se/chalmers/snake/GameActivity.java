@@ -95,10 +95,7 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 			this.ENTER_HIGHSCORE.setOnClickListener(new View.OnClickListener() {
 
 				public void onClick(View view) {
-					Intent highscoreIntent = new Intent(GameActivity.this, HighscoreActivity.class);
-					highscoreIntent.putExtra("points", GameActivity.this.gameView.getScore() + GameActivity.this.totalScore);
-					GameActivity.this.startActivity(highscoreIntent);
-					GameActivity.this.finish();
+					GameActivity.this.goToHighscoreActivity();
 				}
 			});
 
@@ -143,14 +140,19 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 		this.wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "GameActivityHold");
 
 		this.gameEngine = ControlResources.get().getGameEngine();
-		
-		this.gameEngine.loadLevel("Level 1");
+
+
 		this.currentLevel = "Level 1";
-		
+		this.gameEngine.loadLevel("Level 1");
+
+
 		this.gameView = new GameView(this, this.gameEngine);
 		this.gameEngine.addObserver(GameEngineEvent.PLAYER_LOSE, this);
 		this.gameEngine.addObserver(GameEngineEvent.LEVEL_END, this);
-		this.gameEngine.addObserver(GameEngineEvent.UPDATE, this);
+		this.gameEngine.addObserver(GameEngineEvent.NEW_GAME, this);
+		this.gameEngine.addObserver(GameEngineEvent.START_GAME, this);
+		this.gameEngine.addObserver(GameEngineEvent.PAUSE_GAME, this);
+
 		RelativeLayout layout = ((RelativeLayout) this.findViewById(R.id.game_view_holder));
 		layout.addView(this.gameView);
 		this.showStartMenu();
@@ -233,50 +235,50 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 	}
 
 	private void loadNextLevel() {
+		this.mColl.hidden();
 		this.totalScore += this.gameView.getScore();
-		String[] levels = ControlResources.get().getLevelDatabase().getLevelListByName();
-		for (int index = 0; index < levels.length; index++) {
-			if (this.currentLevel.equals(levels[index])) {
-				if (levels.length < (index + 1)) {
-					this.currentLevel = levels[index + 1];
-					break;
-				} else {
-					this.currentLevel = null;
-					break;
-				}
-			}
-		}
+		this.currentLevel = ControlResources.get().getLevelDatabase().getNextLevel(this.currentLevel);
 		if (this.currentLevel != null) {
-			this.gameEngine.loadLevel(this.currentLevel);
+			if (!this.gameEngine.loadLevel(this.currentLevel)) {
+				this.goToHighscoreActivity();
+			}
 		} else {
+			this.goToHighscoreActivity();
 		}
 	}
 
 	public Void observerNotify(EnumObservable<GameEngineEvent, Void, Void> observable, GameEngineEvent event, Void arg) {
-
-
 		if (event == GameEngineEvent.PLAYER_LOSE) {
 			this.runOnUiThread(new Runnable() {
 
 				public void run() {
 					GameActivity.this.showPauseMenu(true);
-					/*
-					Intent highscoreIntent = new Intent(GameActivity.this, HighscoreActivity.class);
-					highscoreIntent.putExtra("points",GameActivity.this.gameView.getScore());
-					GameActivity.this.startActivity(highscoreIntent);
-					 */
 				}
 			});
 			return null;
-		}
-		if (event == GameEngineEvent.LEVEL_END) { // Try to load next level if 
+		} else if (event == GameEngineEvent.LEVEL_END) { // Try to load next level if 
 			this.runOnUiThread(new Runnable() {
-
 				public void run() {
 					GameActivity.this.showNextLevelMenu();
 				}
 			});
+		} else if (event == GameEngineEvent.NEW_GAME) {
+			this.runOnUiThread(new Runnable() {
+
+				public void run() {
+					GameActivity.this.showStartMenu();
+				}
+			});
+		} else {
+			System.out.println("@@@@@@@@@@@@@@@@@@@@" + event + "@@@@@@@@@@@@@@@@@@@");
 		}
 		return null;
+	}
+
+	private void goToHighscoreActivity() {
+		Intent highscoreIntent = new Intent(GameActivity.this, HighscoreActivity.class);
+		highscoreIntent.putExtra("points", GameActivity.this.gameView.getScore() + GameActivity.this.totalScore);
+		GameActivity.this.startActivity(highscoreIntent);
+		GameActivity.this.finish();
 	}
 }
