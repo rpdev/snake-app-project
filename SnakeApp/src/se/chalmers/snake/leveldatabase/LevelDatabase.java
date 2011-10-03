@@ -9,6 +9,7 @@ import se.chalmers.snake.interfaces.LevelDatabaseIC;
 import se.chalmers.snake.interfaces.LevelIC;
 import android.app.Activity;
 import android.content.res.AssetManager;
+import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -86,10 +87,11 @@ public class LevelDatabase implements LevelDatabaseIC {
 				this.levelValues.put(level, data);
 			}
 		}
-		Iterator<Integer> it = levelValues.keySet().iterator();
+		Iterator<LevelDatabaseData> it = levelValues.values().iterator();
 		
 		while (it.hasNext()) {
-			it.next();
+			this.levelNameList.add(it.next().name);
+			
 		}
 	}
 
