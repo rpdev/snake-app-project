@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -47,7 +48,6 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 		this.menu = (LinearLayout) this.findViewById(R.id.game_menu_button);
 		this.buttonResume = (Button) this.findViewById(R.id.game_menu_button_resume);
 		this.buttonResume.setOnClickListener(new View.OnClickListener() {
-
 			public void onClick(View view) {
 				GameActivity.this.hide();
 				GameActivity.this.gameView.startGame();
@@ -94,6 +94,8 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 		this.gameEngine.loadLevel("Level 1");
 		this.gameView = new GameView(this, this.gameEngine);
 		this.gameEngine.addObserver(GameEngineEvent.PLAYER_LOSE, this);
+		this.gameEngine.addObserver(GameEngineEvent.LEVEL_END, this);
+		this.gameEngine.addObserver(GameEngineEvent.UPDATE, this);
 		RelativeLayout layout = ((RelativeLayout) this.findViewById(R.id.game_view_holder));
 		layout.addView(this.gameView);
 		this.showStartMenu();
@@ -147,7 +149,7 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 			this.gameView.pauseGame();
 		}
 
-
+		
 		this.buttonStart.setVisibility(View.VISIBLE);
 		this.buttonMenu.setVisibility(View.VISIBLE);
 		this.menu.setVisibility(View.VISIBLE);
@@ -186,12 +188,23 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 	}
 
 	public Void observerNotify(EnumObservable<GameEngineEvent, Void, Void> observable, GameEngineEvent event, Void arg) {
+		
+		
 		if (event == GameEngineEvent.PLAYER_LOSE) {
-			Intent highscoreIntent = new Intent(GameActivity.this, HighscoreActivity.class);
-			highscoreIntent.putExtra("points",this.gameView.getScore());
-			GameActivity.this.startActivity(highscoreIntent);
+			//Intent highscoreIntent = new Intent(GameActivity.this, HighscoreActivity.class);
+			//highscoreIntent.putExtra("points",this.gameView.getScore());
+			//GameActivity.this.startActivity(highscoreIntent);
+			//this.finish();
+			
+			
+			System.out.println("*********** PLAYER LOSE ************************");
+			this.showPauseMenu();
+			return null;
+		}
+		if(event == GameEngineEvent.LEVEL_END) {
 			this.finish();
 		}
 		return null;
 	}
+
 }

@@ -10,13 +10,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import se.chalmers.snake.highscoreDatabase.HighscoreDatabase;
-import se.chalmers.snake.interfaces.GameEngineIC;
-import se.chalmers.snake.interfaces.GameEngineIC.GameEngineEvent;
 import se.chalmers.snake.interfaces.HighscoreDatabaseIC;
 import se.chalmers.snake.mastercontroller.ControlResources;
-import se.chalmers.snake.util.EnumObservable;
-import se.chalmers.snake.util.EnumObserver;
+
 
 
 public class StartActivity extends Activity { // implements SensorEventListener

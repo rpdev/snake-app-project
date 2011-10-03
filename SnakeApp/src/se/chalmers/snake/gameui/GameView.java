@@ -36,7 +36,6 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	 */
 	private Bitmap obstacle;
 
-	
 	public GameView(Context context, GameEngineIC gameEngine) {
 		super(context);
 		this.mRes = context.getResources();
@@ -48,31 +47,32 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		int playerBodyWidth = this.gameEngine.getPlayerHead().radius;
 		int appleWidth = this.gameEngine.getItemRadius();
 		this.bodySeg = Bitmap.createScaledBitmap(
-				BitmapFactory.decodeResource(this.mRes, R.drawable.snake_body), playerBodyWidth * 2 ,playerBodyWidth * 2, true);
+				  BitmapFactory.decodeResource(this.mRes, R.drawable.snake_body), playerBodyWidth * 2, playerBodyWidth * 2, true);
 		this.apple = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(mRes, R.drawable.apple),
-				appleWidth * 2, appleWidth * 2, true);
+				  appleWidth * 2, appleWidth * 2, true);
 		this.postInvalidate();
 	}
 
-	public void addGameEngine(GameEngineIC gameEngine){
-		this.gameEngine = gameEngine;		
+	public void addGameEngine(GameEngineIC gameEngine) {
+		this.gameEngine = gameEngine;
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.START_GAME, this);
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.PAUSE_GAME, this);
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.UPDATE, this);
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.PLAYER_LOSE, this);
+		gameEngine.addObserver(GameEngineIC.GameEngineEvent.LEVEL_END, this);
+
 		this.snakeBody = gameEngine.getPlayerBody();
 		this.items = gameEngine.getItems();
 		this.walls = gameEngine.getObstacles();
 
 	}
 
-
 	@Override
 	public void onDraw(Canvas canvas) {
 		if (this.snakeBody != null) {
 			for (REPoint reP : this.snakeBody) {
-				canvas.drawBitmap(bodySeg, 
-						reP.x - reP.radius, reP.y - reP.radius,null);
+				canvas.drawBitmap(bodySeg,
+						  reP.x - reP.radius, reP.y - reP.radius, null);
 			}
 		}
 		if (this.items != null) {
@@ -91,8 +91,9 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 
 	}
 
-	public Void observerNotify(EnumObservable<GameEngineEvent, Void, Void> observable, 
-			GameEngineEvent event, Void arg) {
+	public Void observerNotify(EnumObservable<GameEngineEvent, Void, Void> observable,
+			  GameEngineEvent event, Void arg) {
+		System.out.println("*********************** REPAINT ************");
 		this.snakeBody = this.gameEngine.getPlayerBody();
 		this.items = this.gameEngine.getItems();
 		this.postInvalidate();
@@ -100,24 +101,23 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		return null;
 	}
 
-	public void pauseGame(){
+	public void pauseGame() {
 		this.gameEngine.pauseGame();
 	}
 
-	public void startGame(){
+	public void startGame() {
 		this.gameEngine.startGame();
 	}
-	
+
 	public boolean isRun() {
 		return this.gameEngine.isRun();
 	}
-	
+
 	public void restartGame() {
 		this.gameEngine.restartGame();
 	}
-	
+
 	public int getScore() {
 		return this.gameEngine.getScore();
 	}
-
 }

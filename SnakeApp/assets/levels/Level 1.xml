@@ -5,9 +5,9 @@
 	<difficuly>1</difficuly> <!-- difficuly of this level, value is 1=Easy,2=Normal,3=Hard,4=Vary Hard -->
 	<map x="300" y="400" /> <!-- define the reference frame for the x y grid. -->
 	
-	<gamespeed type="simple">3</gamespeed> <!-- The game speed, the type is what type of algorithm that will 
+	<gamespeed type="simple">5</gamespeed> <!-- The game speed, the type is what type of algorithm that will 
 	 be use, "simple" is algorithm that only return the given value as constant.-->
-	<growthspeed type="simple">2</growthspeed> <!-- How much the player will growth for each collect item,
+	<growthspeed type="simple">20</growthspeed> <!-- How much the player will growth for each collect item,
 	The type is same as for 'gamespeed' -->
 	<levelgoal type="greater">25</levelgoal> <!-- How many item the player most collect for end the level 
 	The type is same as for 'gamespeed' -->
