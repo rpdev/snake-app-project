@@ -22,15 +22,19 @@ import se.chalmers.snake.util.EnumObserver;
 
 /**
  * This GameActivity will run the Game 
+ * Use <code>
+ *  Intent gameIntent = new Intent(StartActivity.this, GameActivity.class);
+ *  gameIntent.putExtra("level", "STRING LEVEL NAME");
+ *  StartActivity.this.startActivity(gameIntent);<code> for select level to be load.
  */
 public class GameActivity extends Activity implements EnumObserver<GameEngineIC.GameEngineEvent, Void, Void> {
 
 	private GameEngineIC gameEngine;
-	private int totalScore;
 	private String currentLevel;
 	private GameView gameView;
 	private WakeLock wakeLock;
 	private MenuControll mColl;
+	
 
 	private class MenuControll {
 
@@ -134,18 +138,27 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 
 		this.setContentView(R.layout.game_layout);
 		this.mColl = new MenuControll();
-		this.totalScore = 0;
 
 		PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
 		this.wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "GameActivityHold");
 
 		this.gameEngine = ControlResources.get().getGameEngine();
-
-
-		this.currentLevel = "Level 1";
-		this.gameEngine.loadLevel("Level 1");
-
-
+		//<editor-fold defaultstate="collapsed" desc="Load Select Level">
+		String startLevelName = null;
+		try {
+			Bundle extras = this.getIntent().getExtras();
+			startLevelName = extras.getString("level");
+		} catch(Exception ex) {}
+		if(startLevelName!=null && startLevelName.length()>0) {
+			String [] allLevel = ControlResources.get().getLevelDatabase().getLevelListByName();
+			if(allLevel.length>0){
+				startLevelName = allLevel[0];
+			}
+		}
+		
+		this.currentLevel = startLevelName;
+		this.gameEngine.loadLevel(startLevelName);
+		//</editor-fold>
 		this.gameView = new GameView(this, this.gameEngine);
 		this.gameEngine.addObserver(GameEngineEvent.PLAYER_LOSE, this);
 		this.gameEngine.addObserver(GameEngineEvent.LEVEL_END, this);
@@ -181,7 +194,7 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 		if (this.wakeLock != null && this.wakeLock.isHeld()) {
 			this.wakeLock.release();
 		}
-		this.gameEngine.pauseGame(); // Force Stop of gameEngine on exit.
+		this.gameEngine.pauseGame(); // Force Stop of gameEngine on exit, in case run
 		super.finish();
 	}
 
@@ -190,7 +203,7 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 			this.gameView.pauseGame();
 		}
 		boolean showResume = GameActivity.this.gameEngine.getStatus() != GameEngineIC.GameEngineStatus.LEVEL_END;
-		boolean showEnterHighscore = showHighscore && ControlResources.get().getHighscoreDatabase().checkIfEnoughPoints(this.totalScore + this.gameView.getScore());
+		boolean showEnterHighscore = showHighscore && ControlResources.get().getHighscoreDatabase().checkIfEnoughPoints(this.gameView.getScore());
 
 		this.mColl.show(showResume ? this.mColl.RESUME : null, showEnterHighscore ? this.mColl.ENTER_HIGHSCORE : null, this.mColl.RESTART, this.mColl.EXIT);
 
@@ -236,7 +249,7 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 
 	private void loadNextLevel() {
 		this.mColl.hidden();
-		this.totalScore += this.gameView.getScore();
+		this.gameEngine.setStartScore(this.gameView.getScore());
 		this.currentLevel = ControlResources.get().getLevelDatabase().getNextLevel(this.currentLevel);
 		if (this.currentLevel != null) {
 			if (!this.gameEngine.loadLevel(this.currentLevel)) {
@@ -256,8 +269,9 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 				}
 			});
 			return null;
-		} else if (event == GameEngineEvent.LEVEL_END) { // Try to load next level if 
+		} else if (event == GameEngineEvent.LEVEL_END) {
 			this.runOnUiThread(new Runnable() {
+
 				public void run() {
 					GameActivity.this.showNextLevelMenu();
 				}
@@ -269,16 +283,16 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 					GameActivity.this.showStartMenu();
 				}
 			});
-		} else {
-			System.out.println("@@@@@@@@@@@@@@@@@@@@" + event + "@@@@@@@@@@@@@@@@@@@");
 		}
 		return null;
 	}
 
 	private void goToHighscoreActivity() {
 		Intent highscoreIntent = new Intent(GameActivity.this, HighscoreActivity.class);
-		highscoreIntent.putExtra("points", GameActivity.this.gameView.getScore() + GameActivity.this.totalScore);
+		highscoreIntent.putExtra("points", GameActivity.this.gameView.getScore());
 		GameActivity.this.startActivity(highscoreIntent);
 		GameActivity.this.finish();
 	}
+
+
 }

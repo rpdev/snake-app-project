@@ -21,6 +21,10 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 		 */
 		NEW_GAME,
 		/**
+		 * The game has restart.
+		 */
+		RESTART_GAME,
+		/**
 		 * The game has start or resume from a pause stat.
 		 */
 		START_GAME,
@@ -172,4 +176,7 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 	 * @return  Return the a level, or null if no level are load.
 	 */
 	public LevelIC getLevelMetaData();
+	
+	
+	public void setStartScore(int score);
 }

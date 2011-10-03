@@ -9,13 +9,18 @@ import se.chalmers.snake.interfaces.LevelDatabaseIC;
 import se.chalmers.snake.interfaces.LevelIC;
 import android.app.Activity;
 import android.content.res.AssetManager;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class LevelDatabase implements LevelDatabaseIC {
 
 	private final String PATH = "levels";
 	private final AssetManager am;
-	private final HashMap<String, LevelDatabaseData> levelnames = new HashMap<String, LevelDatabaseData>();
-	private final HashMap<Integer, LevelDatabaseData> levelvalues = new HashMap<Integer, LevelDatabaseData>();
+	private final List<String> levelNameList = new ArrayList<String>();
+	private final Map<String, LevelDatabaseData> levelNames = new HashMap<String, LevelDatabaseData>();
+	private final Map<Integer, LevelDatabaseData> levelValues = new TreeMap<Integer, LevelDatabaseData>();
 
 	public LevelDatabase(Activity activty) {
 		this.am = activty.getAssets();
@@ -27,7 +32,7 @@ public class LevelDatabase implements LevelDatabaseIC {
 
 	@Override
 	public LevelIC getByLevel(int level) {
-		LevelDatabaseData data = levelvalues.get(level);
+		LevelDatabaseData data = levelValues.get(level);
 		if (data != null) //return new Level(data);
 		{
 			try {
@@ -40,7 +45,7 @@ public class LevelDatabase implements LevelDatabaseIC {
 
 	@Override
 	public LevelIC getByName(String name) {
-		LevelDatabaseData data = levelnames.get(name);
+		LevelDatabaseData data = levelNames.get(name);
 		if (data != null) {
 			try {
 				return new XMLLevel(data);
@@ -57,8 +62,8 @@ public class LevelDatabase implements LevelDatabaseIC {
 
 	@Override
 	public int[] getLevelListByLevel() {
-		Iterator<Integer> it = levelvalues.keySet().iterator();
-		int[] array = new int[levelvalues.size()];
+		Iterator<Integer> it = levelValues.keySet().iterator();
+		int[] array = new int[levelValues.size()];
 		int i = 0;
 		while (it.hasNext()) {
 			array[i++] = it.next();
@@ -68,7 +73,7 @@ public class LevelDatabase implements LevelDatabaseIC {
 
 	@Override
 	public String[] getLevelListByName() {
-		return levelnames.keySet().toArray(new String[levelnames.size()]);
+		return levelNameList.toArray(new String[levelNameList.size()]);
 	}
 
 	private void loadFiles(String[] files) {
@@ -77,18 +82,23 @@ public class LevelDatabase implements LevelDatabaseIC {
 				int level = Integer.parseInt(file.substring(file.indexOf(' '), file.indexOf('.')).trim());
 				String name = file.substring(0, file.lastIndexOf('.'));
 				LevelDatabaseData data = new LevelDatabaseData(this.PATH + "/" + file, name, level);
-				this.levelnames.put(name, data);
-				this.levelvalues.put(level, data);
+				this.levelNames.put(name, data);
+				this.levelValues.put(level, data);
 			}
+		}
+		Iterator<Integer> it = levelValues.keySet().iterator();
+		
+		while (it.hasNext()) {
+			it.next();
 		}
 	}
 
 	@Override
 	public String getNextLevel(String level) {
-		if (this.levelnames.containsKey(level)) {
-			int levelID = this.levelnames.get(level).level+1;
-			if (this.levelvalues.containsKey(levelID)) {
-				return this.levelvalues.get(levelID).name;
+		if (this.levelNames.containsKey(level)) {
+			int levelID = this.levelNames.get(level).level+1;
+			if (this.levelValues.containsKey(levelID)) {
+				return this.levelValues.get(levelID).name;
 			}
 		}
 		return null;
@@ -96,7 +106,7 @@ public class LevelDatabase implements LevelDatabaseIC {
 
 	@Override
 	public int getNextLevel(int level) {
-		if (this.levelvalues.containsKey(level + 1)) {
+		if (this.levelValues.containsKey(level + 1)) {
 			return level + 1;
 		} else {
 			return -1;
