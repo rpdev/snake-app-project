@@ -38,7 +38,7 @@ public final class HighscoreDatabase implements HighscoreDatabaseIC, Serializabl
 		if (checkIfEnoughPoints(points)) {
 			this.highscoreList.add(new Highscore(playerName, points));
 			if (this.highscoreList.size() > SHOW_COUNT) {
-				this.highscoreList.remove(this.highscoreList.getFirst());
+				this.highscoreList.remove(this.highscoreList.getLast());
 			}
 			
 			Collections.sort(this.highscoreList);

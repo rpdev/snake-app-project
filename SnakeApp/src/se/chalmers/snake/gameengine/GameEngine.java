@@ -24,6 +24,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	private boolean isRun = false;
 	private double currentAngle;
 	private GameEngineStatus currentStatus;
+	private int startScore;
 
 	/**
 	 * The gameEngine nead a ControlResourcesIC class for get some metadata from the system and 
@@ -33,6 +34,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	public GameEngine(ControlResourcesIC controlResources) {
 		super(GameEngineIC.GameEngineEvent.class);
 		this.currentStatus = GameEngineStatus.NO_LEVEL_LOAD;
+		this.startScore = 0;
 		this.controlResources = controlResources;
 		this.motionDetector = controlResources.getMotionDetector();
 		this.isRun = false;
@@ -116,7 +118,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	@Override
 	public synchronized boolean restartGame() {
 		if (this.currentLevel != null) {
-			return this.loadLevel(this.currentLevel.getLevelData());
+			return this.loadLevel(this.currentLevel.getLevelData(), false);
 		}
 		return false;
 	}
@@ -124,10 +126,10 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	@Override
 	public synchronized boolean loadLevel(String name) {
 		LevelIC level = this.controlResources.getLevelDatabase().getByName(name);
-		return this.loadLevel(level);
+		return this.loadLevel(level, true);
 	}
 
-	private boolean loadLevel(LevelIC level) {
+	private boolean loadLevel(LevelIC level, boolean newGame) {
 		if (level != null) {
 			this.pauseGame();
 			try {
@@ -137,7 +139,11 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 				return false;
 			}
 			this.currentStatus = GameEngineStatus.NEW_LEVEL;
-			this.fireObserver(GameEngineEvent.NEW_GAME);
+			if (newGame) {
+				this.fireObserver(GameEngineEvent.NEW_GAME);
+			} else {
+				this.fireObserver(GameEngineEvent.RESTART_GAME);
+			}
 			return true;
 		} else {
 			return false;
@@ -147,7 +153,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	//<editor-fold defaultstate="collapsed" desc="Override Methods">
 	@Override
 	public int getScore() {
-		return this.currentLevel.getScore();
+		return this.startScore + this.currentLevel.getScore();
 	}
 
 	@Override
@@ -231,6 +237,13 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 			return this.currentLevel.getItemsRadius();
 		} else {
 			return 0;
+		}
+	}
+
+	@Override
+	public void setStartScore(int score) {
+		if (score >= 0) {
+			this.startScore = score;
 		}
 	}
 }
