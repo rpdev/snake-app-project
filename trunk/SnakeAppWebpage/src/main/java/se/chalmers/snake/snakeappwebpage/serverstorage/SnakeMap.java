@@ -49,30 +49,28 @@ public class SnakeMap implements Serializable {
 	 * REPoint has value
 	 * int x,y,r
 	 */
-	@JoinColumn
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	private REPoint snakeMeta;
 	@Column
 	private Integer snakeAngle;
 	@Column
 	private Integer snakeSize;
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
 	private List<REPoint> obstacle;
-	@JoinColumn
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	private REPoint mapSize; // Only use x,y
 	/**
 	 * MPoint
 	 * String type ( short string max 16 char )
 	 * int value
 	 */
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	private MPoint gameSpeed;
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	private MPoint growthspeed;
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	private MPoint levelgoal;
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	private MPoint itemPoint;
 	@Column
 	private Integer itemCount;
@@ -91,6 +89,14 @@ public class SnakeMap implements Serializable {
 		creationDate = new Date();
 		status = STATUS.CREATED;
 	}
+        
+        public boolean addComment(Comment comment){
+            return comments.add(comment);
+        }
+        
+        public boolean removeComment(Comment comment){
+            return comments.remove(comment);
+        }
 
 	//<editor-fold defaultstate="collapsed" desc="Getters & setters">
 	/**
