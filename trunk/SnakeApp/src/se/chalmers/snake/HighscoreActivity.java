@@ -8,11 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import se.chalmers.snake.interfaces.HighscoreDatabaseIC;
 import se.chalmers.snake.mastercontroller.ControlResources;
 
 public class HighscoreActivity extends Activity {
 
-	private HighscoreDatabase highscoreDatabase;
+	private HighscoreDatabaseIC highscoreDatabase;
 	private Storage storage;
 	private int points;
 	
@@ -34,11 +35,7 @@ public class HighscoreActivity extends Activity {
 		
 		this.setObjects();
 		this.storage = ControlResources.get().getStorage();
-		this.highscoreDatabase = storage.getObject("highscore");
-		if(this.highscoreDatabase == null){
-			this.highscoreDatabase = new HighscoreDatabase();
-		}
-		
+		this.highscoreDatabase = ControlResources.get().getHighscoreDatabase();
 		if(checkIfEnoughPoints()){
 			showYouMadeItMenu();
 		} else {
@@ -86,11 +83,10 @@ public class HighscoreActivity extends Activity {
 		this.submitButton.setVisibility(View.GONE);
 	}
 	
-	private void savePoints(String name, int points){
+	private boolean  savePoints(String name, int points){
 		this.highscoreDatabase.addPlayerToHighscore(name, points);
-		this.storage.storeObject("highscore", this.highscoreDatabase);
-		if(this.storage.getObject("highscore") == null)
-			submitButton.setText("FAIL");
+		return this.highscoreDatabase.saveHighscore();
+			
 	}
 
 	private View.OnClickListener skipListener = new View.OnClickListener() {
@@ -105,8 +101,10 @@ public class HighscoreActivity extends Activity {
 		
 		@Override
 		public void onClick(View v) {
-			String name = inputName.getText().toString();
-			HighscoreActivity.this.savePoints(name,points);			
+			String name = HighscoreActivity.this.inputName.getText().toString();
+			if(HighscoreActivity.this.savePoints(name,points)) {
+				HighscoreActivity.this.finish();
+			}
 		}
 	};
 }

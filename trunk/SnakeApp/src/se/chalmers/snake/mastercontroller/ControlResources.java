@@ -31,8 +31,19 @@ public class ControlResources implements ControlResourcesIC{
 
 	private ControlResources(Activity currentActivity, SensorManager sensorManager, XYPoint screenSize) {
 		this.motionDetector = new MotionDetector(sensorManager);
-		this.highscoreDatabase = new HighscoreDatabase();
+		
+		
 		this.storage = new Storage(currentActivity);
+		
+		HighscoreDatabase highscoreDatabaseObj = this.storage.getObject("highscore");
+		if(highscoreDatabaseObj instanceof HighscoreDatabaseIC) {
+			this.highscoreDatabase = (HighscoreDatabaseIC)highscoreDatabaseObj;
+		} else {
+			this.highscoreDatabase = new HighscoreDatabase();
+		}
+		
+		//this.highscoreDatabase = new HighscoreDatabase();
+		
 		this.levelDatabase = new LevelDatabase(currentActivity);
 		this.screenSize = screenSize;
 		this.gameEngine = new GameEngine(this);

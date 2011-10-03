@@ -10,31 +10,24 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import se.chalmers.snake.gameui.GameView;
 import se.chalmers.snake.highscoreDatabase.HighscoreDatabase;
 import se.chalmers.snake.interfaces.GameEngineIC;
 import se.chalmers.snake.interfaces.GameEngineIC.GameEngineEvent;
+import se.chalmers.snake.interfaces.HighscoreDatabaseIC;
 import se.chalmers.snake.mastercontroller.ControlResources;
 import se.chalmers.snake.util.EnumObservable;
 import se.chalmers.snake.util.EnumObserver;
-import se.chalmers.snake.util.Storage;
 
-public class StartActivity extends Activity implements EnumObserver<GameEngineIC.GameEngineEvent, Void, Void> { // implements SensorEventListener
 
-	private RelativeLayout gameHolder;
-	private GameView gameView;
-	private HighscoreDatabase highData;
-	private Storage storage;
-	private GameEngineIC gameEngineIC;
+public class StartActivity extends Activity { // implements SensorEventListener
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.snake_layout);
-				
-		
-		storage = new Storage(this);
-		
+
+
+
 		//Instantiate layouts
 		background = (RelativeLayout) findViewById(R.id.backgroundImage);
 		menu = (LinearLayout) findViewById(R.id.menu_buttons);
@@ -55,7 +48,7 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 
 		show();
 		newGame.setOnClickListener(newGameListener);
-		resumeGame.setOnClickListener(resumeGameListener);
+		//resumeGame.setOnClickListener(resumeGameListener);
 		help.setOnClickListener(helpListener);
 		highscore.setOnClickListener(highscoreListener);
 		back.setOnClickListener(backListener);
@@ -79,7 +72,6 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 	private TextView helpText;
 	private TextView highscoreText;
 	//Info
-	private boolean hidden;
 
 	private enum MenuState {
 		//menuState possibilities
@@ -94,13 +86,12 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 
 	public void show() {
 		menu.setVisibility(View.VISIBLE);
-		hidden = false;
+
 	}
 
 	public void hide() {
 		menu.setVisibility(View.GONE);
 		background.setBackgroundColor(0x00000000);
-		hidden = true;
 	}
 
 	public void switchToStartMenu() {
@@ -168,6 +159,7 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 
 		@Override
 		public void onClick(View v) {
+			ControlResources.make(StartActivity.this, R.id.spelplan);
 			switch (previousMenuState) {
 				case onStartMenu:
 					switchToStartMenu();
@@ -182,47 +174,21 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 		}
 	};
 	private View.OnClickListener newGameListener = new View.OnClickListener() {
-
 		public void onClick(View v) {
-			/*
-			FrameLayout spelplan = (FrameLayout) StartActivity.this.findViewById(R.id.spelplan);
-
-			if (gameView == null) {
-				gameEngineIC = ControlResources.get().getGameEngine();
-				gameView = new GameView(StartActivity.this, gameEngineIC);
-				gameEngineIC.addObserver(GameEngineIC.GameEngineEvent.PLAYER_LOSE, StartActivity.this);
-				gameHolder = (RelativeLayout) findViewById(R.id.gameViewHolder);
-				gameHolder.addView(gameView);
-			}
-			else {
-				gameView.addGameEngine(gameEngineIC);
-//				gameEngineIC.addObserver(GameEngineIC.GameEngineEvent.PLAYER_LOSE, StartActivity.this);
-			}
-			gameEngineIC.startGame();
-			hide();
-			*/
-			
 			// This call most be down after first rend of screen but before some recuses nead this.
 			ControlResources.make(StartActivity.this, R.id.spelplan);
-			
 			Intent gameIntent = new Intent(StartActivity.this, GameActivity.class);
 			StartActivity.this.startActivity(gameIntent);
-			
-		}
-	};
-	private View.OnClickListener resumeGameListener = new View.OnClickListener() {
 
-		@Override
-		public void onClick(View v) {
-			gameView.startGame();
-//			findViewById(R.id.menu_buttons).setVisibility(View.GONE);
-			hide();
 		}
 	};
+
+	
 	private View.OnClickListener helpListener = new View.OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
+			ControlResources.make(StartActivity.this, R.id.spelplan);
 			switchToHelpMenu();
 			show();
 		}
@@ -231,11 +197,12 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 
 		@Override
 		public void onClick(View v) {
-			highData = storage.getObject("highscore");
-			if(highData == null)
-				highscoreText.setText("Error, could not find highscore file.");
-			else
-				highscoreText.setText(highData.toString());
+			ControlResources.make(StartActivity.this, R.id.spelplan);
+
+
+			HighscoreDatabaseIC highData = ControlResources.get().getHighscoreDatabase();
+			highscoreText.setText(highData.toString());
+			
 			switchToHighscoreMenu();
 			show();
 		}
@@ -269,11 +236,4 @@ public class StartActivity extends Activity implements EnumObserver<GameEngineIC
 	}
 	}
 	 */
-	@Override
-	public Void observerNotify(
-			  EnumObservable<GameEngineEvent, Void, Void> observable,
-			  GameEngineEvent event, Void arg) {
-		highData.addPlayerToHighscore("Auto", 5);
-		return null;
-	}
 }
