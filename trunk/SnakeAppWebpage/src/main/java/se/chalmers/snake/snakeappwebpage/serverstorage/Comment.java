@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
@@ -33,11 +34,9 @@ public class Comment implements Serializable {
     @Column
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date commentLatestEdit = null;
-    @OneToOne
-    @JoinColumn(nullable = false)
+    @ManyToOne
     private SnakeMap map;
-    @OneToOne
-    @JoinColumn(nullable = false)
+    @ManyToOne
     private UserAcc user;
 
     public Comment() {
