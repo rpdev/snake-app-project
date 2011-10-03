@@ -8,7 +8,7 @@
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/snakeappweb"/>
-      <property name="javax.persistence.jdbc.password" value="jhq1gvizjulrk83g"/>
+      <property name="javax.persistence.jdbc.password" value="snakeappweb"/>
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
       <property name="javax.persistence.jdbc.user" value="snakeappweb"/>
       <property name="eclipselink.ddl-generation" value="create-tables"/>
