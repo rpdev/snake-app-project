@@ -5,13 +5,15 @@
     <class>se.chalmers.snake.snakeappwebpage.serverstorage.Comment</class>
     <class>se.chalmers.snake.snakeappwebpage.serverstorage.SnakeMap</class>
     <class>se.chalmers.snake.snakeappwebpage.serverstorage.UserAcc</class>
+    <class>se.chalmers.snake.snakeappwebpage.serverstorage.REPoint</class>
+    <class>se.chalmers.snake.snakeappwebpage.serverstorage.MPoint</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/snakeappweb"/>
       <property name="javax.persistence.jdbc.password" value="snakeappweb"/>
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
       <property name="javax.persistence.jdbc.user" value="snakeappweb"/>
-      <property name="eclipselink.ddl-generation" value="create-tables"/>
+      <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
     </properties>
   </persistence-unit>
 </persistence>
