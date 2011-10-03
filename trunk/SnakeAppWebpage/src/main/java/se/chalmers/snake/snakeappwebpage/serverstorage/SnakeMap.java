@@ -49,6 +49,34 @@ public class SnakeMap implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date editedDate;
 
+	 
+	 /**
+	  * REPoint has value
+	  * int x,y,r
+	  */
+	 private REPoint snakeMeta;
+	 private int snakeAngle;
+	 private int snakeSIZE;
+	 private List<REPoint> obstacle;
+	 private REPoint mapSize; // Only use x,y
+	 
+	 /**
+	  * MPoint
+	  * String type ( short string max 16 char )
+	  * int value
+	  */
+	 private MPoint gameSpeed;
+	 private MPoint growthspeed;
+	 private MPoint levelgoal;
+	 private MPoint itemPoint;
+	 private int itemCount;
+	 private String mapName;
+	 private String mapDescription;
+	 private int difficuly; // 1 to 4 ( 1:easy,2:normal,3:hard,4:vary Hard
+	 
+	 
+	 
+	 
     public SnakeMap(){}
 
     public SnakeMap(UserAcc user){
