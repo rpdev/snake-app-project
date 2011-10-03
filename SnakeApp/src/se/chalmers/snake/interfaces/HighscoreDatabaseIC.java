@@ -24,4 +24,8 @@ public interface HighscoreDatabaseIC {
 	 * @return
 	 */
 	public String toString();
+	
+	public boolean checkIfEnoughPoints(int points);
+	
+	public boolean saveHighscore(); 
 }

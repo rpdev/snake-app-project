@@ -111,7 +111,7 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 
 	@Override
 	public void onResume() {
-		if (this.wakeLock != null ) {
+		if (this.wakeLock != null) {
 			this.wakeLock.acquire();
 		}
 		super.onResume();
@@ -186,11 +186,12 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 	}
 
 	public Void observerNotify(EnumObservable<GameEngineEvent, Void, Void> observable, GameEngineEvent event, Void arg) {
-		System.out.println("Event " + event);
-		Intent highscoreIntent = new Intent(GameActivity.this, HighscoreActivity.class);
-		highscoreIntent.putExtra("points", 5);
-		GameActivity.this.startActivity(highscoreIntent);
-		this.finish();
+		if (event == GameEngineEvent.PLAYER_LOSE) {
+			Intent highscoreIntent = new Intent(GameActivity.this, HighscoreActivity.class);
+			highscoreIntent.putExtra("points",this.gameView.getScore());
+			GameActivity.this.startActivity(highscoreIntent);
+			this.finish();
+		}
 		return null;
 	}
 }

@@ -1,35 +1,47 @@
 package se.chalmers.snake.highscoreDatabase;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.TreeSet;
 import se.chalmers.snake.interfaces.HighscoreDatabaseIC;
+import se.chalmers.snake.mastercontroller.ControlResources;
+import se.chalmers.snake.util.Storage;
 
 public final class HighscoreDatabase implements HighscoreDatabaseIC, Serializable {
-
-	private static final long serialVersionUID = 995427075433374394L;
-	private final TreeSet<Highscore> highscoreList;
+	private static final int SHOW_COUNT = 10;
+	private static final long serialVersionUID = 995427075433374393L;
+	//private final TreeSet<Highscore> highscoreList;
+	private final LinkedList<Highscore> highscoreList;
 
 	public HighscoreDatabase() {
-		this.highscoreList = new TreeSet<Highscore>(new HighscoreComparator());
-		for (int i = 0; i < 5; i++) {
-			this.addPlayerToHighscore("[Empty]", i);
+		
+		// Sort by higest point first.
+		//this.highscoreList = new TreeSet<Highscore>();
+		this.highscoreList = new LinkedList<Highscore>();
+		for (int i = 0; i < SHOW_COUNT; i++) {
+			this.addPlayerToHighscore("[Empty]", 0);
 		}
 	}
-
+	@Override
 	public boolean checkIfEnoughPoints(int points) {
 		if (highscoreList.isEmpty()) {
 			return true;
 		}
-		return points > highscoreList.first().getPoints();
+		
+		return points >= this.highscoreList.getLast().getPoints();
 	}
 
 	@Override
 	public boolean addPlayerToHighscore(String playerName, int points) {
 		if (checkIfEnoughPoints(points)) {
-			highscoreList.add(new Highscore(playerName, points));
-			if (highscoreList.size() >= 10) {
-				highscoreList.remove(highscoreList.first());
+			this.highscoreList.add(new Highscore(playerName, points));
+			if (this.highscoreList.size() > SHOW_COUNT) {
+				this.highscoreList.remove(this.highscoreList.getFirst());
 			}
+			
+			Collections.sort(this.highscoreList);
+			
 			return true;
 		}
 		return false;
@@ -45,12 +57,19 @@ public final class HighscoreDatabase implements HighscoreDatabaseIC, Serializabl
 	@Override
 	public String toString() {
 
-		String text = "Highscore:";
-
-		for (Highscore highscore : highscoreList) {
-			text += "\n" + highscore.getPlayerName() + "\t\t\t\t\t\t" + highscore.getPoints();
+		StringBuilder outText = new StringBuilder("Highscore:");
+		for (Highscore highscore : this.highscoreList) {
+			outText.append("\n").append(highscore.getPlayerName()).append(" - ").append(highscore.getPoints());
 		}
+		return outText.toString();
+	}
 
-		return text;
+	public boolean saveHighscore() {
+		Storage storage  = ControlResources.get().getStorage();
+		storage.storeObject("highscore", this);
+		if(storage.getObject("highscore") == null) {
+			return false;
+		}
+		return true;
 	}
 }

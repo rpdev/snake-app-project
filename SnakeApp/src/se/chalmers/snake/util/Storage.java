@@ -1,10 +1,8 @@
 package se.chalmers.snake.util;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.StreamCorruptedException;
 import java.lang.reflect.Type;
 
 import android.app.Activity;
@@ -90,6 +88,7 @@ public class Storage {
 			oos.close();
 			return true;
 		} catch (Exception ex) {
+			
 		}
 		return false;
 	}

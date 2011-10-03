@@ -2,7 +2,7 @@ package se.chalmers.snake.highscoreDatabase;
 
 import java.io.Serializable;
 
-public final class Highscore implements Serializable {
+public final class Highscore implements Serializable, Comparable<Highscore> {
 	private static final long serialVersionUID = 4611406553461997259L;
 	
 	private String playerName;
@@ -42,6 +42,10 @@ public final class Highscore implements Serializable {
 
 	public String getLevel() {
 		return level;
+	}
+
+	public int compareTo(Highscore t) {
+		return t.points-this.points;
 	}
 
 }
