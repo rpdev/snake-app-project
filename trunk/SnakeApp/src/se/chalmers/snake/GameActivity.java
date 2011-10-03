@@ -34,7 +34,6 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 	private GameView gameView;
 	private WakeLock wakeLock;
 	private MenuControll mColl;
-	
 
 	private class MenuControll {
 
@@ -148,14 +147,15 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 		try {
 			Bundle extras = this.getIntent().getExtras();
 			startLevelName = extras.getString("level");
-		} catch(Exception ex) {}
-		if(startLevelName!=null && startLevelName.length()>0) {
-			String [] allLevel = ControlResources.get().getLevelDatabase().getLevelListByName();
-			if(allLevel.length>0){
+		} catch (Exception ex) {
+		}
+		if (startLevelName == null || startLevelName.length() == 0) {
+			String[] allLevel = ControlResources.get().getLevelDatabase().getLevelListByName();
+			if (allLevel.length > 0) {
 				startLevelName = allLevel[0];
 			}
 		}
-		
+
 		this.currentLevel = startLevelName;
 		this.gameEngine.loadLevel(startLevelName);
 		//</editor-fold>
@@ -293,6 +293,4 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 		GameActivity.this.startActivity(highscoreIntent);
 		GameActivity.this.finish();
 	}
-
-
 }
