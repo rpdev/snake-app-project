@@ -25,6 +25,7 @@ public final class HighscoreDatabase implements HighscoreDatabaseIC, Serializabl
 	}
 	@Override
 	public boolean checkIfEnoughPoints(int points) {
+		if(points<=0) return false;
 		if (highscoreList.isEmpty()) {
 			return true;
 		}

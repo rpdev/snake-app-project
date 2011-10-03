@@ -115,19 +115,25 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 
 	@Override
 	public synchronized boolean restartGame() {
-		return this.loadLevel(this.getLevelName());
+		if (this.currentLevel != null) {
+			return this.loadLevel(this.currentLevel.getLevelData());
+		}
+		return false;
 	}
 
 	@Override
 	public synchronized boolean loadLevel(String name) {
 		LevelIC level = this.controlResources.getLevelDatabase().getByName(name);
+		return this.loadLevel(level);
+	}
+
+	private boolean loadLevel(LevelIC level) {
 		if (level != null) {
 			this.pauseGame();
 			try {
 				this.currentLevel = new LevelEngine(level, this.controlResources.getScreenSize());
 				this.currentAngle = this.currentLevel.getLevelData().getStartAngle();
 			} catch (Exception ex) {
-				ex.printStackTrace();
 				return false;
 			}
 			this.currentStatus = GameEngineStatus.NEW_LEVEL;

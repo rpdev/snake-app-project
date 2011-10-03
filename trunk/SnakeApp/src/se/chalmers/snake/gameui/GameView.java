@@ -93,7 +93,6 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 
 	public Void observerNotify(EnumObservable<GameEngineEvent, Void, Void> observable,
 			  GameEngineEvent event, Void arg) {
-		System.out.println("*********************** REPAINT ************");
 		this.snakeBody = this.gameEngine.getPlayerBody();
 		this.items = this.gameEngine.getItems();
 		this.postInvalidate();
