@@ -14,7 +14,6 @@ import se.chalmers.snake.mastercontroller.ControlResources;
 public class HighscoreActivity extends Activity {
 
 	private HighscoreDatabaseIC highscoreDatabase;
-	private Storage storage;
 	private int points;
 	
 	private Button skipButton;
@@ -22,6 +21,25 @@ public class HighscoreActivity extends Activity {
 	private TextView youMadeIt;
 	private TextView youDidntMakeIt;
 	private EditText inputName;
+	
+	private View.OnClickListener skipListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			HighscoreActivity.this.finish();
+		}
+	};
+	
+	private View.OnClickListener submitListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			String name = HighscoreActivity.this.inputName.getText().toString();
+			if(HighscoreActivity.this.savePoints(name,points)) {
+				HighscoreActivity.this.finish();
+			}
+		}
+	};
+	
+	
 	
 	@Override
 	public void onCreate(Bundle icicle) {
@@ -34,7 +52,6 @@ public class HighscoreActivity extends Activity {
 		}
 		
 		this.setObjects();
-		this.storage = ControlResources.get().getStorage();
 		this.highscoreDatabase = ControlResources.get().getHighscoreDatabase();
 		if(checkIfEnoughPoints()){
 			showYouMadeItMenu();
@@ -86,25 +103,6 @@ public class HighscoreActivity extends Activity {
 	private boolean  savePoints(String name, int points){
 		this.highscoreDatabase.addPlayerToHighscore(name, points);
 		return this.highscoreDatabase.saveHighscore();
-			
 	}
 
-	private View.OnClickListener skipListener = new View.OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			HighscoreActivity.this.finish();
-			
-		}
-	};
-	private View.OnClickListener submitListener = new View.OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			String name = HighscoreActivity.this.inputName.getText().toString();
-			if(HighscoreActivity.this.savePoints(name,points)) {
-				HighscoreActivity.this.finish();
-			}
-		}
-	};
 }
