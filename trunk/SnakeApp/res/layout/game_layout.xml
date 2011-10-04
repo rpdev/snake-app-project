@@ -25,7 +25,17 @@
 			android:orientation="vertical" 
 			android:visibility="gone"
 			>
-			
+	
+			<TextView android:id="@+id/game_menu_text_box"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/congrats"
+      	style="@style/customText"
+			android:visibility="gone"
+			android:layout_marginBottom="5dip"
+			android:gravity="center_vertical|center_horizontal"
+			/>
+	
 			<Button 
 			android:id="@+id/game_menu_button_start" 
       			android:layout_width="fill_parent"
@@ -33,6 +43,8 @@
       			android:text="Start"
       			android:layout_marginBottom="5dip"
 					android:visibility="gone"
+					
+
 			/>
 			
 			<Button 
@@ -79,5 +91,4 @@
 			/>
 		</LinearLayout>
 	</RelativeLayout>
-
 </FrameLayout>

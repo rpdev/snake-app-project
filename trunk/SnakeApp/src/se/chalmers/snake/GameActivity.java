@@ -13,12 +13,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import se.chalmers.snake.gameui.GameView;
 import se.chalmers.snake.interfaces.GameEngineIC;
 import se.chalmers.snake.interfaces.GameEngineIC.GameEngineEvent;
+import se.chalmers.snake.interfaces.LevelIC;
 import se.chalmers.snake.mastercontroller.ControlResources;
 import se.chalmers.snake.util.EnumObservable;
 import se.chalmers.snake.util.EnumObserver;
+import se.chalmers.snake.util.TextFormatter;
 
 /**
  * This GameActivity will run the Game 
@@ -44,6 +47,7 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 		private final Button START;
 		private final Button NEXT_LEVEL;
 		private final Button ENTER_HIGHSCORE;
+		private final TextView TEXT_BOX;
 
 		private MenuControll() {
 			this.menu = (LinearLayout) GameActivity.this.findViewById(R.id.game_menu_button);
@@ -62,7 +66,9 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 				public void onClick(View view) {
 					MenuControll.this.hidden();
 					GameActivity.this.gameView.restartGame();
+					GameActivity.this.gameEngine.setStartScore(0);
 					GameActivity.this.gameView.startGame();
+
 				}
 			});
 
@@ -102,24 +108,31 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 				}
 			});
 
+
+			this.TEXT_BOX = (TextView) GameActivity.this.findViewById(R.id.game_menu_text_box);
+		}
+
+		private void show(CharSequence textBox, Button... buttons) {
+			this.show(buttons);
+
+			TEXT_BOX.setText(textBox);
+			TEXT_BOX.setVisibility(View.VISIBLE);
 		}
 
 		private void show(Button... buttons) {
-
 			RESUME.setVisibility(View.GONE);
 			EXIT.setVisibility(View.GONE);
 			RESTART.setVisibility(View.GONE);
 			START.setVisibility(View.GONE);
 			NEXT_LEVEL.setVisibility(View.GONE);
 			ENTER_HIGHSCORE.setVisibility(View.GONE);
-
+			TEXT_BOX.setVisibility(View.GONE);
 			for (Button button : buttons) {
 				if (button != null) {
 					button.setVisibility(View.VISIBLE);
 				}
 			}
 			this.menu.setVisibility(View.VISIBLE);
-
 		}
 
 		private void hidden() {
@@ -202,11 +215,18 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 		if (this.gameView.isRun()) {
 			this.gameView.pauseGame();
 		}
+
+
 		boolean showResume = GameActivity.this.gameEngine.getStatus() != GameEngineIC.GameEngineStatus.LEVEL_END;
 		boolean showEnterHighscore = showHighscore && ControlResources.get().getHighscoreDatabase().checkIfEnoughPoints(this.gameView.getScore());
 
-		this.mColl.show(showResume ? this.mColl.RESUME : null, showEnterHighscore ? this.mColl.ENTER_HIGHSCORE : null, this.mColl.RESTART, this.mColl.EXIT);
 
+		if (showEnterHighscore) {
+			CharSequence text = TextFormatter.FT(TextFormatter.TS("Enter Highscore", "bi"), "\nYou have enter Highscore with ", TextFormatter.TS("" + this.gameEngine.getScore(), "i"), " points.");
+			this.mColl.show(text, showResume ? this.mColl.RESUME : null, showEnterHighscore ? this.mColl.ENTER_HIGHSCORE : null, this.mColl.RESTART, this.mColl.EXIT);
+		} else {
+			this.mColl.show(showResume ? this.mColl.RESUME : null, showEnterHighscore ? this.mColl.ENTER_HIGHSCORE : null, this.mColl.RESTART, this.mColl.EXIT);
+		}
 	}
 
 	public void showNextLevelMenu() {
@@ -220,8 +240,11 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 		if (this.gameView.isRun()) {
 			this.gameView.pauseGame();
 		}
+		LevelIC lvMeta = this.gameEngine.getLevelMetaData();
 
-		this.mColl.show(this.mColl.START, this.mColl.EXIT);
+		CharSequence text = TextFormatter.FT(TextFormatter.TS(lvMeta.getLevelName(), "b"), "\n", TextFormatter.TS(lvMeta.getLevelDescription(), "i"));
+
+		this.mColl.show(text, this.mColl.START, this.mColl.EXIT);
 	}
 
 	@Override
