@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <snakeappmap id="1"> <!-- id is the database id for this level and are only use for the editor -->
 	<name>My First Level</name> <!-- The level name to be display -->
-	<description>My First Level, Collect 25 Apples</description> <!-- The description of the level -->
+	<description>My First Level, Collect 15 Apples</description> <!-- The description of the level -->
 	<difficuly>1</difficuly> <!-- difficuly of this level, value is 1=Easy,2=Normal,3=Hard,4=Vary Hard -->
 	<map x="300" y="400" /> <!-- define the reference frame for the x y grid. -->
 	
-	<gamespeed type="simple">5</gamespeed> <!-- The game speed, the type is what type of algorithm that will 
+	<gamespeed type="simple">4</gamespeed> <!-- The game speed, the type is what type of algorithm that will 
 	 be use, "simple" is algorithm that only return the given value as constant.-->
 	<growthspeed type="simple">2</growthspeed> <!-- How much the player will growth for each collect item,
 	The type is same as for 'gamespeed' -->
-	<levelgoal type="greater">3</levelgoal> <!-- How many item the player most collect for end the level 
+	<levelgoal type="greater">15</levelgoal> <!-- How many item the player most collect for end the level 
 	The type is same as for 'gamespeed' -->
 	
 	<item type="simple" r="10">1</item> <!-- how big and many item that to be show on the map at same time
