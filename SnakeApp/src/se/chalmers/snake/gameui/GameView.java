@@ -10,7 +10,7 @@ import android.graphics.Paint;
 import android.view.View;
 import java.util.List;
 import se.chalmers.snake.R;
-import se.chalmers.snake.StartActivity;
+
 import se.chalmers.snake.interfaces.GameEngineIC;
 import se.chalmers.snake.interfaces.GameEngineIC.GameEngineEvent;
 import se.chalmers.snake.interfaces.util.REPoint;
@@ -35,6 +35,7 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	 * This will not work, the obstacle can has diffrent size on a map.
 	 */
 	private Bitmap obstacle;
+	private int score;
 
 	public GameView(Context context, GameEngineIC gameEngine) {
 		super(context);
@@ -96,6 +97,9 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 				canvas.drawCircle(reP.x, reP.y, reP.radius, this.paint);
 			}
 		}
+		
+		paint.setColor(Color.BLACK);
+		canvas.drawText("Score: "+score, 10,20, paint);
 
 	}
 
@@ -103,8 +107,8 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 			  GameEngineEvent event, Void arg) {
 		this.snakeBody = this.gameEngine.getPlayerBody();
 		this.items = this.gameEngine.getItems();
-		if(event == GameEngineEvent.NEW_GAME) {
-			
+		this.score = this.gameEngine.getScore();
+		if(event == GameEngineEvent.NEW_GAME) {	
 			this.initLevel();
 		}
 		
