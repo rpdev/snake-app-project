@@ -18,6 +18,7 @@ class PlayerBody implements Iterable<REPoint> {
 	 * Private REPoint for the body.
 	 */
 	private class PBFPoint {
+
 		private float x, y;
 		private double angle;
 
@@ -44,10 +45,8 @@ class PlayerBody implements Iterable<REPoint> {
 	private final int bodySegmentRadius;
 	private final int bodySegmentRadius2;
 	private final XYPoint gameSize;
-	private final int segFromFrist;
 	private int bufferBodySegment;
 	private int lengthSincLastAddSegment;
-	
 
 	/**
 	 * Make a new Player Body 
@@ -61,27 +60,25 @@ class PlayerBody implements Iterable<REPoint> {
 	 */
 	public PlayerBody(XYPoint gameSize, XYPoint startPosition, double startAngle, int bodySegmentRadius, int startSegNumber, int startBufferSegNumber) {
 		if (!(gameSize != null && gameSize.x > 0 && gameSize.y > 0)) {
-			throw new IllegalArgumentException("The condition 'gameSize != null && gameSize.x > 0 && gameSize.y > 0' is not true, the value is "+gameSize+".");
+			throw new IllegalArgumentException("The condition 'gameSize != null && gameSize.x > 0 && gameSize.y > 0' is not true, the value is " + gameSize + ".");
 		}
 		if (!(startPosition.x > 0 && startPosition.x < gameSize.x)) {
-			throw new IllegalArgumentException("The condition 'startPosition.x>0 && startPosition.x<gameSize.x' is not true, the value is "+startPosition+".");
+			throw new IllegalArgumentException("The condition 'startPosition.x>0 && startPosition.x<gameSize.x' is not true, the value is " + startPosition + ".");
 		}
 		if (!(startPosition.y > 0 && startPosition.y < gameSize.y)) {
-			throw new IllegalArgumentException("The condition 'startPosition.y > 0 && startPosition.y < gameSize.y' is not true, the value is "+startPosition+".");
+			throw new IllegalArgumentException("The condition 'startPosition.y > 0 && startPosition.y < gameSize.y' is not true, the value is " + startPosition + ".");
 		}
 		if (!(bodySegmentRadius > 0 && startSegNumber > 1 && startAngle >= 0 && startAngle <= Math.PI * 2)) {
-			throw new IllegalArgumentException("The condition 'bodySegmentRadius > 0 && startSegNumber > 1 && startAngle >= 0 && startAngle <= Math.PI * 2' is not true, the value is "+startAngle+".");
+			throw new IllegalArgumentException("The condition 'bodySegmentRadius > 0 && startSegNumber > 1 && startAngle >= 0 && startAngle <= Math.PI * 2' is not true, the value is " + startAngle + ".");
 		}
-		
+
 		this.seg = new LinkedList<PBFPoint>();
 		this.gameSize = gameSize;
 		this.bodySpaceSize = bodySegmentRadius;
 		this.bodySegmentRadius = bodySegmentRadius;
 		this.bodySegmentRadius2 = 2 * this.bodySegmentRadius;
 		this.bufferBodySegment = startBufferSegNumber;
-		
 
-		this.segFromFrist = (int) (1+((bodySegmentRadius*5)/this.bodySpaceSize));
 		this.initBody(startPosition, startAngle, startSegNumber - 1);
 	}
 
@@ -94,9 +91,10 @@ class PlayerBody implements Iterable<REPoint> {
 	private void initBody(XYPoint point, double angle, int segCount) {
 		PBFPoint floatPoint = new PBFPoint(point, angle);
 		this.seg.add(floatPoint);
-		double mirrorAngle = angle > Math.PI ? angle - Math.PI : angle + Math.PI; // Get the Mirror angle.
+		//double mirrorAngle = angle > Math.PI ? angle - Math.PI : angle + Math.PI; // Get the Mirror angle.
+		//double mirrorAngle = angle > Math.PI ? angle - Math.PI : angle + Math.PI; // Get the Mirror angle.
 		for (int i = 0; i < segCount; i++) {
-			floatPoint = this.nextPoint(floatPoint, mirrorAngle, (int) this.bodySpaceSize);
+			floatPoint = this.nextPoint(floatPoint, angle, (int) this.bodySpaceSize);
 			floatPoint.angle = angle;
 			this.seg.add(floatPoint);
 
@@ -195,7 +193,7 @@ class PlayerBody implements Iterable<REPoint> {
 		PBFPoint floatPoint = this.seg.getFirst();
 		return new REPoint(REPoint.REType.HEADSEG, (int) floatPoint.x, (int) floatPoint.y, this.bodySegmentRadius, floatPoint.angle);
 	}
-	
+
 	/**
 	 * Get the tail of the player body,
 	 * 
@@ -218,12 +216,12 @@ class PlayerBody implements Iterable<REPoint> {
 		while (it.hasNext()) {
 			PBFPoint point = it.next();
 			if (isFirst == true) {
-				rList.add(new REPoint(REPoint.REType.HEADSEG, (int) point.x, (int) point.y, this.bodySegmentRadius,point.angle));
+				rList.add(new REPoint(REPoint.REType.HEADSEG, (int) point.x, (int) point.y, this.bodySegmentRadius, point.angle));
 				isFirst = false;
 			} else if (it.hasNext()) {
-				rList.add(new REPoint(REPoint.REType.BODYSEG, (int) point.x, (int) point.y, this.bodySegmentRadius,point.angle));
+				rList.add(new REPoint(REPoint.REType.BODYSEG, (int) point.x, (int) point.y, this.bodySegmentRadius, point.angle));
 			} else {
-				rList.add(new REPoint(REPoint.REType.TAILSEG, (int) point.x, (int) point.y, this.bodySegmentRadius,point.angle));
+				rList.add(new REPoint(REPoint.REType.TAILSEG, (int) point.x, (int) point.y, this.bodySegmentRadius, point.angle));
 			}
 		}
 		return rList;
@@ -247,11 +245,16 @@ class PlayerBody implements Iterable<REPoint> {
 	 * @return 
 	 */
 	public synchronized boolean isSelfCollision() {
-		if (this.seg.size() > this.segFromFrist) {
+		boolean startCollied = true;
+
+
+		if (this.seg.size() > 1) {
+
 			PBFPoint head = this.seg.getFirst();
-			ListIterator<PBFPoint> it = this.seg.listIterator(this.segFromFrist);
-			while (it.hasNext()) {
-				if (this.isCollision(it.next(), head)) {
+			for (Iterator<PBFPoint> it = this.seg.iterator(); it.hasNext();) {
+				if (startCollied == true) {
+					startCollied = this.isCollision(head, it.next());
+				} else if (this.isCollision(head, it.next())) {
 					return true;
 				}
 			}
