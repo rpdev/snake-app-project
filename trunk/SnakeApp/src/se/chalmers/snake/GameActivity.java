@@ -10,6 +10,8 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -145,15 +147,22 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 
-
-
+		//<editor-fold defaultstate="collapsed" desc="Config Activity">
+		PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+		this.wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "GameActivityHold");
+		/**
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				  WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		**/
+		//</editor-fold>
 
 		this.setContentView(R.layout.game_layout);
 		this.mColl = new MenuControll();
 
-		PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-		this.wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "GameActivityHold");
-
+	
+		
+		
 		this.gameEngine = ControlResources.get().getGameEngine();
 		//<editor-fold defaultstate="collapsed" desc="Load Select Level">
 		String startLevelName = null;
