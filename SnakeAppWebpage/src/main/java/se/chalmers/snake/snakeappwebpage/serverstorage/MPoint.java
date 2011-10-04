@@ -25,6 +25,9 @@ public class MPoint implements Serializable {
 	private Integer intValue;
 	@Column(length=16, nullable=false)
 	private String type;
+
+	public MPoint() {
+	}
 	
 	//<editor-fold defaultstate="collapsed" desc="Getters & setters">
 		/**
@@ -69,6 +72,15 @@ public class MPoint implements Serializable {
 		this.type = type;
 	}
 	//</editor-fold>
+	
+	public MPoint(String type, int value) {
+		this.intValue=value;
+		if(type!=null) {
+			this.type = type;
+		} else {
+			this.type = "";
+		}
+	}
 	
 	@Override
 	public int hashCode() {
