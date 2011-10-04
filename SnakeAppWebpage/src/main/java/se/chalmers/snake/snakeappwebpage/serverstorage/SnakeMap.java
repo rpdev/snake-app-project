@@ -86,7 +86,7 @@ public class SnakeMap implements Serializable {
     @OneToOne(cascade = CascadeType.ALL)
     private MPoint itemPoint;
     @Column
-    private Integer itemCount;
+    private Integer itemSize;
     @Column
     private String mapName;
     @Column
@@ -163,6 +163,7 @@ public class SnakeMap implements Serializable {
 	    if (itemPoint != null) {
 		Element itemNode = xmlDocument.createElement(XMLKeys.GOAL.key);
 		itemNode.setAttribute(XMLKeys.CFUNC.key, itemPoint.getType());
+		itemNode.setAttribute(XMLKeys.RADIUS.key, Integer.toString(itemSize));
 		itemNode.appendChild(xmlDocument.createTextNode(itemPoint.getIntValue().toString()));
 		rootNode.appendChild(itemNode);
 	    }
@@ -461,15 +462,15 @@ public class SnakeMap implements Serializable {
     /**
      * @return the itemCount
      */
-    public Integer getItemCount() {
-	return itemCount;
+    public Integer getItemSize() {
+	return itemSize;
     }
 
     /**
      * @param itemCount the itemCount to set
      */
-    public void setItemCount(Integer itemCount) {
-	this.itemCount = itemCount;
+    public void setItemSize(Integer itemCount) {
+	this.itemSize = itemCount;
     }
 
     /**
