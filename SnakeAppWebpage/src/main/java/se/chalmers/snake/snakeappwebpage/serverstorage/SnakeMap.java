@@ -6,6 +6,7 @@ package se.chalmers.snake.snakeappwebpage.serverstorage;
 
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -123,6 +124,24 @@ public class SnakeMap implements Serializable {
 	 * @return XML representation of this level.
 	 */
 	public String generateXML() {
+		StringWriter sw = new StringWriter();
+		if (this.generateXML(sw)) {
+			return sw.toString();
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Return an string representing this map as xml, note that if the map
+	 * dosn't contain any data will the xml only contain one node. If any
+	 * of the following exception occur will this fuction return null,
+	 * {@link TransformerConfigurationException}, {@link TransformerException},
+	 * {@link ParserConfigurationException}.
+	 * 
+	 * @return XML representation of this level.
+	 */
+	public boolean generateXML(Writer ioWriter) {
 		try {
 			Document xmlDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 			Element rootNode = xmlDocument.createElement(XMLKeys.ROOT.key);
@@ -194,20 +213,16 @@ public class SnakeMap implements Serializable {
 			Transformer transformer = TransformerFactory.newInstance().newTransformer();
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-			StreamResult result = new StreamResult(new StringWriter());
+			StreamResult result = new StreamResult(ioWriter);
 			DOMSource source = new DOMSource(xmlDocument);
 			transformer.transform(source, result);
-
-			return result.getWriter().toString();
+			return true;
 
 		} catch (TransformerConfigurationException ex) {
-			Logger.getLogger(SnakeMap.class.getName()).log(Level.SEVERE, null, ex);
 		} catch (TransformerException ex) {
-			Logger.getLogger(SnakeMap.class.getName()).log(Level.SEVERE, null, ex);
 		} catch (ParserConfigurationException ex) {
-			Logger.getLogger(SnakeMap.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		return null;
+		return false;
 	}
 
 	private enum XMLKeys {
@@ -277,9 +292,9 @@ public class SnakeMap implements Serializable {
 	 * @param status the status to set
 	 */
 	public void setStatus(STATUS status) {
-		if(status==STATUS.CREATED) {
+		if (status == STATUS.CREATED) {
 			this.creationDate = new Date();
-		} else if(status == STATUS.PUBLICHED) {
+		} else if (status == STATUS.PUBLICHED) {
 			this.publicedDate = new Date();
 		}
 		this.status = status;
@@ -394,8 +409,8 @@ public class SnakeMap implements Serializable {
 	 * @param obstacle the obstacle to set
 	 */
 	public void setObstacle(List<REPoint> obstacle) {
-		if(obstacle!=null) {
-		this.obstacle.addAll(obstacle);
+		if (obstacle != null) {
+			this.obstacle.addAll(obstacle);
 		}
 	}
 
