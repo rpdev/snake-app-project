@@ -11,29 +11,30 @@ import java.util.regex.Pattern;
  * And give this a a list, the first list is all int read from the first "{...}" 
  */
 public class IntegerScan implements Iterator<List<Integer>>, Iterable<List<Integer>> {
-
+	private static final Pattern REGEX = Pattern.compile("\\{[0-9]+(\\,[0-9]+)*");
+	private static final Pattern REGXPEND = Pattern.compile("\\}");
 	private Scanner scan;
 
 	public IntegerScan(String source) {
 		this.scan = new Scanner(source);
+		this.scan.useDelimiter(IntegerScan.REGXPEND);
 	}
+	
 
 	@Override
 	public synchronized boolean hasNext() {
-		return this.scan.hasNext("(\\{(([0-9]+)(\\,([0-9]+))*)\\})");
+		return this.scan.hasNext(IntegerScan.REGEX);
 	}
 
 	@Override
 	public synchronized List<Integer> next() {
 		ArrayList<Integer> iList = new ArrayList<Integer>();
 		if (this.hasNext()) {
-			System.out.println(this.scan.next("(.)")); // Read "{"
-			while (this.scan.hasNextInt()) {
-				
-				iList.add(this.scan.nextInt());
-				this.scan.next(); // Read "," if exist
+			String item = this.scan.next();
+			String[] iListPost = item.substring(1, item.length()).split("\\,");
+			for (String string : iListPost) {
+				iList.add(Integer.parseInt(string));
 			}
-			//this.scan.next(); // Read "}"
 		}
 		iList.trimToSize();
 		return iList;

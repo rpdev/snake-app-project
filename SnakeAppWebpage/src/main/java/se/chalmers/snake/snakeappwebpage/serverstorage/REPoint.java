@@ -5,6 +5,7 @@
 package se.chalmers.snake.snakeappwebpage.serverstorage;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,6 +30,24 @@ public class REPoint implements Serializable {
 	private Integer r;
 	
 	public REPoint(){}
+	
+	/**
+	 * Try to read the 3 first post as X,Y,R
+	 * This will throws NullPointerException if not the list have last 3 post
+	 * @param iList 
+	 * 
+	 */
+	public REPoint(List<Integer> iList) throws NullPointerException {
+		if(iList!=null && iList.size()>=3) {
+			this.x = iList.get(0);
+			this.y = iList.get(1);
+			this.r = iList.get(2);
+		} else {
+			throw new NullPointerException("Can not make REPoint from the List<Integer>");
+		}
+		
+		
+	}
 	
 	public REPoint(int x, int y, int r){
 		this.x = x;
