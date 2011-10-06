@@ -7,7 +7,7 @@ import android.text.style.UnderlineSpan;
 import java.util.ArrayList;
 
 /**
- *
+ * Format text for TextView in Android.
  */
 public class TextFormatter {
 
