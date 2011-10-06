@@ -35,19 +35,31 @@ public final class HighscoreDatabase implements HighscoreDatabaseIC, Serializabl
 
 	@Override
 	public boolean addPlayerToHighscore(String playerName, int points) {
+		this.controlListIntegrity();
 		if (checkIfEnoughPoints(points)) {
 			this.highscoreList.add(new Highscore(playerName, points));
+			Collections.sort(this.highscoreList);
 			if (this.highscoreList.size() > SHOW_COUNT) {
 				this.highscoreList.remove(this.highscoreList.getLast());
 			}
-			
-			Collections.sort(this.highscoreList);
-			
+						
 			return true;
 		}
 		return false;
 	}
-
+	
+	/**
+	 * This method will ensure the list has "SHOW_COUNT" elements in it and fix as necessary.
+	 * Fixes a bug where the list only accepted one element.
+	 */
+	private void controlListIntegrity() {
+		if(this.highscoreList.size() == SHOW_COUNT)
+			return;
+		int itemsLeft = SHOW_COUNT - this.highscoreList.size();
+		for(int i = 0; i < itemsLeft; i++){
+			this.highscoreList.add(new Highscore("[Empty]", 0));
+		}
+	}
 	@Override
 	public boolean addPlayerToHighscore(String playerName, int points,
 			  String level) {
@@ -57,7 +69,8 @@ public final class HighscoreDatabase implements HighscoreDatabaseIC, Serializabl
 
 	@Override
 	public String toString() {
-
+		this.controlListIntegrity();
+		
 		StringBuilder outText = new StringBuilder("Highscore:");
 		for (Highscore highscore : this.highscoreList) {
 			outText.append("\n").append(highscore.getPlayerName()).append(" - ").append(highscore.getPoints());
@@ -66,6 +79,7 @@ public final class HighscoreDatabase implements HighscoreDatabaseIC, Serializabl
 	}
 
 	public boolean saveHighscore() {
+		this.controlListIntegrity(); //Might not be needed here but just in case.
 		Storage storage  = ControlResources.get().getStorage();
 		storage.storeObject("highscore", this);
 		if(storage.getObject("highscore") == null) {
