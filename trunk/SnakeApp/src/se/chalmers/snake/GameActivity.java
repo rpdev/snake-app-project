@@ -87,7 +87,6 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 
 				public void onClick(View view) {
 					MenuControll.this.hidden();
-					GameActivity.this.gameEngine.setStartScore(0);
 					if (GameActivity.this.gameEngine.getStatus() != GameEngineIC.GameEngineStatus.NEW_LEVEL) {
 						GameActivity.this.gameView.restartGame();
 					}
@@ -154,17 +153,18 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 		/**
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				  WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		**/
+		WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		 **/
 		//</editor-fold>
-
+		
 		this.setContentView(R.layout.game_layout);
 		this.mColl = new MenuControll();
 
-	
-		
-		
+
+
+
 		this.gameEngine = ControlResources.get().getGameEngine();
+		GameActivity.this.gameEngine.setStartScore(0);
 		//<editor-fold defaultstate="collapsed" desc="Load Select Level">
 		String startLevelName = null;
 		try {
