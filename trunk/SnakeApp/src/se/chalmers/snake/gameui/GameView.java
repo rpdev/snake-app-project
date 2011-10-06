@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
+import java.util.ArrayList;
 import java.util.List;
 import se.chalmers.snake.R;
 
@@ -23,20 +24,27 @@ import se.chalmers.snake.util.EnumObserver;
  */
 public class GameView extends View implements EnumObserver<GameEngineIC.GameEngineEvent, Void, Void> {
 
+	private class BitSet {
+		private Bitmap bitmap;
+		private REPoint point;
+		private BitSet(Bitmap b, REPoint r) {
+			this.bitmap = b;
+			this.point = r;
+		}
+	}
+	
 	private GameEngineIC gameEngine;
 	private Paint paint;
 	private List<REPoint> snakeBody;
 	private List<REPoint> items;
-	private List<REPoint> walls;
 	private Resources mRes;
 	private Bitmap bodySeg;
 	private Bitmap apple;
-	/**
-	 * This will not work, the obstacle can has diffrent size on a map.
-	 */
-	private Bitmap[] obstacles;
+	private List<BitSet> obstacles;
 	private int score;
 
+	
+	
 	public GameView(Context context, GameEngineIC gameEngine) {
 		super(context);
 		this.mRes = context.getResources();
@@ -53,27 +61,31 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	private void initLevel() {
 		int playerBodyWidth = this.gameEngine.getPlayerHead().radius * 2;
 		int appleWidth = this.gameEngine.getItemRadius() * 2;
-		int totalObstacles = this.gameEngine.getObstacles().size();
-		
-		int[] obstacleWidths = new int[totalObstacles];
-		for(int i = 0; i < totalObstacles; i++){
-			obstacleWidths[i] = this.gameEngine.getObstacles().get(i).radius * 2;
-		}
-		
+
+
 		this.bodySeg = Bitmap.createScaledBitmap(
 				  BitmapFactory.decodeResource(this.mRes, R.drawable.snake_body), playerBodyWidth, playerBodyWidth, true);
 		this.apple = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(mRes, R.drawable.apple),
-				  appleWidth , appleWidth, true);
-		obstacles = new Bitmap[totalObstacles];
-		for(int i = 0; i < totalObstacles; i++){
-			obstacles[i] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(mRes, R.drawable.obstacle),
-					  obstacleWidths[i], obstacleWidths[i], true);
+				  appleWidth, appleWidth, true);
+
+		List<REPoint> obstaclesPos = this.gameEngine.getObstacles();
+		int totalObstacles = obstaclesPos.size();
+		this.obstacles = new ArrayList<BitSet>();
+		for (int i = 0; i < totalObstacles; i++) {
+			REPoint bitsetKey = obstaclesPos.get(i);
+			int obstacleWidths = bitsetKey.radius*2;
+			if(obstacleWidths>0) {
+			Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(this.mRes, R.drawable.obstacle),
+					  obstacleWidths, obstacleWidths, true);
+			this.obstacles.add(new BitSet(bitmap, bitsetKey));
+			}
+			
 		}
-		
-		this.walls = this.gameEngine.getObstacles();
+
+
 		this.postInvalidate();
 	}
-	
+
 	public void addGameEngine(GameEngineIC gameEngine) {
 		this.gameEngine = gameEngine;
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.START_GAME, this);
@@ -85,7 +97,7 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 
 		this.snakeBody = gameEngine.getPlayerBody();
 		this.items = gameEngine.getItems();
-		this.walls = gameEngine.getObstacles();
+		this.obstacles = new ArrayList<BitSet>();
 
 	}
 
@@ -103,15 +115,14 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 			}
 		}
 
-		if (this.walls != null) {
-			for(int i = 0; i < this.walls.size(); i++){
-				REPoint reP = this.walls.get(i);
-				canvas.drawBitmap(obstacles[i], reP.x - reP.radius, reP.y - reP.radius, null);
+		if (this.obstacles != null) {
+			for (BitSet bitset : this.obstacles) {
+				canvas.drawBitmap(bitset.bitmap, bitset.point.x - bitset.point.radius, bitset.point.y -bitset.point.radius, null);
 			}
 		}
-		
+
 		paint.setColor(Color.BLACK);
-		canvas.drawText("Score: "+score, 10,20, paint);
+		canvas.drawText("Score: " + score, 10, 20, paint);
 
 	}
 
@@ -120,10 +131,10 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		this.snakeBody = this.gameEngine.getPlayerBody();
 		this.items = this.gameEngine.getItems();
 		this.score = this.gameEngine.getScore();
-		if(event == GameEngineEvent.NEW_GAME) {	
+		if (event == GameEngineEvent.NEW_GAME) {
 			this.initLevel();
 		}
-		
+
 		this.postInvalidate();
 
 		return null;
