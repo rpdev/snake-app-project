@@ -1,4 +1,4 @@
-package se.chalmers.snake.gameengine;
+package se.chalmers.snake.gameengine.oscillator;
 
 import java.util.Date;
 import java.util.Timer;
@@ -7,7 +7,7 @@ import java.util.TimerTask;
 /**
  * Make a Oscillator to repeatedly at regular intervals call a method.
  */
-class Oscillator {
+public class Oscillator {
 
 	private final int interval;
 	private Timer timer;

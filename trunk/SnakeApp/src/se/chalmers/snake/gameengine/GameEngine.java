@@ -1,5 +1,6 @@
 package se.chalmers.snake.gameengine;
 
+import se.chalmers.snake.gameengine.oscillator.Oscillator;
 import java.util.ArrayList;
 import java.util.List;
 import se.chalmers.snake.interfaces.ControlResourcesIC;
