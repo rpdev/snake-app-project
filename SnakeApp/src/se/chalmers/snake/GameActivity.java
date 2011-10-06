@@ -87,6 +87,7 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 
 				public void onClick(View view) {
 					MenuControll.this.hidden();
+					GameActivity.this.gameEngine.setStartScore(0);
 					if (GameActivity.this.gameEngine.getStatus() != GameEngineIC.GameEngineStatus.NEW_LEVEL) {
 						GameActivity.this.gameView.restartGame();
 					}
