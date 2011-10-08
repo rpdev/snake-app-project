@@ -1,13 +1,19 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package se.chalmers.snake.snakeappwebpage.login;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import se.chalmers.snake.snakeappwebpage.lib.HttpServletBuilder;
 import se.chalmers.snake.snakeappwebpage.lib.HttpServletBuilder.HttpMeta;
 import se.chalmers.snake.snakeappwebpage.lib.HttpServletBuilder.HttpOutput;
@@ -31,7 +37,9 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getParameter("action").equals("login")) {
+        response.setContentType("text/html;charset=UTF-8");
+        String action = request.getParameter("action");
+        if (action.equals("login")) {
             UserAcc newUser = new UserAcc(request.getParameter("user_name"), request.getParameter("password"), "");
             List<UserAcc> userList = Database.getInstance().getEntityList(UserAcc.class);
             for (UserAcc user : userList) {
@@ -43,12 +51,53 @@ public class LoginServlet extends HttpServlet {
             }
             response.sendRedirect("register.xhtml");
 
-        } else if (request.getParameter("action").equals("register")) {
+        } else if (action.equals("logout")) {
+            request.getSession().setAttribute("user", null);
+            request.getRequestDispatcher("index.xhtml").forward(request, response);
+
+        } else if (action.equals("register")) {
             UserAcc newUser = new UserAcc(request.getParameter("user_name"), request.getParameter("password"), "emalme");
             SnakeMap sm = new SnakeMap(newUser);
             Database.getInstance().mergeObject(newUser);
             Database.getInstance().mergeObject(sm);
             response.sendRedirect("index.xhtml");
+        } else if (action.equals("load")) {
+            PrintWriter out = response.getWriter();
+            UserAcc user = (UserAcc) request.getSession().getAttribute("user");
+            try {
+                if (user == null) {
+                    out.println("<p><form action=\"Login\" method=\"POST\">");
+                    out.println("<input type=\"hidden\" name=\"action\" value=\"login\"/>");
+                    out.println("<table>");
+                    out.println("<tr>"
+                            + "<td colspan=\"2\">"
+                            + "<input type=\"text\" name=\"user_name\" id=\"username\" placeholder=\"Username\" style=\"width: 140px;\" />"
+                            + "</td>"
+                            + "</tr>");
+                    out.println("<tr>"
+                            + "<td colspan=\"2\">"
+                            + "<input type=\"password\" name=\"password\" id=\"password\" style=\"width: 140px;\" />"
+                            + "</td>"
+                            + "<td><input type=\"submit\" value=\"Login\" /></td>"
+                            + "</tr>");
+                    out.println("</table>"
+                            + "</form>"
+                            + "</p>");
+                } else {
+                    out.println("<p><form action=\"Login\" method=\"POST\">");
+                    out.println("Välkommen: " + user.getUserName() + "<br />");
+                    out.println("<input type=\"hidden\" name=\"action\" value=\"logout\"/>");
+                    out.println("<input type=\"submit\" value=\"Logout\" />");
+                    out.println("</form></p>");
+
+
+                }
+
+            } finally {
+                out.close();
+            }
+
+
         }
     }
 
