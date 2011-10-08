@@ -1,0 +1,8 @@
+<p>
+    <form action="Login" method="POST">
+        Du är nu inloggad
+        <br/>
+        <input type="hidden" name="action" value="logout"/>
+        <input type="submit" value="Logout" />
+    </form>
+</p>
