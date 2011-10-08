@@ -1,5 +1,13 @@
 package se.chalmers.snake;
 
+import se.chalmers.snake.gameui.GameView;
+import se.chalmers.snake.interfaces.GameEngineIC;
+import se.chalmers.snake.interfaces.GameEngineIC.GameEngineEvent;
+import se.chalmers.snake.interfaces.LevelIC;
+import se.chalmers.snake.mastercontroller.ControlResources;
+import se.chalmers.snake.util.EnumObservable;
+import se.chalmers.snake.util.EnumObserver;
+import se.chalmers.snake.util.TextFormatter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,20 +18,10 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import se.chalmers.snake.gameui.GameView;
-import se.chalmers.snake.interfaces.GameEngineIC;
-import se.chalmers.snake.interfaces.GameEngineIC.GameEngineEvent;
-import se.chalmers.snake.interfaces.LevelIC;
-import se.chalmers.snake.mastercontroller.ControlResources;
-import se.chalmers.snake.util.EnumObservable;
-import se.chalmers.snake.util.EnumObserver;
-import se.chalmers.snake.util.TextFormatter;
 
 /**
  * This GameActivity will run the Game 

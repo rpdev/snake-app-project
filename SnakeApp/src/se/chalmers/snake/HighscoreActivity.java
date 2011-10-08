@@ -1,15 +1,13 @@
 package se.chalmers.snake;
 
-import se.chalmers.snake.highscoreDatabase.HighscoreDatabase;
-import se.chalmers.snake.util.Storage;
+import se.chalmers.snake.interfaces.HighscoreDatabaseIC;
+import se.chalmers.snake.mastercontroller.ControlResources;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import se.chalmers.snake.interfaces.HighscoreDatabaseIC;
-import se.chalmers.snake.mastercontroller.ControlResources;
 
 public class HighscoreActivity extends Activity {
 

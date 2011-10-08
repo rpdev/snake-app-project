@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
+
 import se.chalmers.snake.interfaces.util.REPoint;
 import se.chalmers.snake.interfaces.util.XYPoint;
 

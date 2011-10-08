@@ -1,6 +1,7 @@
 package se.chalmers.snake.util;
 
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
@@ -57,7 +58,7 @@ public class Storage {
 	 * @param defaultValue Value to return if the key wasen't found, this can only be null for String's.
 	 * @return The fetched key's value or the default value if key not found.
 	 */
-	@SuppressWarnings({"unchecked", "unchecked"})
+	@SuppressWarnings("unchecked")
 	public <T> T getPrimitive(Type type, String name, T defaultValue){
 		if(type == Boolean.class)
 			return (T) new Boolean(settings.getBoolean(name, (Boolean) defaultValue));
@@ -87,8 +88,8 @@ public class Storage {
 			oos.writeObject(value);
 			oos.close();
 			return true;
-		} catch (Exception ex) {
-			
+		} catch (IOException ex) {
+			// http://source.android.com/source/code-style.html#dont-catch-generic-exception
 		}
 		return false;
 	}
@@ -106,7 +107,9 @@ public class Storage {
 		try {
 			ObjectInputStream ois = new ObjectInputStream(this.activity.openFileInput(name));
 			return (T) ois.readObject();
-		} catch (Exception ex) {
+		} catch (IOException ex) {
+		} catch (ClassNotFoundException e) {
+			// http://source.android.com/source/code-style.html#dont-catch-generic-exception
 		}
 		return null;
 	}

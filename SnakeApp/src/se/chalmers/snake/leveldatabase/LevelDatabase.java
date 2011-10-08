@@ -2,31 +2,39 @@ package se.chalmers.snake.leveldatabase;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import se.chalmers.snake.interfaces.LevelDatabaseIC;
 import se.chalmers.snake.interfaces.LevelIC;
 import android.app.Activity;
 import android.content.res.AssetManager;
-import java.sql.DatabaseMetaData;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
+/**
+ * LevelDatabase is a class that implements {@link LevelDatabaseIC},
+ * it provide access to the level files or if a level don't exist does it provide
+ * a default level.
+ */
 public class LevelDatabase implements LevelDatabaseIC {
-
 	private final String PATH = "levels";
 	private final AssetManager am;
 	private final List<String> levelNameList = new ArrayList<String>();
 	private final Map<String, LevelDatabaseData> levelNames = new HashMap<String, LevelDatabaseData>();
 	private final Map<Integer, LevelDatabaseData> levelValues = new TreeMap<Integer, LevelDatabaseData>();
 
+	/**
+	 * Constructor for {@link LevelDatabase} when it's used will
+	 * it scan for level files in the assets folder.
+	 * @param activty Activity is needed for accessing the assets folder.
+	 */
 	public LevelDatabase(Activity activty) {
-		this.am = activty.getAssets();
+		am = activty.getAssets();
 		try {
-			loadFiles(this.am.list(PATH));
+			loadFiles(am.list(PATH));
 		} catch (IOException e) {
 		}
 	}
@@ -34,11 +42,11 @@ public class LevelDatabase implements LevelDatabaseIC {
 	@Override
 	public LevelIC getByLevel(int level) {
 		LevelDatabaseData data = levelValues.get(level);
-		if (data != null) //return new Level(data);
-		{
+		if (data != null){ //return new Level(data);
 			try {
 				return new XMLLevel(data);
-			} catch (Exception ex) {
+			} catch (IOException e) {
+				// http://source.android.com/source/code-style.html#dont-catch-generic-exception
 			}
 		}
 		return new LevelDefault();
@@ -77,6 +85,11 @@ public class LevelDatabase implements LevelDatabaseIC {
 		return levelNameList.toArray(new String[levelNameList.size()]);
 	}
 
+	/**
+	 * Iterate over the files in <code>files</code> and the level files
+	 * path into memory, this function won't search for levels in subfolders.
+	 * @param files Files to be scanned.
+	 */
 	private void loadFiles(String[] files) {
 		for (String file : files) {
 			if (file.contains(".") && file.substring(file.lastIndexOf('.') + 1).equalsIgnoreCase("XML")) {
@@ -88,10 +101,8 @@ public class LevelDatabase implements LevelDatabaseIC {
 			}
 		}
 		Iterator<LevelDatabaseData> it = levelValues.values().iterator();
-		
 		while (it.hasNext()) {
-			this.levelNameList.add(it.next().name);
-			
+			this.levelNameList.add(it.next().name);			
 		}
 	}
 
@@ -115,20 +126,36 @@ public class LevelDatabase implements LevelDatabaseIC {
 		}
 	}
 
+	/**
+	 * Class that contains information about one level, this
+	 * information consist of level name, filename, difficulty and possible
+	 * access to an {@link InputStream} for the file that contains
+	 * info about the level.
+	 */
 	class LevelDatabaseData {
-
 		final String name, fileName;
 		final int level;
 
+		/**
+		 * Create an instance of the class that contains information about
+		 * a level.
+		 * @param fileName
+		 * @param name
+		 * @param level Difficulty rating.
+		 */
 		private LevelDatabaseData(String fileName, String name, int level) {
 			this.fileName = fileName;
 			this.name = name;
 			this.level = level;
 		}
 
+		/**
+		 * Return an inputstream to the level file. 
+		 * @return Inputstream to the file.
+		 */
 		InputStream getInputSteam() {
 			try {
-				return LevelDatabase.this.am.open(fileName);
+				return am.open(fileName);
 			} catch (IOException e) {
 			}
 			return null;

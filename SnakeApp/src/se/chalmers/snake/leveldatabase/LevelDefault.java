@@ -7,6 +7,10 @@ import se.chalmers.snake.interfaces.LevelIC;
 import se.chalmers.snake.interfaces.util.REPoint;
 import se.chalmers.snake.interfaces.util.XYPoint;
 
+/**
+ * The default level is returned when another level isn't found,
+ * it dosen't contain any obstacles it's simply a 'blank' map.
+ */
 public class LevelDefault implements LevelIC {
 	private final XYPoint MAP_SIZE = new XYPoint(150, 200);
 	private final int RADIUS = 5;
