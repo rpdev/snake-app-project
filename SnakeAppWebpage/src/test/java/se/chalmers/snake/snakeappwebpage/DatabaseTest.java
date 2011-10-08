@@ -65,16 +65,6 @@ public class DatabaseTest {
     }
 
     @Test
-    public void addMapAndUser() {
-        UserAcc u = new UserAcc("addMapAndUser", "pass", "s@s.se");
-        Database.getInstance().mergeObject(u);
-        SnakeMap m = new SnakeMap(u);
-        u.addMap(m);
-        Database.getInstance().mergeObject(u);
-        Database.getInstance().mergeObject(m);
-    }
-
-    @Test
     public void addRemoveMapAndUser() {
         UserAcc u = new UserAcc("addRemoveMapAndUser", "pass", "s@s.se");
         Database.getInstance().mergeObject(u);
