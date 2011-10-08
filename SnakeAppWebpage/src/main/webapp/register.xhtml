@@ -58,27 +58,29 @@ Written by Martin S. Please do not change anything :)
                 <div id="maindivmain">
 
                     <div id="content">
-
-                        <div id="register">
-                            <p>
-                            <form action="Login" method="POST">
-                                <input type="hidden" name="action" value="register"/>
-                                <table>
-                                    <tr>
-                                        <td colspan="2">
-                                            <input type="text" name="user_name" id="username" placeholder="Username" style="width: 140px;" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">
-                                            <input type="password" name="password" id="password" style="width: 140px;" />
-                                        </td>
-                                        <td><input type="submit" value="Register" /></td>
-                                    </tr>
-                                </table>
-                            </form>
-                            </p>
-                        </div>
+                        <form action="Login" method="POST">
+                            <table align="center">
+                                <tr>
+                                    <td><p>Username</p></td>
+                                    <td><input type="text" name="user_name" id="username" style="width: 200px;" /></td>
+                                </tr>
+                                <tr>
+                                    <td><p>Password</p></td>
+                                    <td><input type="password" name="password" id="password" style="width: 200px;" /></td>
+                                </tr>
+                                <tr>
+                                    <td><p>Re-type password</p></td>
+                                    <td><input type="password" name="password2" id="password2" style="width: 200px;" /></td>
+                                </tr>
+                                <tr>
+                                    <td><p>E-mail</p></td>
+                                    <td><input type="text" name="email" id="email" style="width: 200px;" /></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" align="center"><input type="submit" value="Register" /></td>
+                                </tr>
+                            </table>
+                        </form>
                     </div>
                 </div>
                 <div id="maindivbottom">
