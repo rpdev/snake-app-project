@@ -7,6 +7,11 @@ body{
     background-image: url(img/bg.jpg);
 }
 
+#login p{
+    color: white;
+    font-size: 18px;
+}
+
 #snakebend{ 
     background-image: url(img/snakebody_bend.png);
     width: 116px;
