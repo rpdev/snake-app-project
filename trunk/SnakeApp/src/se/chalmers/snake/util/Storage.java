@@ -11,11 +11,29 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import java.io.Serializable;
 
+/**
+ * The Storage class is used for saving application data in an 
+ * persictent way, so that can be access even if the application
+ * is terminated. This is done by utilizing two ways of saving 
+ * data on the android system.
+ * The first way used by {@link Storage#storePrimitive(Type, String, Object)}
+ * and {@link Storage#getPrimitive(Type, String, Object)} uses
+ * SharedPreferences and can therefore only store primitives including
+ * String.
+ * The second way can store and load any serializable object, the methods
+ * using this is {@link Storage#storeObject(String, Serializable)} and
+ * {@link Storage#getObject(String)}.
+ */
 public class Storage {
 	private static final String PREFS_NAME = "SnakeApp";
 	private final SharedPreferences settings;
 	private final Activity activity;
 	
+	/**
+	 * Constructor for the Storage class, to be able to store object
+	 * those this class require access to an activity.
+	 * @param activity A class that extends Activity for the application using this class.
+	 */
 	public Storage(Activity activity){
 		 settings = activity.getSharedPreferences(PREFS_NAME, 0);
 		 this.activity = activity;
