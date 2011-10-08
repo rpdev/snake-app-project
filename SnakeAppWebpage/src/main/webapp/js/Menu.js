@@ -8,7 +8,6 @@ $(document).ready(function(){
             if($(xml).find('userName').text() == ''){
                 $('#login').load('login/login.ihtml');
             } else {
-                alert($(xml).find('userName').text());
                 $('#login').load('login/loggedin.ihtml');
             }
         }
