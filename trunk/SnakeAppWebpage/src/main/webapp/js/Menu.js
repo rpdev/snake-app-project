@@ -5,9 +5,10 @@ $(document).ready(function(){
         data: "action=getForm",
         dataType: "xml",
         success: function(xml) {
-            if($(xml).find('userName') == null){
+            if($(xml).find('userName').text() == ''){
                 $('#login').load('login/login.ihtml');
             } else {
+                alert($(xml).find('userName').text());
                 $('#login').load('login/loggedin.ihtml');
             }
         }
