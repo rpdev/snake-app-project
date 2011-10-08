@@ -98,7 +98,7 @@ public class DatabaseTest {
         Database.getInstance().mergeObject(m);
         Database.getInstance().mergeObject(c);
         // comment --> map --> user
-        Database.getInstance().removeEnity(c.getClass(), c.getId());
+        //Database.getInstance().removeEnity(c.getClass(), c.getId());
         Database.getInstance().removeEnity(m.getClass(), m.getId());
         Database.getInstance().removeEnity(u.getClass(), u.getId());        
     }
