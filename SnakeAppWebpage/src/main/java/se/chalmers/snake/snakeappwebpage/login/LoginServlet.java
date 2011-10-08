@@ -6,7 +6,10 @@ package se.chalmers.snake.snakeappwebpage.login;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,6 +23,11 @@ import se.chalmers.snake.snakeappwebpage.lib.HttpServletBuilder.HttpOutput;
 import se.chalmers.snake.snakeappwebpage.serverstorage.Database;
 import se.chalmers.snake.snakeappwebpage.serverstorage.SnakeMap;
 import se.chalmers.snake.snakeappwebpage.serverstorage.UserAcc;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -27,6 +35,25 @@ import se.chalmers.snake.snakeappwebpage.serverstorage.UserAcc;
  */
 @WebServlet(name = "Login", urlPatterns = {"/Login"})
 public class LoginServlet extends HttpServlet {
+
+    @XmlRootElement
+    static class User {
+
+        @XmlElement
+        private String userName;
+        @XmlElement
+        private String userEmail;
+
+        public User() {
+        }
+
+        public User(UserAcc user) {
+            if (user != null) {
+                this.userName = user.getUserName();
+                this.userEmail = user.getEmail();
+            }
+        }
+    }
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,7 +64,6 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         if (action.equals("login")) {
             UserAcc newUser = new UserAcc(request.getParameter("user_name"), request.getParameter("password"), "");
@@ -96,8 +122,24 @@ public class LoginServlet extends HttpServlet {
             } finally {
                 out.close();
             }
-
-
+        } else if (action.equals("getForm")) {
+            response.setContentType("text/xml;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            UserAcc user = (UserAcc) request.getSession().getAttribute("user");
+            User wrapper = new User(user);
+            JAXBContext jc;
+            try {
+                jc = JAXBContext.newInstance(User.class);
+                Marshaller m = jc.createMarshaller();
+                m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
+                        Boolean.TRUE);
+                // Dump XML data
+                m.marshal(wrapper, out);
+            } catch (JAXBException ex) {
+                Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                out.close();
+            }
         }
     }
 
