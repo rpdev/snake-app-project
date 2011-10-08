@@ -161,10 +161,10 @@ public class UserAcc implements Serializable {
             return false;
         }
         UserAcc other = (UserAcc) object;
-        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.id.equals(other.id))) {
-            return false;
+        if (this.getUserName().equals(other.getUserName()) && this.getUserPassword().equals(other.getUserPassword())) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override
