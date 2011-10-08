@@ -1,5 +1,19 @@
-$(document).ready(function(){
-    $('#login').load('Login?action=load');
+$(document).ready(function(){ 
+    $.ajax({
+        type: "GET",
+        url: "./Login",
+        data: "action=getForm",
+        dataType: "xml",
+        success: function(xml) {
+            if($(xml).find('userName') == null){
+                $('#login').load('login/login.ihtml');
+            } else {
+                $('#login').load('login/loggedin.ihtml');
+            }
+        }
+    });
+    
+    
     // Try div.hover or div#divMain if not working 
     $("#homebutton").hover(
         function() {
