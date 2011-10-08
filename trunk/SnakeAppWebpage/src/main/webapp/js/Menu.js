@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    $('#login').load('Login?action=load');
     // Try div.hover or div#divMain if not working 
     $("#homebutton").hover(
         function() {
