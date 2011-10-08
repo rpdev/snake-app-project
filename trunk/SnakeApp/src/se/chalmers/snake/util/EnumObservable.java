@@ -173,7 +173,6 @@ public class EnumObservable<E extends Enum<E>, A, R> implements EnumObservableIn
 				return returnValue;
         }
         return new java.util.ArrayList<java.util.Map.Entry<EnumObserver<E, A, R>, R>>(0);
-
     }
 
 

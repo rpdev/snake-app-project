@@ -3,7 +3,7 @@ package se.chalmers.snake.highscoreDatabase;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.TreeSet;
+
 import se.chalmers.snake.interfaces.HighscoreDatabaseIC;
 import se.chalmers.snake.mastercontroller.ControlResources;
 import se.chalmers.snake.util.Storage;
