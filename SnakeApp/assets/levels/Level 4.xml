@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<snakeappmap id="-1">
+	<name>Quick Game</name>
+	<description>Do not eat your tail.</description>
+	<difficuly>2</difficuly>
+	<map x="300" y="400" />
+	<gamespeed type="simple">4</gamespeed>
+	<growthspeed type="simple">50</growthspeed>
+	<item type="simple" r="10">1</item>
+	<levelgoal type="greater">10</levelgoal>
+	<player x="151" y="256" r="7" a="90" s="4" />
+	<obstacles>
+		<item x="246" y="319" r="30" />
+		<item x="187" y="81" r="30" />
+		<item x="67" y="218" r="30" />
+	</obstacles>
+</snakeappmap>
