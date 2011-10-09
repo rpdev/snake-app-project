@@ -1,86 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-Written by Martin S. Please do not change anything :)
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <script type="text/javascript"  
-                src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"/>
-        <script type="text/javascript" src="js/Menu.js" />
-        <link rel="stylesheet" href="default.css" type="text/css"/>
-        <title>Snake Android App Website</title>
-    </head>
-    <body>
+<ui:composition template="WEB-INF/facelets/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
 
-        <div id="topcontainer">
-            <!-- The top right div where the logo is shown -->
-            <div id="snakebend">
-                <div id="login"/>
-            </div>
-            <!-- The big div in the middle -->
-            <div id="topmainbar">
-                <div id="topmenu">
-                    <p>
-                        <a href="index.xhtml"><img src="img/menu/homebutton_normal.png" id="homebutton" border="0" /></a>
-                        <a href="editor.xhtml"><img src="img/menu/editorbutton_normal.png" id="editorbutton" border="0" /></a>
-                        <a href="download.xhtml"><img src="img/menu/downloadbutton_normal.png" id="downloadbutton" border="0" /></a>
-                        <a href="faq.xhtml"><img src="img/menu/faqbutton_normal.png" id="faqbutton" border="0" /></a>
-                        <a href="browsemaps.xhtml"><img src="img/menu/browsemapsbutton_normal.png" id="browsemapsbutton" border="0" /></a>
-                    </p>
-                </div>
-                
-            </div>
-            <!-- The top "edge" of the frame -->
-            <div id="topedge">
-
-            </div>
-        </div>
-
-        <div id="maincontainer">
-            <div id="leftsidecontainer">
-                <!-- The div where the left part of the snake is located -->
-                <div id="menubar">
-                    <div id="snakeleft">
-
-                    </div>
-                </div>
-            </div>
-            <!-- The main div. This is where content is shown -->
-            <div id="maindiv">
-                
-
-                <div id="maindivtop">
-                    <p>
-                        Main
-                    </p>
-                </div>
-                <div id="maindivmain">
-
-                    <div id="content">
-
-                        <p>
-                            <b>Saker att göra:</b><br />
-                            Skapa registrationssida<br />
-                            <br />
-                            <img src="img/snake_bite.jpg" id="bitethis" />
-                        </p>
-                    </div>
-                </div>
-                <div id="maindivbottom">
-                    <!-- In this div the little "tag" at the bottom is shown -->
-                    <div id="tagdiv">   
-                        <p>Snake Android App Webpage | 2011 - 2011</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- This is the place for ads (optional right div) -->
-        <!--<div id="ads">
-                <img src="fakead.jpg">
-        </div>-->
-
-
-
-    </body>
-</html>
+    
+    <ui:define name="PageName">
+        Main
+    </ui:define>
+    <ui:define name="content">
+        <p>
+            <b>Saker att göra:</b><br />
+            Skapa registrationssida<br />
+            <br />
+            <img src="img/snake_bite.jpg" id="bitethis" />
+        </p>
+    </ui:define>
+</ui:composition>
