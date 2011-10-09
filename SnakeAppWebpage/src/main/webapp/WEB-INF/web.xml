@@ -23,10 +23,10 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>index.xhtml</welcome-file>
+        <welcome-file>index.jsf</welcome-file>
     </welcome-file-list>
     <error-page>
         <error-code>404</error-code>
-        <location>/error.xhtml</location>
+        <location>/error.jsf</location>
     </error-page> 
 </web-app>
