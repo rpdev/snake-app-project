@@ -1,0 +1,27 @@
+<ui:composition template="WEB-INF/facelets/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:define name="title">
+        Map Editor - 
+    </ui:define>
+
+    <ui:define name="extrascript">
+        <script type="text/javascript" src="mapeditor/MapEditor.js" />
+    </ui:define>
+
+    <ui:param name="onLoadJS" value="MapEditor('mapeditor','./mapeditor/Level 2.xml');" />
+    
+    <ui:define name="PageName">
+        Editor
+    </ui:define>
+
+    <ui:define name="content">
+        <div style="position: relative;left: 50px;top: 0px">
+            <div id="mapeditor">
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
