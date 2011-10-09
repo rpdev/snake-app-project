@@ -1,109 +1,46 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-Written by Martin S. Please do not change anything :)
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <script type="text/javascript"  
-                src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"/>
-        <script type="text/javascript" src="js/Menu.js" />
-        <link rel="stylesheet" href="default.css" type="text/css"/>
-        <title>Snake Android App Website</title>
-    </head>
-    <body>
+<ui:composition template="WEB-INF/facelets/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
 
-        <div id="topcontainer">
-            <!-- The top right div where the logo is shown -->
-            <div id="snakebend">
-                <div id="login" />
-            </div>
-            <!-- The big div in the middle -->
-            <div id="topmainbar">
-                <div id="topmenu">
-                    <p>
-                        <a href="index.xhtml"><img src="img/menu/homebutton_normal.png" id="homebutton" border="0" /></a>
-                        <a href="editor.xhtml"><img src="img/menu/editorbutton_normal.png" id="editorbutton" border="0" /></a>
-                        <a href="download.xhtml"><img src="img/menu/downloadbutton_normal.png" id="downloadbutton" border="0" /></a>
-                        <a href="faq.xhtml"><img src="img/menu/faqbutton_normal.png" id="faqbutton" border="0" /></a>
-                        <a href="browsemaps.xhtml"><img src="img/menu/browsemapsbutton_normal.png" id="browsemapsbutton" border="0" /></a>
-                    </p>
-                </div>
+    <ui:define name="title">
+        FAQ - 
+    </ui:define>
+    
+    <ui:define name="PageName">
+        FAQ
+    </ui:define>
 
-            </div>
-            <!-- The top "edge" of the frame -->
-            <div id="topedge">
+    <ui:define name="content">
+        <p>
+            <b>Q: What is Snake App?</b><br />
+            A: It's a snake game for Android smartphones but with a twist. You control
+            the snake by tilting your phone and you can rotate 360 degrees. Snake App can
+            also be played using custom maps that you can create on this site.
+            <br /><br />
+            <b>Q: How do I install it on my phone?</b><br />
+            A: First of all you need to download the app which you can do <a href="download.xhtml">
+                here</a>. Unzip the file and place the .apk-file on your SD card.<br />
+            For the next step you need to have a File manager installed on your phone. This doesn't come as standard
+            with most smartphones but you can easily find one using Market, there's plenty to choose
+            from. Download one and install. <br />
+            Third step is to enable apps from unknown sources. When on the home screen go to Menu > Settings > 
+            Applications and check the box next to "Unknown sources".<br />
+            Now use your file manager to navigate to the path where you placed the .apk file. Select it and
+            choose "Open app manager". You can now install the app by simply following the regular installer.<br />
+            Have fun!
+            <br /><br />
+            <b>Q: How do I create my own maps?</b><br />
+            A: You need to register as a member on the site and then login. When logged in
+            go to the Editor and let your creativity flow freely. When done just click "Upload map".
+            <br /><br />
+            <b>Q: How do I install my own custom map and play on it?</b><br />
+            A: I don't know yet  :P
+            <br /><br />
+        </p>
 
-            </div>
-        </div>
-
-        <div id="maincontainer">
-            <div id="leftsidecontainer">
-                <!-- The div where the left part of the snake is located -->
-                <div id="menubar">
-                    <div id="snakeleft">
-
-                    </div>
-                </div>
-            </div>
-            <!-- The main div. This is where content is shown -->
-            <div id="maindiv">
-
-
-                <div id="maindivtop">
-                    <p>
-                        FAQ
-                    </p>
-                </div>
-                <div id="maindivmain">
-
-                    <div id="content">
-
-                        <p>
-                            <b>Q: What is Snake App?</b><br />
-                            A: It's a snake game for Android smartphones but with a twist. You control
-                            the snake by tilting your phone and you can rotate 360 degrees. Snake App can
-                            also be played using custom maps that you can create on this site.
-                            <br /><br />
-                            <b>Q: How do I install it on my phone?</b><br />
-                            A: First of all you need to download the app which you can do <a href="download.xhtml">
-                                here</a>. Unzip the file and place the .apk-file on your SD card.<br />
-                            For the next step you need to have a File manager installed on your phone. This doesn't come as standard
-                            with most smartphones but you can easily find one using Market, there's plenty to choose
-                            from. Download one and install. <br />
-                            Third step is to enable apps from unknown sources. When on the home screen go to Menu > Settings > 
-                            Applications and check the box next to "Unknown sources".<br />
-                            Now use your file manager to navigate to the path where you placed the .apk file. Select it and
-                            choose "Open app manager". You can now install the app by simply following the regular installer.<br />
-                            Have fun!
-                            <br /><br />
-                            <b>Q: How do I create my own maps?</b><br />
-                            A: You need to register as a member on the site and then login. When logged in
-                            go to the Editor and let your creativity flow freely. When done just click "Upload map".
-                            <br /><br />
-                            <b>Q: How do I install my own custom map and play on it?</b><br />
-                            A: I don't know yet  :P
-                            <br /><br />
-                        </p>
-
-                        <br /><br />
-                        <p>// Fyll gärna i mer ifall ni kommer på något</p>
-                    </div>
-                </div>
-                <div id="maindivbottom">
-                    <!-- In this div the little "tag" at the bottom is shown -->
-                    <div id="tagdiv">   
-                        <p>Snake Android App Webpage | 2011 - 2011</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- This is the place for ads (optional right div) -->
-        <!--<div id="ads">
-                <img src="fakead.jpg">
-        </div>-->
-
-
-
-    </body>
-</html>
+        <br /><br />
+        <p>// Fyll gärna i mer ifall ni kommer på något</p>
+    </ui:define>
+</ui:composition>
