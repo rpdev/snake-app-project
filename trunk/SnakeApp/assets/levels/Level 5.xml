@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<snakeappmap id="-1">
+	<name>Maze</name>
+	<description>The Snake Maze</description>
+	<difficuly>3</difficuly>
+	<map x="300" y="400" />
+	<gamespeed type="simple">2.5</gamespeed>
+	<growthspeed type="simple">4</growthspeed>
+	<item type="simple" r="10">1</item>
+	<levelgoal type="greater">9999</levelgoal>
+	<player x="159" y="202" r="14" a="90" s="4" />
+	<obstacles>
+		<item x="232" y="287" r="15" />
+		<item x="233" y="259" r="15" />
+		<item x="234" y="231" r="15" />
+		<item x="233" y="204" r="15" />
+		<item x="84" y="122" r="15" />
+		<item x="85" y="149" r="15" />
+		<item x="84" y="174" r="15" />
+		<item x="86" y="202" r="15" />
+		<item x="120" y="76" r="15" />
+		<item x="144" y="76" r="15" />
+		<item x="169" y="76" r="15" />
+		<item x="197" y="74" r="15" />
+		<item x="230" y="175" r="15" />
+		<item x="87" y="227" r="15" />
+		<item x="254" y="175" r="15" />
+		<item x="283" y="176" r="15" />
+		<item x="62" y="228" r="15" />
+		<item x="37" y="229" r="15" />
+		<item x="16" y="229" r="15" />
+		<item x="196" y="44" r="15" />
+		<item x="197" y="16" r="15" />
+		<item x="119" y="383" r="15" />
+		<item x="119" y="358" r="15" />
+		<item x="116" y="330" r="15" />
+		<item x="139" y="329" r="15" />
+		<item x="167" y="332" r="15" />
+		<item x="194" y="330" r="15" />
+		<item x="234" y="309" r="15" />
+		<item x="214" y="330" r="15" />
+		<item x="236" y="328" r="15" />
+		<item x="95" y="76" r="15" />
+		<item x="83" y="97" r="15" />
+	</obstacles>
+</snakeappmap>
