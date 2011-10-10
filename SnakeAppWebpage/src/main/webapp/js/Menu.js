@@ -22,14 +22,15 @@ $(document).ready(function(){
         }
     });
     
-    $('ul.links a').hover(
-        function() {
+    $('ul.links img').live({
+        mouseover: function() {
             var src = "img/menu/" + $(this).attr('id') + "_hover.png";
             $(this).attr("src", src);
-        }, 
-        function() {
+        },
+        mouseout: function() {
             var src = "img/menu/" + $(this).attr('id') + "_normal.png";
             $(this).attr("src", src);
+        }
         });
     $('#bitethis').click(function() {
         alert('TROLOLOLOLOLOLOLOLOLOLO');
