@@ -167,8 +167,10 @@ public class UserAcc implements Serializable {
         return false;
     }
 
-    @Override
-    public String toString() {
-        return "se.chalmers.snake.snakeappwebpage.serverstorage.User[ id=" + getId() + " ]";
-    }
+	@Override
+	public String toString() {
+		return "UserAcc{" + "id=" + id + ", userName=" + userName + ", email=" + email + ", userComments=" + userComments + ", createMaps=" + createMaps + '}';
+	}
+
+	 
 }

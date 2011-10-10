@@ -135,6 +135,8 @@ public class REPoint implements Serializable {
 
 	@Override
 	public String toString() {
-		return "se.chalmers.snake.snakeappwebpage.serverstorage.REPoint[ id=" + getId() + " ]";
-	}	
+		return "REPoint{" + "id=" + id + ", x=" + x + ", y=" + y + ", r=" + r + '}';
+	}
+
+	
 }

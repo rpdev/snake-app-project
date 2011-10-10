@@ -586,6 +586,8 @@ public class SnakeMap implements Serializable {
 
 	@Override
 	public String toString() {
-		return "se.chalmers.snake.snakeappwebpage.serverstorage.SnakeMap[ id=" + getId() + " ]";
+		return "SnakeMap{" + "id=" + id + ", userName=" + userName + ", mapRating=" + mapRating + ", status=" + status + ", comments=" + comments + ", creationDate=" + creationDate + ", publicedDate=" + publicedDate + ", editedDate=" + editedDate + ", snakeMeta=" + snakeMeta + ", snakeAngle=" + snakeAngle + ", snakeSize=" + snakeSize + ", obstacle=" + obstacle + ", mapSize=" + mapSize + ", gameSpeed=" + gameSpeed + ", growthspeed=" + growthspeed + ", levelgoal=" + levelgoal + ", itemPoint=" + itemPoint + ", itemSize=" + itemSize + ", mapName=" + mapName + ", mapDescription=" + mapDescription + ", difficuly=" + difficuly + '}';
 	}
+
+	
 }
