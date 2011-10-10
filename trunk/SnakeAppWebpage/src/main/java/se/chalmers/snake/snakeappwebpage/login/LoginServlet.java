@@ -68,21 +68,21 @@ public class LoginServlet extends HttpServletBuilder {
                 if (user.equals(newUser)) {
 						 
                     httpMeta.sessionScope().set("user", user);
-						  httpOutput.forward("index.xhtml");
+						  httpOutput.forward("main.jsf");
                     return;
                 }
             }
-				httpOutput.redirect("register.xhtml");
+				httpOutput.redirect("register.jsf");
 
         } else if (action.equals("logout")) {
 				httpMeta.sessionScope().remove("user");
-				httpOutput.forward("index.xhtml");
+				httpOutput.forward("main.jsf");
         } else if (action.equals("register")) {
             UserAcc newUser = new UserAcc(httpMeta.REQUEST("user_name"), httpMeta.REQUEST("password"), "emalme");
             SnakeMap sm = new SnakeMap(newUser);
             Database.getInstance().mergeObject(newUser);
             Database.getInstance().mergeObject(sm);
-				httpOutput.redirect("index.xhtml");
+				httpOutput.redirect("main.jsf");
         } else if (action.equals("getForm")) {
 				httpMeta.setContentType("text/xml;charset=UTF-8");
             PrintWriter out = httpOutput.getWriter();
