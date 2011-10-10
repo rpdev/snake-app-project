@@ -104,6 +104,8 @@ public class MPoint implements Serializable {
 
 	@Override
 	public String toString() {
-		return "se.chalmers.snake.snakeappwebpage.serverstorage.MPoint[ id=" + getId() + " ]";
+		return "MPoint{" + "id=" + id + ", intValue=" + intValue + ", type=" + type + '}';
 	}
+
+	
 }
