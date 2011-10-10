@@ -10,8 +10,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -148,13 +146,19 @@ public class SnakeMap implements Serializable {
 			Document xmlDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 			Element rootNode = xmlDocument.createElement(XMLKeys.ROOT.key);
 			rootNode.setAttribute(XMLKeys.ROOT_ID.key, id.toString());
-			rootNode.setAttribute(XMLKeys.LEVEL.key, difficuly.toString());
+			
 
 			if (mapName != null) {
 				Element nameNode = xmlDocument.createElement(XMLKeys.NAME.key);
 				nameNode.appendChild(xmlDocument.createTextNode(mapName));
 				rootNode.appendChild(nameNode);
 			}
+			if(difficuly!=null) {
+				Element descriptionNode = xmlDocument.createElement(XMLKeys.DIFFICULY.key);
+				descriptionNode.appendChild(xmlDocument.createTextNode(this.difficuly.toString()));
+				rootNode.appendChild(descriptionNode);
+			}
+			
 			if (mapDescription != null) {
 				Element descriptionNode = xmlDocument.createElement(XMLKeys.DESCRIPTION.key);
 				descriptionNode.appendChild(xmlDocument.createTextNode(mapDescription));
@@ -168,7 +172,8 @@ public class SnakeMap implements Serializable {
 			}
 			if (gameSpeed != null) {
 				Element speedNode = xmlDocument.createElement(XMLKeys.GAMESPEED.key);
-				speedNode.appendChild(xmlDocument.createTextNode(gameSpeed.toString()));
+				speedNode.setAttribute(XMLKeys.CFUNC.key, gameSpeed.getType());
+				speedNode.appendChild(xmlDocument.createTextNode(gameSpeed.getIntValue().toString()));
 				rootNode.appendChild(speedNode);
 			}
 			if (growthspeed != null) {
@@ -216,7 +221,7 @@ public class SnakeMap implements Serializable {
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
 			StreamResult result = new StreamResult(ioWriter);
-			DOMSource source = new DOMSource(xmlDocument);
+			DOMSource source = new DOMSource(rootNode);
 			transformer.transform(source, result);
 			return true;
 
@@ -260,7 +265,8 @@ public class SnakeMap implements Serializable {
 		Y("y"),
 		ANGLE("a"),
 		PLAYER_LENGTH("s"),
-		OBSTACLES("obstacles");
+		OBSTACLES("obstacles"),
+		DIFFICULY("difficuly");
 		private final String key;
 
 		private XMLKeys(String key) {

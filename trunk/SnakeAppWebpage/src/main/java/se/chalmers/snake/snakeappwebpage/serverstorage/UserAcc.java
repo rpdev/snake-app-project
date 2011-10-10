@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package se.chalmers.snake.snakeappwebpage.serverstorage;
 
 import java.io.Serializable;
@@ -169,7 +165,7 @@ public class UserAcc implements Serializable {
 
 	@Override
 	public String toString() {
-		return "UserAcc{" + "id=" + id + ", userName=" + userName + ", email=" + email + ", userComments=" + userComments + ", createMaps=" + createMaps + '}';
+		return "UserAcc{" + "id=" + id + ", userName=" + userName + ", email=" + email + ", userComments=" + userComments.size() + ", createMaps=" + createMaps.size() + '}';
 	}
 
 	 
