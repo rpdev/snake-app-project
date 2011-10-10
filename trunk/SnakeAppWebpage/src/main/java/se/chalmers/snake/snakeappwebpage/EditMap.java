@@ -71,12 +71,14 @@ public class EditMap extends HttpServletBuilder {
     private SnakeMap storeMap(HttpMeta httpMeta, boolean publicMap) throws Exception {
         UserAcc userAcc = this.getUserAccount();
         if (userAcc != null) {
-            //int mapID = this.getIntFromRequest(httpMeta, "id", -1);
+            int mapID = this.getIntFromRequest(httpMeta, "id", -1);
             SnakeMap myMap = null;
 
-            /*if (mapID > 0) {
+            if (mapID > 0) {
+					try {
                 myMap = Database.getInstance().getEntity(SnakeMap.class, Long.valueOf(mapID));
-            }*/
+					} catch(Exception ex) {}
+            }
             if (myMap == null) {
                 myMap = new SnakeMap(userAcc);
             }
