@@ -8,7 +8,7 @@ $(document).ready(function(){
                 function(){
                     var src = "img/star_yellow.png";
                     $(this).attr("src", src);
-                    if($(this).attr('id') == element.toString()){
+                    if($(this).attr('id') == element){
                         return false;
                     }
                 });
