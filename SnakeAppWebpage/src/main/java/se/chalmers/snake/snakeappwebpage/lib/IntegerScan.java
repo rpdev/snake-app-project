@@ -15,6 +15,10 @@ public class IntegerScan implements Iterator<List<Integer>>, Iterable<List<Integ
 	private static final Pattern REGXPEND = Pattern.compile("\\}");
 	private Scanner scan;
 
+	/**
+	 * The String to be the score of this scanner.
+	 * @param source 
+	 */
 	public IntegerScan(String source) {
 		this.scan = new Scanner(source);
 		this.scan.useDelimiter(IntegerScan.REGXPEND);
@@ -40,10 +44,17 @@ public class IntegerScan implements Iterator<List<Integer>>, Iterable<List<Integ
 		return iList;
 	}
 
+	/**
+	 * Not support on a read only IO.
+	 */
 	@Override
 	public void remove() {
 	}
 
+	/**
+	 * Return this IntergerScan and will not reset the iterator if end or has be run.
+	 * @return 
+	 */
 	@Override
 	public Iterator<List<Integer>> iterator() {
 		return this;

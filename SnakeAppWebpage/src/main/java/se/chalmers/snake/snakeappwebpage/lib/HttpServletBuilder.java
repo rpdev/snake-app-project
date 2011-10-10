@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * A API for use the HttpServlet more easy.
  */
 public abstract class HttpServletBuilder extends HttpServlet {
+	private static final long serialVersionUID = 6323638897225635090L;
 
 	/**
 	 * This Enum is define what type of requestScope the server is do.
@@ -206,13 +207,30 @@ public abstract class HttpServletBuilder extends HttpServlet {
 	}
 
 	public interface HttpServletBuilderScope<T> {
-
+		/**
+		 * Set a value to the select scope if the scope support this method.
+		 * @param name
+		 * @param obj 
+		 */
 		public void set(String name, T obj);
 
+		/**
+		 * Get a value from select scope if the scope support this method.
+		 * @param name
+		 * @return 
+		 */
 		public T get(String name);
 
+		/**
+		 * Remove a value from select scope if the scope support this method.
+		 * @param name 
+		 */
 		public void remove(String name);
 
+		/**
+		 * Return a list of all keys in this scope if the scope support this method.
+		 * @return 
+		 */
 		public List<String> keys();
 	}
 
@@ -251,7 +269,7 @@ public abstract class HttpServletBuilder extends HttpServlet {
 			try {
 				this.response.sendError(httpError);
 				return true;
-			} finally {
+			} catch(Exception ex) {
 				return false;
 			}
 		}
@@ -267,7 +285,7 @@ public abstract class HttpServletBuilder extends HttpServlet {
 			try {
 				this.response.sendRedirect(url);
 				return true;
-			} finally {
+			} catch(Exception ex) {
 				return false;
 			}
 		}
@@ -283,7 +301,7 @@ public abstract class HttpServletBuilder extends HttpServlet {
 			try {
 				this.request.getRequestDispatcher(JSPFileName).forward(this.request, this.response);
 				return true;
-			} finally {
+			} catch(Exception ex) {
 				return false;
 			}
 		}
@@ -299,7 +317,7 @@ public abstract class HttpServletBuilder extends HttpServlet {
 			try {
 				this.request.getRequestDispatcher(JSPFileName).include(this.request, this.response);
 				return true;
-			} finally {
+			} catch(Exception ex) {
 				return false;
 			}
 		}
@@ -354,12 +372,18 @@ public abstract class HttpServletBuilder extends HttpServlet {
 	}
 	//</editor-fold>
 
+	/**
+	 * The private method for prepress the call before handle to the pageRequest
+	 * @param method
+	 * @param request
+	 * @param response
+	 * @throws IOException 
+	 */
 	private void doRequest(MethodType method, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		PrintWriter pw = response.getWriter();
 		try {
 			this.pageRequest(new HttpMeta(method,request, response), new HttpOutput(request, response,pw));
 		} catch(Exception ex) {
-			ex.printStackTrace();
 		} finally {
 			pw.close();
 		}
