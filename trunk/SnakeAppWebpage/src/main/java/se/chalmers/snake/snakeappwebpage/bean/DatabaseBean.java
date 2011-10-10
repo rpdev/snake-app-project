@@ -17,6 +17,7 @@ import se.chalmers.snake.snakeappwebpage.serverstorage.UserAcc;
 @ManagedBean(name = "DatabaseBean")
 @SessionScoped
 public class DatabaseBean implements Serializable {
+	private static final long serialVersionUID = -7839226307524402862L;
     
     private List<SnakeMap> snakeMapList = new ArrayList<SnakeMap>();
 
@@ -24,7 +25,9 @@ public class DatabaseBean implements Serializable {
      * @return the snakeMapList
      */
     public List<SnakeMap> getSnakeMapList() {
-        return Database.getInstance().getEntityList(SnakeMap.class);
+		 
+		 this.snakeMapList = Database.getInstance().getEntityList(SnakeMap.class);
+       return this.snakeMapList ;
     }
 
     /**

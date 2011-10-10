@@ -2,7 +2,6 @@ package se.chalmers.snake.snakeappwebpage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 import javax.servlet.annotation.WebServlet;
 import se.chalmers.snake.snakeappwebpage.lib.HttpServletBuilder;
 import se.chalmers.snake.snakeappwebpage.lib.IntegerScan;
@@ -14,13 +13,22 @@ import se.chalmers.snake.snakeappwebpage.serverstorage.SnakeMap;
 import se.chalmers.snake.snakeappwebpage.serverstorage.UserAcc;
 
 /**
- *
+ * The Servlet for save and read a SnakeMap Obj.
+ * The save obj is come as a post call.
+ * and the read obj as a get call and return a xml file for the select item if this exist.
+ * 
  */
 @WebServlet(name = "EditMap", urlPatterns = {"/editmap"})
 public class EditMap extends HttpServletBuilder {
 
 	private static final long serialVersionUID = 2244928737289982716L;
 
+	/**
+	 * The main function of the Servlets and handle the first call of this Servlet.
+	 * @param httpMeta 
+	 * @param httpOutput
+	 * @throws Exception 
+	 */
 	@Override
 	protected void pageRequest(HttpMeta httpMeta, HttpOutput httpOutput) throws Exception {
 		httpMeta.setContentType("text/xml;charset=UTF-8");
@@ -43,30 +51,45 @@ public class EditMap extends HttpServletBuilder {
 		}
 	}
 
+	
 	/**
-	 * Get the current user account that has access the page.
+	 * Get the current user account that has access the page
 	 * @param httpMeta
-	 * @return 
+	 * @return The UserAcc if a user are access to the page, else null.
 	 */
 	private UserAcc getUserAccount(HttpMeta httpMeta) {
 		return LoginServlet.getUserAccount(httpMeta);
 	}
 
+	/**
+	 * Get the map if the map exist, else not return a template file
+	 * @param httpMeta
+	 * @param httpOutput 
+	 */
 	private void getMap(HttpMeta httpMeta, HttpOutput httpOutput) {
 		try {
 			int mapID = this.getIntFromRequest(httpMeta, "id", -1);
 			if (mapID > 0) {
 				SnakeMap myMap = Database.getInstance().getEntity(SnakeMap.class, Long.valueOf(mapID));
 				if (myMap != null) {
-					System.out.println(myMap.toString());
-					System.out.println(myMap.generateXML());
 					myMap.generateXML(httpOutput.getWriter());
+					return;
 				}
 			}
 		} catch (Exception ex) {
 		}
+		httpOutput.forward("mapeditor/template.xml");
 	}
 
+	
+	/**
+	 * Save a map to the database. A map can be save as a new post or edit of a old map.
+	 * And the map can be mark with public state while save.
+	 * @param httpMeta The HTTP Meta
+	 * @param publicMap Will this map be public or not.
+	 * @return Return the Obj if this can be save, else this will throws a error.
+	 * @throws Exception 
+	 */
 	private SnakeMap storeMap(HttpMeta httpMeta, boolean publicMap) throws Exception {
 		UserAcc userAcc = this.getUserAccount(httpMeta);
 		if (userAcc != null) {
@@ -114,6 +137,11 @@ public class EditMap extends HttpServletBuilder {
 		throw new Exception("No user are access or allow to edit this map");
 	}
 
+	/**
+	 * Get a list of all Obstract that is store in the POST call while save data.
+	 * @param httpMeta
+	 * @return 
+	 */
 	private List<REPoint> getObstacle(HttpMeta httpMeta) {
 		List<REPoint> points = new ArrayList<REPoint>();
 		String str = this.getStringFromRequest(httpMeta, "obstacle", "");
@@ -125,6 +153,13 @@ public class EditMap extends HttpServletBuilder {
 		return points;
 	}
 
+	/**
+	 * Return a int from the Request, or return a default value if not value are allow. 
+	 * @param httpMeta
+	 * @param key The key of request to be read
+	 * @param nullValue the default if not the value can be read as a int.
+	 * @return 
+	 */
 	private int getIntFromRequest(HttpMeta httpMeta, String key, int nullValue) {
 		try {
 			return Integer.parseInt(httpMeta.REQUEST(key));
@@ -133,6 +168,16 @@ public class EditMap extends HttpServletBuilder {
 		}
 	}
 
+	/**
+	 * Return a int from the Request, or return a default value if not value are allow
+	 * or in given limit.
+	 * @param httpMeta
+	 * @param key The key of request to be read
+	 * @param nullValue the default if not the value can be read as a int.
+	 * @param min the lower limit, include this number.
+	 * @param max the higer limit, include this number.
+	 * @return 
+	 */
 	private int getIntFromRequest(HttpMeta httpMeta, String key, int nullValue, int min, int max) {
 		try {
 			int value = Integer.parseInt(httpMeta.REQUEST(key));
@@ -142,11 +187,23 @@ public class EditMap extends HttpServletBuilder {
 		}
 	}
 
+	/**
+	 * Return a String from the request by a key, if the value exist and can be use.
+	 * @param httpMeta
+	 * @param key The key of request to be read
+	 * @param nullValue the default if not the value can be read as a int.
+	 * @return 
+	 */
 	private String getStringFromRequest(HttpMeta httpMeta, String key, String nullValue) {
 		String value = httpMeta.REQUEST(key);
 		return value != null ? value : nullValue;
 	}
 
+	/**
+	 * Read the map size from the post data on save or public call.
+	 * @param httpMeta
+	 * @return 
+	 */
 	private REPoint getMapSize(HttpMeta httpMeta) {
 		String rowString = this.getStringFromRequest(httpMeta, "gamesize", "");
 		IntegerScan is = new IntegerScan(rowString);
@@ -159,6 +216,11 @@ public class EditMap extends HttpServletBuilder {
 		throw new NullPointerException("Can not read the MapSize");
 	}
 
+	/**
+	 * Read the SnakeMeta from the post data on save or public call.
+	 * @param httpMeta
+	 * @param myMap 
+	 */
 	private void setSnakeMeta(HttpMeta httpMeta, SnakeMap myMap) {
 		String rowString = this.getStringFromRequest(httpMeta, "player", "");
 		IntegerScan is = new IntegerScan(rowString);
