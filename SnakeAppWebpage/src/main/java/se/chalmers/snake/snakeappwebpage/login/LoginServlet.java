@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Alesandro
  */
 @WebServlet(name = "Login", urlPatterns = {"/Login"})
-public class LoginServlet extends HttpServlet {
+public class LoginServlet extends HttpServletBuilder {
+	private static final long serialVersionUID = -2455964686168401537L;
 
     @XmlRootElement
     static class User {
@@ -54,78 +55,38 @@ public class LoginServlet extends HttpServlet {
             }
         }
     }
-
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String action = request.getParameter("action");
+	 
+	
+	@Override
+	protected void pageRequest(HttpMeta httpMeta, HttpOutput httpOutput) throws Exception {		
+		if(httpMeta.isMethodPostGet()) {
+        String action = httpMeta.REQUEST("action");
         if (action.equals("login")) {
-            UserAcc newUser = new UserAcc(request.getParameter("user_name"), request.getParameter("password"), "");
+            UserAcc newUser = new UserAcc(httpMeta.REQUEST("user_name"), httpMeta.REQUEST("password"), "");
             List<UserAcc> userList = Database.getInstance().getEntityList(UserAcc.class);
             for (UserAcc user : userList) {
                 if (user.equals(newUser)) {
-                    request.getSession().setAttribute("user", user);
-                    request.getRequestDispatcher("index.xhtml").forward(request, response);
+						 
+                    httpMeta.sessionScope().set("user", user);
+						  httpOutput.forward("index.xhtml");
                     return;
                 }
             }
-            response.sendRedirect("register.xhtml");
+				httpOutput.redirect("register.xhtml");
 
         } else if (action.equals("logout")) {
-            request.getSession().setAttribute("user", null);
-            request.getRequestDispatcher("index.xhtml").forward(request, response);
-
+				httpMeta.sessionScope().remove("user");
+				httpOutput.forward("index.xhtml");
         } else if (action.equals("register")) {
-            UserAcc newUser = new UserAcc(request.getParameter("user_name"), request.getParameter("password"), "emalme");
+            UserAcc newUser = new UserAcc(httpMeta.REQUEST("user_name"), httpMeta.REQUEST("password"), "emalme");
             SnakeMap sm = new SnakeMap(newUser);
             Database.getInstance().mergeObject(newUser);
             Database.getInstance().mergeObject(sm);
-            response.sendRedirect("index.xhtml");
-        } else if (action.equals("load")) {
-            PrintWriter out = response.getWriter();
-            UserAcc user = (UserAcc) request.getSession().getAttribute("user");
-            try {
-                if (user == null) {
-                    out.println("<p><form action=\"Login\" method=\"POST\">");
-                    out.println("<input type=\"hidden\" name=\"action\" value=\"login\"/>");
-                    out.println("<table>");
-                    out.println("<tr>"
-                            + "<td colspan=\"2\">"
-                            + "<input type=\"text\" name=\"user_name\" id=\"username\" placeholder=\"Username\" style=\"width: 140px;\" />"
-                            + "</td>"
-                            + "</tr>");
-                    out.println("<tr>"
-                            + "<td colspan=\"2\">"
-                            + "<input type=\"password\" name=\"password\" id=\"password\" style=\"width: 140px;\" />"
-                            + "</td>"
-                            + "<td><input type=\"submit\" value=\"Login\" /></td>"
-                            + "</tr>");
-                    out.println("</table>"
-                            + "</form>"
-                            + "</p>");
-                } else {
-                    out.println("<p><form action=\"Login\" method=\"POST\">");
-                    out.println("Welcome " + user.getUserName() + "<br />");
-                    out.println("<input type=\"hidden\" name=\"action\" value=\"logout\"/>");
-                    out.println("<input type=\"submit\" value=\"Logout\" />");
-                    out.println("</form></p>");
-
-
-                }
-
-            } finally {
-                out.close();
-            }
+				httpOutput.redirect("index.xhtml");
         } else if (action.equals("getForm")) {
-            response.setContentType("text/xml;charset=UTF-8");
-            PrintWriter out = response.getWriter();
-            UserAcc user = (UserAcc) request.getSession().getAttribute("user");
+				httpMeta.setContentType("text/xml;charset=UTF-8");
+            PrintWriter out = httpOutput.getWriter();
+            UserAcc user = (UserAcc)httpMeta.sessionScope().get("user");
             User wrapper = new User(user);
             JAXBContext jc;
             try {
@@ -141,41 +102,7 @@ public class LoginServlet extends HttpServlet {
                 out.close();
             }
         }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+		}
+	}
+	
 }
