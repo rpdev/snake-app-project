@@ -28,7 +28,8 @@ import android.widget.TextView;
  * Use <code>
  *  Intent gameIntent = new Intent(StartActivity.this, GameActivity.class);
  *  gameIntent.putExtra("level", "STRING LEVEL NAME");
- *  StartActivity.this.startActivity(gameIntent);<code> for select level to be load.
+ *  StartActivity.this.startActivity(gameIntent);<code>
+ * for select level to be load.
  */
 public class GameActivity extends Activity implements EnumObserver<GameEngineIC.GameEngineEvent, Void, Void> {
 
@@ -138,6 +139,10 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 		private void hidden() {
 			this.menu.setVisibility(View.GONE);
 		}
+
+		private boolean isShow() {
+			return this.menu.getVisibility()==View.VISIBLE;
+		}
 	}
 
 	/** Called when the activity is first created. */
@@ -154,7 +159,6 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 		WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		 **/
 		//</editor-fold>
-		
 		this.setContentView(R.layout.game_layout);
 		this.mColl = new MenuControll();
 
@@ -223,17 +227,16 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 		if (this.gameView.isRun()) {
 			this.gameView.pauseGame();
 		}
+		if (!this.mColl.isShow()) {
+			boolean showResume = GameActivity.this.gameEngine.getStatus() != GameEngineIC.GameEngineStatus.LEVEL_END;
+			boolean showEnterHighscore = showHighscore && ControlResources.get().getHighscoreDatabase().checkIfEnoughPoints(this.gameView.getScore());
 
-
-		boolean showResume = GameActivity.this.gameEngine.getStatus() != GameEngineIC.GameEngineStatus.LEVEL_END;
-		boolean showEnterHighscore = showHighscore && ControlResources.get().getHighscoreDatabase().checkIfEnoughPoints(this.gameView.getScore());
-
-
-		if (showEnterHighscore) {
-			CharSequence text = TextFormatter.FT(TextFormatter.TS("Enter Highscore", "bi"), "\nYou have enter Highscore with ", TextFormatter.TS("" + this.gameEngine.getScore(), "i"), " points.");
-			this.mColl.show(text, showResume ? this.mColl.RESUME : null, showEnterHighscore ? this.mColl.ENTER_HIGHSCORE : null, this.mColl.RESTART, this.mColl.EXIT);
-		} else {
-			this.mColl.show(showResume ? this.mColl.RESUME : null, showEnterHighscore ? this.mColl.ENTER_HIGHSCORE : null, this.mColl.RESTART, this.mColl.EXIT);
+			if (showEnterHighscore) {
+				CharSequence text = TextFormatter.FT(TextFormatter.TS("Enter Highscore", "bi"), "\nYou have enter Highscore with ", TextFormatter.TS("" + this.gameEngine.getScore(), "i"), " points.");
+				this.mColl.show(text, showResume ? this.mColl.RESUME : null, showEnterHighscore ? this.mColl.ENTER_HIGHSCORE : null, this.mColl.RESTART, this.mColl.EXIT);
+			} else {
+				this.mColl.show(showResume ? this.mColl.RESUME : null, showEnterHighscore ? this.mColl.ENTER_HIGHSCORE : null, this.mColl.RESTART, this.mColl.EXIT);
+			}
 		}
 	}
 
