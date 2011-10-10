@@ -141,7 +141,7 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 		}
 
 		private boolean isShow() {
-			return this.menu.getVisibility()==View.VISIBLE;
+			return this.menu.getVisibility() == View.VISIBLE;
 		}
 	}
 
@@ -180,6 +180,8 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 				startLevelName = allLevel[0];
 			}
 		}
+		ControlResources.get().getLevelHistory().set(startLevelName);
+
 
 		this.currentLevel = startLevelName;
 		this.gameEngine.loadLevel(startLevelName);
@@ -286,8 +288,11 @@ public class GameActivity extends Activity implements EnumObserver<GameEngineIC.
 		this.gameEngine.setStartScore(this.gameView.getScore());
 		this.currentLevel = ControlResources.get().getLevelDatabase().getNextLevel(this.currentLevel);
 		if (this.currentLevel != null) {
+
 			if (!this.gameEngine.loadLevel(this.currentLevel)) {
 				this.goToHighscoreActivity();
+			} else {
+				ControlResources.get().getLevelHistory().set(this.currentLevel);
 			}
 		} else {
 			this.goToHighscoreActivity();

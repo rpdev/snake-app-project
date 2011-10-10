@@ -27,24 +27,26 @@
 			android:visibility="gone"
 			>
 			
-			<Button 
-			android:id="@+id/resumeGame_button" 
-      			android:layout_width="fill_parent"
-      			android:layout_height="wrap_content"
-      			android:text="Resume"
-      			android:visibility="gone"
-      			android:layout_marginBottom="5dip"
-			/>
 			
 			<Button 
-			android:id="@+id/newGame_button" 
+			android:id="@+id/snake_new_game_button" 
       			android:layout_width="fill_parent"
       			android:layout_height="wrap_content"
       			android:text="New Game"
       			android:layout_marginBottom="5dip"
 				android:visibility="gone"
 			/>
-			<Button android:id="@+id/help_button" 
+			
+			<Button 
+			android:id="@+id/select_level_button" 
+      			android:layout_width="fill_parent"
+      			android:layout_height="wrap_content"
+      			android:text="Select Level"
+      			android:layout_marginBottom="5dip"
+				android:visibility="gone"
+			/>
+			
+			<Button android:id="@+id/snake_help_button" 
       			android:layout_width="fill_parent"
       			android:layout_height="wrap_content"
       			android:text="Help"
@@ -52,10 +54,18 @@
       			android:layout_marginBottom="5dip"
 			/>
 			
-			<Button android:id="@+id/highscore_button" 
+			<Button android:id="@+id/snake_highscore_button" 
       			android:layout_width="fill_parent"
       			android:layout_height="wrap_content"
       			android:text="Highscore"
+				android:visibility="gone"
+      			android:layout_marginBottom="5dip"
+			/>
+			
+			<Button android:id="@+id/exit_button" 
+      			android:layout_width="fill_parent"
+      			android:layout_height="wrap_content"
+      			android:text="Exit Game"
 				android:visibility="gone"
       			android:layout_marginBottom="5dip"
 			/>

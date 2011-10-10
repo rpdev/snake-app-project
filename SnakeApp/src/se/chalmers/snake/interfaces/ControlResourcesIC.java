@@ -20,4 +20,6 @@ public interface ControlResourcesIC {
 	
 	public Storage getStorage();
 	
+	public LevelHistoryIC getLevelHistory();
+	
 }

@@ -13,8 +13,6 @@ import android.widget.TextView;
 import se.chalmers.snake.interfaces.HighscoreDatabaseIC;
 import se.chalmers.snake.mastercontroller.ControlResources;
 
-
-
 public class StartActivity extends Activity { // implements SensorEventListener
 
 	@Override
@@ -29,25 +27,45 @@ public class StartActivity extends Activity { // implements SensorEventListener
 		menu = (LinearLayout) findViewById(R.id.menu_buttons);
 
 		//Instantiate buttons
-		newGame = (Button) findViewById(R.id.newGame_button);
-		resumeGame = (Button) findViewById(R.id.resumeGame_button);
-		help = (Button) findViewById(R.id.help_button);
-		highscore = (Button) findViewById(R.id.highscore_button);
+		newGameButton = (Button) findViewById(R.id.snake_new_game_button);
+		
+		helpButton = (Button) findViewById(R.id.snake_help_button);
+		highscoreButton = (Button) findViewById(R.id.snake_highscore_button);
 
 		//Instantiate texts
 		helpText = (TextView) findViewById(R.id.helpText);
 		highscoreText = (TextView) findViewById(R.id.highscoreText);
 		back = (Button) findViewById(R.id.back_button);
 
+		this.exitGame = (Button) this.findViewById(R.id.exit_button);
+		this.exitGame.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View view) {
+				StartActivity.this.finish();
+			}
+		});
+
+		this.selectLevel = (Button) this.findViewById(R.id.select_level_button);
+		this.selectLevel.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				ControlResources.make(StartActivity.this, R.id.spelplan);
+				Intent gameIntent = new Intent(StartActivity.this, SelectLevelActivity.class);
+				StartActivity.this.startActivity(gameIntent);
+				
+			}
+		});
+
 
 		switchToStartMenu();
 
 		show();
-		newGame.setOnClickListener(newGameListener);
+		newGameButton.setOnClickListener(newGameListener);
 		//resumeGame.setOnClickListener(resumeGameListener);
-		help.setOnClickListener(helpListener);
-		highscore.setOnClickListener(highscoreListener);
+		helpButton.setOnClickListener(helpListener);
+		highscoreButton.setOnClickListener(highscoreListener);
 		back.setOnClickListener(backListener);
+
+
 
 
 	}
@@ -59,11 +77,12 @@ public class StartActivity extends Activity { // implements SensorEventListener
 	private RelativeLayout background;
 	private LinearLayout menu;
 	//Buttons
-	private Button newGame;
-	private Button resumeGame;
-	private Button help;
-	private Button highscore;
+	private Button newGameButton;
+	private Button helpButton;
+	private Button highscoreButton;
 	private Button back;
+	private Button selectLevel;
+	private Button exitGame;
 	//Texts
 	private TextView helpText;
 	private TextView highscoreText;
@@ -73,7 +92,6 @@ public class StartActivity extends Activity { // implements SensorEventListener
 		//menuState possibilities
 
 		onStartMenu,
-		onPauseMenu,
 		onHighscoreMenu,
 		onHelpMenu
 	};
@@ -96,30 +114,15 @@ public class StartActivity extends Activity { // implements SensorEventListener
 		//These components should be present
 		background.setBackgroundResource(R.drawable.snake_bg);
 		menu.setVisibility(View.VISIBLE);
-		newGame.setVisibility(View.VISIBLE);
-		help.setVisibility(View.VISIBLE);
-		highscore.setVisibility(View.VISIBLE);
+		newGameButton.setVisibility(View.VISIBLE);
+		helpButton.setVisibility(View.VISIBLE);
+		highscoreButton.setVisibility(View.VISIBLE);
+		this.exitGame.setVisibility(View.VISIBLE);
+		this.selectLevel.setVisibility(View.VISIBLE);
 		//These shouldn't
-		resumeGame.setVisibility(View.GONE);
 		back.setVisibility(View.GONE);
 		helpText.setVisibility(View.GONE);
 		highscoreText.setVisibility(View.GONE);
-	}
-
-	public void switchToPauseMenu() {
-		previousMenuState = menuState;
-		menuState = MenuState.onPauseMenu;
-		//These components should be present
-		menu.setVisibility(View.VISIBLE);
-		resumeGame.setVisibility(View.VISIBLE);
-		newGame.setVisibility(View.VISIBLE);
-		help.setVisibility(View.VISIBLE);
-		highscore.setVisibility(View.VISIBLE);
-		//These shouldn't
-		background.setBackgroundColor(0x00000000);
-		helpText.setVisibility(View.GONE);
-		highscoreText.setVisibility(View.GONE);
-		back.setVisibility(View.GONE);
 	}
 
 	public void switchToHighscoreMenu() {
@@ -130,11 +133,12 @@ public class StartActivity extends Activity { // implements SensorEventListener
 		back.setVisibility(View.VISIBLE);
 		highscoreText.setVisibility(View.VISIBLE);
 		//These shouldn't
-		resumeGame.setVisibility(View.GONE);
-		help.setVisibility(View.GONE);
-		highscore.setVisibility(View.GONE);
-		newGame.setVisibility(View.GONE);
+		helpButton.setVisibility(View.GONE);
+		highscoreButton.setVisibility(View.GONE);
+		newGameButton.setVisibility(View.GONE);
 		helpText.setVisibility(View.GONE);
+		this.exitGame.setVisibility(View.GONE);
+		this.selectLevel.setVisibility(View.GONE);
 	}
 
 	public void switchToHelpMenu() {
@@ -145,11 +149,12 @@ public class StartActivity extends Activity { // implements SensorEventListener
 		back.setVisibility(View.VISIBLE);
 		helpText.setVisibility(View.VISIBLE);
 		//These shouldn't
-		resumeGame.setVisibility(View.GONE);
-		help.setVisibility(View.GONE);
-		highscore.setVisibility(View.GONE);
-		newGame.setVisibility(View.GONE);
+		helpButton.setVisibility(View.GONE);
+		highscoreButton.setVisibility(View.GONE);
+		newGameButton.setVisibility(View.GONE);
 		highscoreText.setVisibility(View.GONE);
+		this.exitGame.setVisibility(View.GONE);
+		this.selectLevel.setVisibility(View.GONE);
 	}
 	private OnClickListener backListener = new OnClickListener() {
 
@@ -160,9 +165,6 @@ public class StartActivity extends Activity { // implements SensorEventListener
 				case onStartMenu:
 					switchToStartMenu();
 					break;
-				case onPauseMenu:
-					switchToPauseMenu();
-					break;
 				default:
 					break;
 			}
@@ -170,6 +172,7 @@ public class StartActivity extends Activity { // implements SensorEventListener
 		}
 	};
 	private View.OnClickListener newGameListener = new View.OnClickListener() {
+
 		public void onClick(View v) {
 			// This call most be down after first rend of screen but before some recuses nead this.
 			ControlResources.make(StartActivity.this, R.id.spelplan);
@@ -178,8 +181,6 @@ public class StartActivity extends Activity { // implements SensorEventListener
 
 		}
 	};
-
-	
 	private View.OnClickListener helpListener = new View.OnClickListener() {
 
 		@Override
@@ -198,38 +199,9 @@ public class StartActivity extends Activity { // implements SensorEventListener
 
 			HighscoreDatabaseIC highData = ControlResources.get().getHighscoreDatabase();
 			highscoreText.setText(highData.toString());
-			
+
 			switchToHighscoreMenu();
 			show();
 		}
 	};
-	/*
-	@Override
-	public boolean onKeyDown(int keycode, KeyEvent event) {
-	if (keycode == KeyEvent.KEYCODE_MENU) {
-	
-	gameView.pauseGame();
-	switchToPauseMenu();
-	show();
-	}
-	return super.onKeyDown(keycode, event);
-	}
-	 */
-
-	/**
-	 * This will block the Back Button in case the game is run and only show the menu.
-	 * If the back button are press in pause mode the will work as normal. and return/exit app.
-	 */
-	/*
-	@Override
-	public void onBackPressed() {
-	if (this.gameView.isRun()) {
-	this.gameView.pauseGame();
-	switchToPauseMenu();
-	show();
-	} else {
-	super.onBackPressed();
-	}
-	}
-	 */
 }

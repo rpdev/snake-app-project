@@ -10,6 +10,7 @@ import se.chalmers.snake.interfaces.ControlResourcesIC;
 import se.chalmers.snake.interfaces.GameEngineIC;
 import se.chalmers.snake.interfaces.HighscoreDatabaseIC;
 import se.chalmers.snake.interfaces.LevelDatabaseIC;
+import se.chalmers.snake.interfaces.LevelHistoryIC;
 import se.chalmers.snake.interfaces.MotionDetectorIC;
 import se.chalmers.snake.interfaces.util.XYPoint;
 import se.chalmers.snake.leveldatabase.LevelDatabase;
@@ -19,7 +20,7 @@ import se.chalmers.snake.util.Storage;
 /**
  *
  */
-public class ControlResources implements ControlResourcesIC{
+public class ControlResources implements ControlResourcesIC {
 
 	private static ControlResources controlResources = null;
 	private MotionDetectorIC motionDetector;
@@ -28,25 +29,33 @@ public class ControlResources implements ControlResourcesIC{
 	private Storage storage;
 	private LevelDatabaseIC levelDatabase;
 	private HighscoreDatabaseIC highscoreDatabase;
+	private LevelHistoryIC levelHistory;
 
 	private ControlResources(Activity currentActivity, SensorManager sensorManager, XYPoint screenSize) {
 		this.motionDetector = new MotionDetector(sensorManager);
-		
-		
+
+
 		this.storage = new Storage(currentActivity);
-		
+
 		HighscoreDatabase highscoreDatabaseObj = this.storage.getObject("highscore");
-		if(highscoreDatabaseObj instanceof HighscoreDatabaseIC) {
-			this.highscoreDatabase = (HighscoreDatabaseIC)highscoreDatabaseObj;
+		if (highscoreDatabaseObj instanceof HighscoreDatabaseIC) {
+			this.highscoreDatabase = (HighscoreDatabaseIC) highscoreDatabaseObj;
 		} else {
 			this.highscoreDatabase = new HighscoreDatabase();
 		}
-		
-		//this.highscoreDatabase = new HighscoreDatabase();
-		
+
 		this.levelDatabase = new LevelDatabase(currentActivity);
 		this.screenSize = screenSize;
 		this.gameEngine = new GameEngine(this);
+
+		LevelHistory levelHistoryObj = this.storage.getObject(LevelHistory.SAVE_NAME);
+		if (levelHistoryObj instanceof LevelHistoryIC) {
+			this.levelHistory = (LevelHistoryIC) levelHistoryObj;
+		} else {
+			this.levelHistory = new LevelHistory();
+		}
+
+
 	}
 
 	public static void make(Activity currentActivity, int mainViewID) {
@@ -57,9 +66,11 @@ public class ControlResources implements ControlResourcesIC{
 				XYPoint screenSize = new XYPoint(mainView.getWidth(), mainView.getHeight());
 				SensorManager sensorManager = (SensorManager) currentActivity.getSystemService(Context.SENSOR_SERVICE);
 				ControlResources.controlResources = new ControlResources(currentActivity, sensorManager, screenSize);
-			} catch (Exception ex) {}
+			} catch (Exception ex) {
+			}
 		}
 	}
+
 	public static ControlResources get() {
 
 		if (ControlResources.controlResources != null) {
@@ -91,5 +102,11 @@ public class ControlResources implements ControlResourcesIC{
 
 	public HighscoreDatabaseIC getHighscoreDatabase() {
 		return this.highscoreDatabase;
+	}
+
+	public LevelHistoryIC getLevelHistory() {
+
+
+		return this.levelHistory;
 	}
 }

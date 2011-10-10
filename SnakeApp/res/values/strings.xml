@@ -4,4 +4,5 @@
     <string name="sorry">Sorry, you didn\'t make it to the highscore :(</string>
     <string name="congrats">Congratulations! You made it to the highscore.\nPlease insert your name to enter the highscore or skip if you\'re too cool for it.</string>
     <string name="help_text">To control the snake you have to tilt  the phone.\nWhen the level begins, the phone is flat in your hand and then tilt it up to 45 degrees in any angle.\nTo pause the game press the menu or back button.</string>
+	 <string name="select_level_text"><b>Select Level</b>\nYou can only select levels that you has player before.</string>
 </resources>
