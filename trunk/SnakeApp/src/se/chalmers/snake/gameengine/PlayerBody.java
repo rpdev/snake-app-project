@@ -71,7 +71,7 @@ class PlayerBody implements Iterable<REPoint> {
 		if (!(bodySegmentRadius > 0 && startSegNumber > 1 && startAngle >= 0 && startAngle <= Math.PI * 2)) {
 			throw new IllegalArgumentException("The condition 'bodySegmentRadius > 0 && startSegNumber > 1 && startAngle >= 0 && startAngle <= Math.PI * 2' is not true, the value is " + startAngle + ".");
 		}
-
+		
 		this.seg = new LinkedList<PBFPoint>();
 		this.gameSize = gameSize;
 		this.bodySpaceSize = bodySegmentRadius;

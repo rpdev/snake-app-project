@@ -29,6 +29,11 @@
 		android:label="@string/app_name"
 		/>
 		
+		<activity
+		android:name="SelectLevelActivity"
+		android:label="@string/app_name"
+		/>
+		
 		
 		
 	</application>
