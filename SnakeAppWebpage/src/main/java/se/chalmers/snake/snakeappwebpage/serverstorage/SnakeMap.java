@@ -46,6 +46,8 @@ public class SnakeMap implements Serializable {
 	private Long id;
 	@ManyToOne
 	private UserAcc userName;
+	@Column
+	private Double mapRating;
 	@Enumerated(EnumType.STRING)
 	private STATUS status;
 	@OneToMany(cascade = CascadeType.ALL)
@@ -224,6 +226,20 @@ public class SnakeMap implements Serializable {
 		}
 		return false;
 	}
+
+    /**
+     * @return the mapRating
+     */
+    public Double getMapRating() {
+        return mapRating;
+    }
+
+    /**
+     * @param mapRating the mapRating to set
+     */
+    public void setMapRating(Double mapRating) {
+        this.mapRating = mapRating;
+    }
 
 	private enum XMLKeys {
 
