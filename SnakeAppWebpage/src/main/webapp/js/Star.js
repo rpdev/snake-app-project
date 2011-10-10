@@ -1,10 +1,25 @@
 $(document).ready(function(){
-
-    function clearStars(){
-        for(k = 1; k <= 5; k++){
-            var src = "img/star_gray.png";
-            var namn = "#star"+k;
-            $(namn).attr("src", src);
-        }
-    }
+    // Try div.hover or div#divMain if not working 
+   
+    $('div.stars img').live({
+        mouseover: function() {
+            var element = $(this).attr('id');
+            $('div.stars img').each(
+                function(){
+                    var src = "img/star_yellow.png";
+                    $(this).attr("src", src);
+                    if($(this).attr('id') == element.toString()){
+                        return false;
+                    }
+                });
+        },
+        mouseout: function() {
+            $('div.stars img').each(
+                function(){
+                    var src = "img/star_gray.png";
+                    $(this).attr("src", src);
+                });
+        }        
+    })
+    
 })
