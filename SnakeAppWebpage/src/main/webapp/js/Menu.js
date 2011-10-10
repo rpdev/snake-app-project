@@ -5,11 +5,10 @@ $(document).ready(function(){
         url: "./Login",
         data: "action=getForm",
         dataType: "xml",
-        success: function(xml) {
-            var userName = $(xml).find('userName').text();
+        success: function(user) {
+            var userName = $(user).find('userName').text();
             if(userName == ''){
                 $('#login').load('login/login.ihtml');
-                $('#login').css('position', 'absolute');
             } else {
                 $('#login').append("" +
                     "<p>" +
@@ -33,8 +32,5 @@ $(document).ready(function(){
             var src = "img/menu/" + $(this).attr('id') + "_normal.png";
             $(this).attr("src", src);
         }
-    });
-    $('#bitethis').click(function() {
-        alert('TROLOLOLOLOLOLOLOLOLOLO');
     });
 })
