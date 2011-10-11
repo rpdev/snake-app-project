@@ -71,7 +71,7 @@ class PlayerBody implements Iterable<REPoint> {
 		if (!(bodySegmentRadius > 0 && startSegNumber > 1 && startAngle >= 0 && startAngle <= Math.PI * 2)) {
 			throw new IllegalArgumentException("The condition 'bodySegmentRadius > 0 && startSegNumber > 1 && startAngle >= 0 && startAngle <= Math.PI * 2' is not true, the value is " + startAngle + ".");
 		}
-		
+
 		this.seg = new LinkedList<PBFPoint>();
 		this.gameSize = gameSize;
 		this.bodySpaceSize = bodySegmentRadius;
@@ -165,6 +165,7 @@ class PlayerBody implements Iterable<REPoint> {
 		if (this.bufferBodySegment > 0 && this.lengthSincLastAddSegment > this.bodySpaceSize) {
 			double mirrorAngle = angle > Math.PI ? angle - Math.PI : angle + Math.PI; // Get the Mirror angle.
 			PBFPoint newTail = this.nextPoint(this.seg.getLast(), mirrorAngle, this.bodySpaceSize);
+			newTail.angle = angle;
 			this.bufferBodySegment--;
 			this.lengthSincLastAddSegment = 0;
 			this.seg.addLast(newTail);
@@ -246,15 +247,12 @@ class PlayerBody implements Iterable<REPoint> {
 	 * @return 
 	 */
 	public synchronized boolean isSelfCollision() {
-		boolean startCollied = true;
-
-
+		int startCollied = 0;
 		if (this.seg.size() > 1) {
-
 			PBFPoint head = this.seg.getFirst();
 			for (Iterator<PBFPoint> it = this.seg.iterator(); it.hasNext();) {
-				if (startCollied == true) {
-					startCollied = this.isCollision(head, it.next());
+				if (startCollied < 3) {
+					startCollied += this.isCollision(head, it.next()) ? 1 : 0;
 				} else if (this.isCollision(head, it.next())) {
 					return true;
 				}
