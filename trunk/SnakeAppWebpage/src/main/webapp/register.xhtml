@@ -14,11 +14,16 @@
 
     <ui:define name="content">
         <form action="Login" method="POST">
-            <input type="hidden" name="action" value="register" />
             <table align="center">
                 <tr>
                     <td><p>Username</p></td>
                     <td><input type="text" name="user_name" id="username" style="width: 200px;" /></td>
+                </tr>
+                <tr>
+                    <td><p>E-mail</p></td>
+                    <td>
+                        <input type="text" name="email" id="email" style="width: 200px;" />
+                    </td>
                 </tr>
                 <tr>
                     <td><p>Password</p></td>
@@ -29,13 +34,9 @@
                     <td><input type="password" name="password2" id="password2" style="width: 200px;" /></td>
                 </tr>
                 <tr>
-                    <td><p>E-mail</p></td>
-                    <td>
-                        <input type="text" name="email" id="email" style="width: 200px;" />
+                    <td colspan="2" align="center">
+                        <input type="submit" name="action" value="Register" />
                     </td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="center"><input type="submit" value="Register" /></td>
                 </tr>
             </table>
         </form>

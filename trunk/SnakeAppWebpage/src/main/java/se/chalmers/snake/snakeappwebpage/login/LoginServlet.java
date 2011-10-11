@@ -64,7 +64,7 @@ public class LoginServlet extends HttpServletBuilder {
 	protected void pageRequest(HttpMeta httpMeta, HttpOutput httpOutput) throws Exception {
 		if (httpMeta.isMethodPostGet()) {
 			String action = httpMeta.REQUEST("action");
-			if (action.equals("login")) {
+			if (action.equals("Login")) {
 				UserAcc newUser = new UserAcc(httpMeta.REQUEST("user_name"), httpMeta.REQUEST("password"), "");
 				List<UserAcc> userList = Database.getInstance().getEntityList(UserAcc.class);
 				for (UserAcc user : userList) {
@@ -80,7 +80,7 @@ public class LoginServlet extends HttpServletBuilder {
 			} else if (action.equals("logout")) {
 				httpMeta.sessionScope().remove("user");
 				httpOutput.forward("main.jsf");
-			} else if (action.equals("register")) {
+			} else if (action.equals("Register")) {
 				UserAcc newUser = new UserAcc(httpMeta.REQUEST("user_name"), httpMeta.REQUEST("password"), "emalme");
 				Database.getInstance().mergeObject(newUser);
 				httpMeta.sessionScope().set("user", newUser);
