@@ -23,6 +23,7 @@ public interface HighscoreDatabaseIC {
 	 * Returns the highscoreList as a string
 	 * @return
 	 */
+	@Override
 	public String toString();
 	
 	public boolean checkIfEnoughPoints(int points);

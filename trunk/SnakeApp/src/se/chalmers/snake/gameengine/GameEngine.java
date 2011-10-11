@@ -130,6 +130,12 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 		return this.loadLevel(level, true);
 	}
 
+	/**
+	 * Init the load of a new level form the Level Objs.
+	 * @param level
+	 * @param newGame
+	 * @return 
+	 */
 	private boolean loadLevel(LevelIC level, boolean newGame) {
 		if (level != null) {
 			this.pauseGame();

@@ -8,7 +8,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +20,11 @@ import se.chalmers.snake.util.EnumObservable;
 import se.chalmers.snake.util.EnumObserver;
 
 /**
- *
+ * This is the GUI part of the game, and show the game map, and current game on the display
  * @author 
  */
 public class GameView extends View implements EnumObserver<GameEngineIC.GameEngineEvent, Void, Void> {
-	
+
 	private class BitSet {
 
 		private Bitmap bitmap;
@@ -41,15 +40,18 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	private List<REPoint> snakeBody;
 	private List<REPoint> items;
 	private Resources mRes;
-	
 	private List<Bitmap> headSegs;
 	private List<Bitmap> bodySegs;
 	private List<Bitmap> tailSegs;
-	
 	private Bitmap apple;
 	private List<BitSet> obstacles;
 	private int score;
-	
+
+	/**
+	 * Start up and config the GameView
+	 * @param context The place that this GameView will put data into.
+	 * @param gameEngine Take the GameEngine that will be use, are use for debug modes.
+	 */
 	public GameView(Context context, GameEngineIC gameEngine) {
 		super(context);
 		this.mRes = context.getResources();
@@ -66,16 +68,16 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	private void initLevel() {
 		int playerBodyWidth = this.gameEngine.getPlayerHead().radius * 2;
 		int appleWidth = this.gameEngine.getItemRadius() * 2;
-		
+
 
 		this.bodySegs = this.getBodySegBitMap(R.drawable.snake_body1, playerBodyWidth);
 		this.headSegs = this.getBodySegBitMap(R.drawable.snake_head2, playerBodyWidth);
 		this.tailSegs = this.getBodySegBitMap(R.drawable.snake_tail2, playerBodyWidth);
-		
-		
+
+
 		this.apple = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(mRes, R.drawable.apple),
 				  appleWidth, appleWidth, true);
-		
+
 		List<REPoint> obstaclesPos = this.gameEngine.getObstacles();
 		int totalObstacles = obstaclesPos.size();
 		this.obstacles = new ArrayList<BitSet>();
@@ -87,14 +89,20 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 						  obstacleWidths, obstacleWidths, true);
 				this.obstacles.add(new BitSet(bitmap, bitsetKey));
 			}
-			
+
 		}
-		
-		
+
+
 		this.postInvalidate();
 	}
-	
-	
+
+	/**
+	 * Make the BitMap Arrays for the snake body parts, this will be call with 3 tims.
+	 * each body type.
+	 * @param recID The id of the image resuser.
+	 * @param playerBodyWidth
+	 * @return 
+	 */
 	private List<Bitmap> getBodySegBitMap(int recID, int playerBodyWidth) {
 		Bitmap bodySeg = Bitmap.createScaledBitmap(
 				  BitmapFactory.decodeResource(this.mRes, recID), playerBodyWidth, playerBodyWidth, true);
@@ -106,7 +114,11 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		}
 		return segs;
 	}
-	
+
+	/**
+	 * Add the game engine, this will add the event observer for get events from the game engine.
+	 * @param gameEngine 
+	 */
 	private void addGameEngine(GameEngineIC gameEngine) {
 		this.gameEngine = gameEngine;
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.START_GAME, this);
@@ -117,23 +129,23 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		gameEngine.addObserver(GameEngineIC.GameEngineEvent.LEVEL_END, this);
 		this.obstacles = new ArrayList<BitSet>();
 	}
-	
+
+	/**
+	 * Call while the windows will be redraw.
+	 * @param canvas 
+	 */
 	@Override
 	public void onDraw(Canvas canvas) {
-		
-		
+
+
 		if (this.snakeBody != null) {
 			for (REPoint reP : this.snakeBody) {
-				
-				//Matrix matrix = new Matrix();
-				//matrix.postRotate((float) (reP.angle * (180.0 / Math.PI)), bodySeg.getWidth() / 2, bodySeg.getHeight() / 2);
-				//matrix.postTranslate(reP.x - reP.radius, reP.y - reP.radius);
-				//canvas.drawBitmap(bodySeg, matrix, null);
-				
-				int item = (int) ((reP.angle * (180.0 / Math.PI)/4)%90);
-				if(item<0) item += 90;
-				
-				switch(reP.type) {
+				int item = (int) ((reP.angle * (180.0 / Math.PI) / 4) % 90);
+				if (item < 0) {
+					item += 90;
+				}
+
+				switch (reP.type) {
 					case HEADSEG: {
 						canvas.drawBitmap(headSegs.get(item), reP.x - reP.radius, reP.y - reP.radius, null);
 						break;
@@ -146,33 +158,26 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 						canvas.drawBitmap(tailSegs.get(item), reP.x - reP.radius, reP.y - reP.radius, null);
 						break;
 					}
-					
 				}
-
-				
-				
 			}
 		}
-		
-		
-		
 		if (this.items != null) {
 			for (REPoint reP : this.items) {
 				canvas.drawBitmap(apple, reP.x - reP.radius, reP.y - reP.radius, null);
 			}
 		}
-		
+
 		if (this.obstacles != null) {
 			for (BitSet bitset : this.obstacles) {
 				canvas.drawBitmap(bitset.bitmap, bitset.point.x - bitset.point.radius, bitset.point.y - bitset.point.radius, null);
 			}
 		}
-		
+
 		paint.setColor(Color.BLACK);
 		canvas.drawText("Score: " + score, 10, 20, paint);
-		
+
 	}
-	
+
 	public Void observerNotify(EnumObservable<GameEngineEvent, Void, Void> observable,
 			  GameEngineEvent event, Void arg) {
 		this.snakeBody = this.gameEngine.getPlayerBody();
@@ -181,28 +186,29 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		if (event == GameEngineEvent.NEW_GAME) {
 			this.initLevel();
 		}
-		
+
 		this.postInvalidate();
-		
+
 		return null;
 	}
+
 	
 	public void pauseGame() {
 		this.gameEngine.pauseGame();
 	}
-	
+
 	public void startGame() {
 		this.gameEngine.startGame();
 	}
-	
+
 	public boolean isRun() {
 		return this.gameEngine.isRun();
 	}
-	
+
 	public void restartGame() {
 		this.gameEngine.restartGame();
 	}
-	
+
 	public int getScore() {
 		return this.gameEngine.getScore();
 	}

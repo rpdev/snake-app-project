@@ -4,7 +4,7 @@ import se.chalmers.snake.interfaces.util.XYPoint;
 import se.chalmers.snake.util.Storage;
 
 /**
- *
+ * This holde a collections of all servers the game is given.
  */
 public interface ControlResourcesIC {
 	

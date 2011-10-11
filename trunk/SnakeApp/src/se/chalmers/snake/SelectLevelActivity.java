@@ -52,6 +52,11 @@ public class SelectLevelActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Make the onClick function to start select level.
+	 * @param level
+	 * @return 
+	 */
 	private View.OnClickListener onClick(final String level) {
 		return new View.OnClickListener() {
 
