@@ -1,4 +1,5 @@
-$(document).ready(function(){ 
+$(document).ready(function(){
+    
     $('#login').css('position', 'absolute');
     $.ajax({
         type: "GET",
@@ -8,7 +9,7 @@ $(document).ready(function(){
         success: function(user) {
             var userName = $(user).find('userName').text();
             if(userName == ''){
-                $('#login').load('login/login.ihtml');
+                $('#login').load('login/Login.ihtml');
             } else {
                 $('#login').append("" +
                     "<p>" +
@@ -33,4 +34,9 @@ $(document).ready(function(){
             $(this).attr("src", src);
         }
     });
+    
+    $('#Register').live('click', function(){
+        window.location="register.jsf";
+    });
+    
 })
