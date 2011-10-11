@@ -12,12 +12,12 @@ $(document).ready(function(){
                 $('#login').load('login/Login.ihtml');
             } else {
                 $('#login').append("" +
-                    "<p>" +
                     "<form action=\"Login\" method=\"POST\">" +
-                    "Välkommen: " + userName +
+                    "<p>" +
+                    "Logged in as " + userName +
                     "<br/>" +
                     "<input type=\"hidden\" name=\"action\" value=\"logout\"/>" +
-                    "<input type=\"submit\" value=\"Logout\" />" +
+                    "<input type=\"submit\" value=\"Logout\" class=\"buttonstyle\" />" +
                     "</form>" +
                     "</p>");
             }
@@ -37,6 +37,20 @@ $(document).ready(function(){
     
     $('#Register').live('click', function(){
         window.location="register.jsf";
+    });
+    
+    $('.buttonstyle').live({
+        mouseover: function(){
+            $(this).css({
+                "background-color" : "#00CC33"
+            })
+        },
+        mouseout: function(){
+            $(this).css({
+                "background-color" : "#006600"
+            })
+        }
+        
     });
     
 })

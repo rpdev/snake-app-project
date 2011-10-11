@@ -2,6 +2,20 @@
     Written by Martin S. Please do not change :)
 */
 
+.buttonstyle{
+    width: 70px;
+    background-color : #006600;
+    border-top : 2px outset #00CC00 ;
+    border-right : 2px outset #003300 ;
+    border-bottom : 2px outset #003300 ;
+    border-left : 2px outset #00CC00 ;
+    font-family : verdana, helvetica, sans-serif;
+    color : white;
+}
+
+#maptList{
+    text-align: center;
+}
 
 body{
     background-image: url(img/bg.jpg);
@@ -10,6 +24,7 @@ body{
 #login p{
     color: white;
     font-size: 18px;
+    text-shadow: 3px 3px 3px #000000;
 }
 
 #snakebend{ 

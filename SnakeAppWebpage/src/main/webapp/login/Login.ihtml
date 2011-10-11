@@ -1,11 +1,12 @@
 <p>
+    <form action="Login" method="POST">
     <table>
         <tr>
             <td>
                 <input type="text" name="user_name" id="username" placeholder="Username" style="width: 140px;" />
             </td>
             <td>
-                <input type="button" id="Register" value="Register" />
+                <input type="button" class="buttonstyle" id="Register" value="Register" />
             </td>
         </tr>
         <tr>
@@ -13,9 +14,10 @@
                 <input type="password" name="password" id="password" style="width: 140px;" />
             </td>
             <td>
-               <input type="submit" name="action" value="Login" />
+               <input type="submit" class="buttonstyle" name="action" value="Login" />
             </td>
         </tr>
     </table>
+    </form>
 
 </p>
