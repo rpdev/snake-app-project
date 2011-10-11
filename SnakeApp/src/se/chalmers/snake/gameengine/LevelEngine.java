@@ -9,10 +9,12 @@ import se.chalmers.snake.interfaces.util.REPoint;
 import se.chalmers.snake.interfaces.util.XYPoint;
 
 /**
- *
+ * This is the part of the GameEngine that hold a single level and this data.
  */
 class LevelEngine {
-
+	/**
+	 * Private class for hold count of all items and how long time each item has be on the game map.
+	 */
 	private class LEIPoint extends REPoint {
 		private static final long serialVersionUID = 5037544644353660074L;
 		private int time = 0;
@@ -24,7 +26,9 @@ class LevelEngine {
 			super(REPoint.REType.ITEM,x, y, radius,0);
 		}
 	}
-	private int score;
+	
+	
+	
 	private final LevelIC level;
 	final PlayerBody playerBody;
 	// Holds data for place items in the game, and hold history of collect items.
@@ -60,7 +64,6 @@ class LevelEngine {
 		this.playerBody = new PlayerBody(gameFiledSize, startPoint, this.level.getStartAngle(), (int)(this.playerBodyWidth*this.fixScal), level.getSnakeStartLength(), 0);
 		
 		this.obstacles = Collections.unmodifiableList(this.listStaticElement());
-		this.score = 0;
 		/**
 		 * create a source of possible locations of items to be place at.
 		 */
@@ -148,9 +151,9 @@ class LevelEngine {
 	 * @return 
 	 */
 	List<REPoint> getItemsList() {
-		ArrayList al = null;
+		ArrayList<REPoint> al = null;
 		synchronized (this.items) {
-			al = new ArrayList(this.items.size());
+			al = new ArrayList<REPoint>(this.items.size());
 			al.addAll(this.items);
 		}
 		return al;
