@@ -155,6 +155,7 @@ class PlayerBody implements Iterable<REPoint> {
 				angle = point.angle;
 			} else {
 				oldPoint = new PBFPoint(point);
+				point.angle = angle;
 			}
 
 			point.x = (float) ((this.gameSize.x + point.x + jumpStep * Math.cos(angle)) % this.gameSize.x);
