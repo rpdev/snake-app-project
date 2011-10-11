@@ -19,54 +19,55 @@
     </ui:define>
 
     <ui:define name="content">
-		 <!--
-	
-			Use: ./editmap?action=get&id=[id] for get download link
-		 -->
+        <!--
 
-        <p:dataTable id="maptList" value="#{DatabaseBean.snakeMapList}" var="snakeMap"> 
+               Use: ./editmap?action=get&id=[id] for get download link
+        -->
+        <div style="text-align:center;">
+            <p:dataTable id="maptList" value="#{DatabaseBean.snakeMapList}" var="snakeMap"> 
 
-            <p:column sortBy="#{snakeMap.mapName}"> 
-                <f:facet name="header">  
-                    <h:outputText value="Map Name" />  
-                </f:facet>
-                <div class="mapName">
-                    <h:outputText value="#{snakeMap.mapName}" />  
-                </div>
-            </p:column>
+                <p:column sortBy="#{snakeMap.mapName}"> 
+                    <f:facet name="header">  
+                        <h:outputText value="Map Name" />  
+                    </f:facet>
+                    <div class="mapName">
+                        <h:outputText value="#{snakeMap.mapName}" />  
+                    </div>
+                </p:column>
 
-            <p:column sortBy="#{snakeMap.userName.userName}"> 
-                <f:facet name="header">  
-                    <h:outputText value="Creator" />  
-                </f:facet>  
-                <h:outputText value="#{snakeMap.userName.userName}" />  
-            </p:column>
+                <p:column sortBy="#{snakeMap.userName.userName}"> 
+                    <f:facet name="header">  
+                        <h:outputText value="Creator" />  
+                    </f:facet>  
+                    <h:outputText value="#{snakeMap.userName.userName}" />  
+                </p:column>
 
-            <p:column sortBy="#{snakeMap.mapRating}"> 
-                <f:facet name="header">  
-                    <h:outputText value="Average Rating" />  
-                </f:facet>  
-                <h:outputText value="#{snakeMap.mapRating}" />  
-            </p:column>
+                <p:column sortBy="#{snakeMap.mapRating}"> 
+                    <f:facet name="header">  
+                        <h:outputText value="Average Rating" />  
+                    </f:facet>  
+                    <h:outputText value="#{snakeMap.mapRating}" />  
+                </p:column>
 
-            <p:column> 
-                <f:facet name="header">  
-                    <h:outputText value="Rate" />  
-                </f:facet>  
-                 <h:outputText value="#{snakeMap.mapRating}" />  
-            </p:column>
+                <p:column> 
+                    <f:facet name="header">  
+                        <h:outputText value="Rate" />  
+                    </f:facet>  
+                    <h:outputText value="#{snakeMap.mapRating}" />  
+                </p:column>
 
-            <p:column> 
-                <f:facet name="header">  
-                    <h:outputText value="Download" />  
-                </f:facet>  
-                <h:form>
-                    <h:link value="CLICK HERE" outcome="main.jsf"/>
-                </h:form>
-            </p:column>
+                <p:column> 
+                    <f:facet name="header">  
+                        <h:outputText value="Download" />  
+                    </f:facet>  
+                    <h:form>
+                        <h:link value="CLICK HERE" outcome="main.jsf"/>
+                    </h:form>
+                </p:column>
 
 
-        </p:dataTable>
+            </p:dataTable>
+        </div>
         <div id="mapView"/>
     </ui:define>
 </ui:composition>

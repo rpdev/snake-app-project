@@ -15,12 +15,17 @@ var mapView = function(){
     return{
         showMapDialog: function(){
             
+            $('#mapView').insertAfter('div.mapName')
+            
             $('#mapView').css({ 
                 "visibility": "visible",
                 "position": "absolute",
                 "z-index": "2",
-                "background": "lightgreen",
-                "border": "2px solid black"  
+                "background-image": "url(img/mapDetailsBg.PNG)",
+                "background-color": "white",
+                "background-repeat": "repeat-x",
+                "border": "2px solid black",
+                "margin-left": "150px"
             }).load('mapdetails.xhtml')
         },
         
