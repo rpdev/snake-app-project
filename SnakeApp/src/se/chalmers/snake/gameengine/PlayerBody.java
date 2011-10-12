@@ -252,7 +252,7 @@ class PlayerBody implements Iterable<REPoint> {
 			PBFPoint head = this.seg.getFirst();
 			for (Iterator<PBFPoint> it = this.seg.iterator(); it.hasNext();) {
 				if (startCollied < 3) {
-					startCollied += this.isCollision(head, it.next()) ? 1 : 0;
+					startCollied += this.isCollision(head, it.next()) ? 0 : 1;
 				} else if (this.isCollision(head, it.next())) {
 					return true;
 				}
@@ -260,6 +260,7 @@ class PlayerBody implements Iterable<REPoint> {
 
 		}
 		return false;
+		
 	}
 
 	/**
