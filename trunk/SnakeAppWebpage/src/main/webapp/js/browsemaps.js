@@ -2,7 +2,7 @@ $(document).ready(function(){
     
     $('div.mapName').live({
         mouseover: function(){
-            mapView.showMapDialog();
+            mapView.showMapDialog($(this));
         },
         mouseout: function(){
             mapView.hide();
@@ -13,9 +13,9 @@ $(document).ready(function(){
 
 var mapView = function(){
     return{
-        showMapDialog: function(){
+        showMapDialog: function(actualDiv){
             
-            $('#mapView').insertAfter('div.mapName')
+            $('#mapView').insertAfter(actualDiv)
             
             $('#mapView').css({ 
                 "visibility": "visible",
