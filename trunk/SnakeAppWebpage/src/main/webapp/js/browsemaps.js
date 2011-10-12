@@ -3,7 +3,7 @@ $(document).ready(function(){
         "visibility": "hidden"
     })
     
-    $('tr.tableRow').live({
+    $('div.mapName').live({
         mouseover: function(){
             mapView.showMapDialog($(this));
         },
@@ -27,7 +27,7 @@ var mapView = function(){
                 "background-color": "white",
                 "background-repeat": "repeat-x",
                 "border": "2px solid black",
-                "margin-left": "150px"
+                "margin-left": "100px"
             });
             mapView.setSnakeMapDetails(currentSnakeMapId);
         },
