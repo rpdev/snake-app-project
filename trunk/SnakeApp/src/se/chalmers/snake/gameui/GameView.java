@@ -104,12 +104,15 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	 * @return 
 	 */
 	private List<Bitmap> getBodySegBitMap(int recID, int playerBodyWidth) {
+		int playerBodyCenter = playerBodyWidth / 2;
+
 		Bitmap bodySeg = Bitmap.createScaledBitmap(
 				  BitmapFactory.decodeResource(this.mRes, recID), playerBodyWidth, playerBodyWidth, true);
+		
 		List<Bitmap> segs = new ArrayList<Bitmap>(90);
 		for (int i = 0; i < 90; i++) {
 			Matrix matrix = new Matrix();
-			matrix.postRotate(i * 4, bodySeg.getWidth() / 2, bodySeg.getHeight() / 2);
+			matrix.postRotate(i * 4, playerBodyCenter, playerBodyCenter);
 			segs.add(Bitmap.createBitmap(bodySeg, 0, 0, playerBodyWidth, playerBodyWidth, matrix, true));
 		}
 		return segs;
@@ -136,11 +139,11 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	 */
 	@Override
 	public void onDraw(Canvas canvas) {
-
+		double PI_VALUE = 45/Math.PI;
 
 		if (this.snakeBody != null) {
 			for (REPoint reP : this.snakeBody) {
-				int item = (int) ((reP.angle * (180.0 / Math.PI) / 4) % 90);
+				int item = (int) ((reP.angle * PI_VALUE) % 90);
 				if (item < 0) {
 					item += 90;
 				}
@@ -192,7 +195,6 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		return null;
 	}
 
-	
 	public void pauseGame() {
 		this.gameEngine.pauseGame();
 	}
