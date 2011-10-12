@@ -29,6 +29,14 @@ public class DatabaseBean implements Serializable {
 		 this.snakeMapList = Database.getInstance().getEntityList(SnakeMap.class);
        return this.snakeMapList ;
     }
+    
+    public SnakeMap getSnakeMapById(String id){
+        return getSnakeMapById(Long.valueOf(id));
+    }
+    
+    public SnakeMap getSnakeMapById(Long id){
+        return Database.getInstance().getEntity(SnakeMap.class, id);
+    }
 
     /**
      * @param snakeMapList the snakeMapList to set

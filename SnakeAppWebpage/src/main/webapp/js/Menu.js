@@ -9,7 +9,7 @@ $(document).ready(function(){
         success: function(user) {
             var userName = $(user).find('userName').text();
             if(userName == ''){
-                $('#login').load('login/Login.ihtml');
+                $('#login').load('ihtml/Login.ihtml');
             } else {
                 $('#login').append("" +
                     "<form action=\"Login\" method=\"POST\">" +
