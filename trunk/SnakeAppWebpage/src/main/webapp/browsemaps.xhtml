@@ -34,8 +34,13 @@
                     <td>Download</td>
                 </tr>    
                 <c:forEach var="snakeMap" items="#{DatabaseBean.snakeMapList}">
-                    <tr id="#{snakeMap.id}" class="tableRow">
-                        <td>#{snakeMap.mapName}</td>
+                    <tr>
+                    
+                        <td>
+                            <div id="#{snakeMap.id}" class="mapName">
+                                #{snakeMap.mapName}
+                            </div>
+                        </td>
                         <td>#{snakeMap.userName.userName}</td>
                         <td>#{snakeMap.mapRating}</td>
                         <td><div class="stars">
