@@ -1,6 +1,9 @@
 $(document).ready(function(){
+    $('#mapView').css({
+        "visibility": "hidden"
+    })
     
-    $('div.mapName').live({
+    $('tr.tableRow').live({
         mouseover: function(){
             mapView.showMapDialog($(this));
         },
@@ -13,10 +16,9 @@ $(document).ready(function(){
 
 var mapView = function(){
     return{
-        showMapDialog: function(actualDiv){
-            
-            $('#mapView').insertAfter(actualDiv)
-            
+        showMapDialog: function(currentRow){
+            var currentSnakeMapId = currentRow.attr('id');
+            $('#mapView').insertAfter(currentRow)
             $('#mapView').css({ 
                 "visibility": "visible",
                 "position": "absolute",
@@ -26,13 +28,35 @@ var mapView = function(){
                 "background-repeat": "repeat-x",
                 "border": "2px solid black",
                 "margin-left": "150px"
-            }).load('mapdetails.xhtml')
+            });
+            mapView.setSnakeMapDetails(currentSnakeMapId);
         },
         
         hide: function(){
             $('#mapView').css({
                 "visibility": "hidden"
             })
+        },
+        setSnakeMapDetails: function(snakeMapId){
+            $.ajax({
+                type: "GET",
+                url: "./DatabaseServlet",
+                data: 'action=getSnakeMap&id=' + snakeMapId,
+                dataType: "xml",
+                success: function(snakeMap) {
+                    var mapName = $(snakeMap).find('mapName').text();
+                    var difficulty = $(snakeMap).find('difficulty').text();
+                    var speed = $(snakeMap).find('speed').text();
+                    var growth = $(snakeMap).find('growth').text();
+                    var description = $(snakeMap).find('description').text();
+                    mapView.fillSnakeMapDetails(mapName, difficulty, speed, growth, description);
+                }
+            });
+        },
+        fillSnakeMapDetails: function(mapName, difficulty, speed, growth, description){
+            $('#mapDetails').empty().append(mapName + "<br />" + difficulty 
+                + "<br />" + speed + "<br />" + growth);
+            $('#mapDescription').empty().append(description);
         }
         
     }

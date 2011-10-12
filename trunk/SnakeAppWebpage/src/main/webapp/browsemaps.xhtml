@@ -3,7 +3,8 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.prime.com.tr/ui">
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <ui:define name="title">
         Browse maps - 
@@ -23,53 +24,56 @@
 
                Use: ./editmap?action=get&id=[id] for get download link
         -->
-        <div style="text-align:center;">
-            <p:dataTable id="maptList" value="#{DatabaseBean.snakeMapList}" var="snakeMap"> 
-
-                <p:column sortBy="#{snakeMap.mapName}"> 
-                    <f:facet name="header">  
-                        <h:outputText value="Map Name" />  
-                    </f:facet>
-                    <div class="mapName">
-                        <div>
-                            <h:outputText value="#{snakeMap.mapName}" />  
-                        </div>
-                    </div>
-                </p:column>
-
-                <p:column sortBy="#{snakeMap.userName.userName}"> 
-                    <f:facet name="header">  
-                        <h:outputText value="Creator" />  
-                    </f:facet>  
-                    <h:outputText value="#{snakeMap.userName.userName}" />  
-                </p:column>
-
-                <p:column sortBy="#{snakeMap.mapRating}"> 
-                    <f:facet name="header">  
-                        <h:outputText value="Average Rating" />  
-                    </f:facet>  
-                    <h:outputText value="#{snakeMap.mapRating}" />  
-                </p:column>
-
-                <p:column> 
-                    <f:facet name="header">  
-                        <h:outputText value="Rate" />  
-                    </f:facet>  
-                    <h:outputText value="#{snakeMap.mapRating}" />  
-                </p:column>
-
-                <p:column> 
-                    <f:facet name="header">  
-                        <h:outputText value="Download" />  
-                    </f:facet>  
-                    <h:form>
-                        <h:link value="CLICK HERE" outcome="main.jsf"/>
-                    </h:form>
-                </p:column>
-
-
-            </p:dataTable>
+        <div id="browseMapTable">
+            <table align="center" border="1" bgcolor="white">
+                <tr>
+                    <td>Map Name</td>
+                    <td>Creator</td>
+                    <td>Average Rating</td>
+                    <td>Rate</td>
+                    <td>Download</td>
+                </tr>    
+                <c:forEach var="snakeMap" items="#{DatabaseBean.snakeMapList}">
+                    <tr id="#{snakeMap.id}" class="tableRow">
+                        <td>#{snakeMap.mapName}</td>
+                        <td>#{snakeMap.userName.userName}</td>
+                        <td>#{snakeMap.mapRating}</td>
+                        <td><div class="stars">
+                                <a href="maprating_servlet"><img src="img/star_gray.png" border="0" id="star1" class="star" /></a>
+                                <a href="maprating_servlet"><img src="img/star_gray.png" border="0" id="star2" class="star" /></a>
+                                <a href="maprating_servlet"><img src="img/star_gray.png" border="0" id="star3" class="star" /></a>
+                                <a href="maprating_servlet"><img src="img/star_gray.png" border="0" id="star4" class="star" /></a>
+                                <a href="maprating_servlet"><img src="img/star_gray.png" border="0" id="star5" class="star" /></a>
+                            </div></td>
+                        <td><a href="">DOWNLOAD</a></td>
+                    </tr>    
+                </c:forEach>
+            </table>
         </div>
-        <div id="mapView"/>
+
+        <div id="mapView" style="visibility: hidden; position: fixed;">
+            <table border="1" style="border-color: #5cff5c;">
+                <tr>
+                    <td align="center">
+                        <img src="mapeditor/background.png" id="mappic" border="2" />
+                    </td>
+                    <td valign="top" align="left">
+                        <b>Map name:</b><br />
+                        <b>Level:</b><br />
+                        <b>Speed:</b><br />
+                        <b>Growth:</b><br />
+                    </td>
+                    <td valign="top" align="left" width="140">
+                        <div id="mapDetails"/>
+                    </td> 
+                </tr>
+                <tr>
+                    <td valign="top" colspan="3" width="400">
+                        <b>Description:</b> <div id="mapDescription" />
+                    </td>    
+                </tr>
+
+            </table>
+        </div>
     </ui:define>
 </ui:composition>
