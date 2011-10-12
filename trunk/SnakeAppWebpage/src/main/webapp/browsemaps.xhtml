@@ -35,7 +35,7 @@
                 </tr>    
                 <c:forEach var="snakeMap" items="#{DatabaseBean.snakeMapList}">
                     <tr>
-                    
+
                         <td>
                             <div id="#{snakeMap.id}" class="mapName">
                                 #{snakeMap.mapName}
@@ -43,13 +43,13 @@
                         </td>
                         <td>#{snakeMap.userName.userName}</td>
                         <td>#{snakeMap.mapRating}</td>
-                        <td><div class="stars">
-                                <a href="maprating_servlet"><img src="img/star_gray.png" border="0" id="star1" class="star" /></a>
-                                <a href="maprating_servlet"><img src="img/star_gray.png" border="0" id="star2" class="star" /></a>
-                                <a href="maprating_servlet"><img src="img/star_gray.png" border="0" id="star3" class="star" /></a>
-                                <a href="maprating_servlet"><img src="img/star_gray.png" border="0" id="star4" class="star" /></a>
-                                <a href="maprating_servlet"><img src="img/star_gray.png" border="0" id="star5" class="star" /></a>
-                            </div></td>
+                        <td>
+                            <img src="img/star_gray.png" border="0" class="star" />
+                            <img src="img/star_gray.png" border="0" class="star" />
+                            <img src="img/star_gray.png" border="0" class="star" />
+                            <img src="img/star_gray.png" border="0" class="star" />
+                            <img src="img/star_gray.png" border="0" class="star" />
+                        </td>
                         <td><a href="">DOWNLOAD</a></td>
                     </tr>    
                 </c:forEach>
