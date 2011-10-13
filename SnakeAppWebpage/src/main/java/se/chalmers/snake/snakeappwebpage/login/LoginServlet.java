@@ -61,7 +61,7 @@ public class LoginServlet extends HttpServletBuilder {
 			String action = httpMeta.REQUEST("action");
 			if (action.equals("Login")) {
 				UserAcc newUser = new UserAcc(httpMeta.REQUEST("user_name"), httpMeta.REQUEST("password"), "");
-				List<UserAcc> userList = Database.getInstance().getEntityList(UserAcc.class);
+				List<UserAcc> userList = Database.getInstance().getUsersByName(newUser.getUserName());
 				for (UserAcc user : userList) {
 					if (user.equals(newUser)) {
 
