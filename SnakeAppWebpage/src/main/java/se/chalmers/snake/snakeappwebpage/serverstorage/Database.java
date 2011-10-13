@@ -13,6 +13,11 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
+/**
+ * Database is the class that manage operation to the
+ * actual database. This class support adding, getting
+ * and removing database entries.
+ */
 public class Database {
 
 	private static final String DATABASE_NAME = "snakeappweb_pu";
@@ -20,16 +25,39 @@ public class Database {
 	private final EntityManagerFactory emf;
 	private final EntityManager em;
 
+	/**
+	 * This class indicate the status of a map, there
+	 * are two states CREATED and PUBLICHED.
+	 */
 	public enum STATUS {
-
-		CREATED, PUBLICHED
+		/**
+		 * Map is created but not published, only visible
+		 * for the user that created the map.
+		 */
+		CREATED,
+		
+		/**
+		 * The map is created and pulished and is therefor
+		 * visible for everyone.
+		 */
+		PUBLICHED
 	}
 
+	/**
+	 * Database is a singleton and this private constructor initiate
+	 * the EntityManager.
+	 */
 	private Database() {
 		emf = Persistence.createEntityManagerFactory(DATABASE_NAME);
 		em = emf.createEntityManager();
 	}
 
+	/**
+	 * Hash a cleartext password by using the cryptation
+	 * algorithm SHA-1 and returned the hashed version of the password.
+	 * @param passwordClearText Password to be hashed.
+	 * @return Hashed password
+	 */
 	String hashPassword(String passwordClearText) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-1");
@@ -41,6 +69,10 @@ public class Database {
 		throw new UnsupportedOperationException("Hashing password failed.");
 	}
 
+	/**
+	 * Return the instance of the Database class.
+	 * @return Instance of the Database.
+	 */
 	public static Database getInstance() {
 		if (instance == null) {
 			instance = new Database();
@@ -48,10 +80,28 @@ public class Database {
 		return instance;
 	}
 
+	/**
+	 * Search the actual database for an entry.
+	 * @param <T> Class of the entry.
+	 * @param type Class of the entry.
+	 * @param id The id of the desired object.
+	 * @return The object if found otherwise null.
+	 */
 	public synchronized <T> T getEntity(Class<T> type, Long id) {
 		return em.find(type, id);
 	}
 
+	/**
+	 * Remove a disired number of objects of the same class. If
+	 * a map is removed will all comments that this user has made be
+	 * removed, in the case of maps will the relation between the map
+	 * and the user removed. Similar if a map is removed then will this map
+	 * be removed from the user that made it and all the comments for this map
+	 * be removed.
+	 * @param type Type of the object(s) to be removed valid types are 
+	 * UserAcc, SnakeMap and Comment.
+	 * @param id Id of those object that should be removed.
+	 */
 	public void removeEnity(Class<?> type, Long... id) {
 		if (type == UserAcc.class) {
 			removeUser(id);
@@ -64,6 +114,10 @@ public class Database {
 		}
 	}
 
+	/**
+	 * Private class for handeling the removal of comment(s).
+	 * @param id Id for those comments that should be removed.
+	 */
 	private void removeComment(Long... id) {
 		em.getTransaction().begin();
 		for (Long i : id) {
@@ -76,6 +130,11 @@ public class Database {
 		em.getTransaction().commit();
 	}
 
+	/**
+	 * Private class for handeling the removal of map(s), this is done
+	 * by first removing all comments for this map.
+	 * @param id Id of the maps that should be removed.
+	 */
 	private void removeMap(Long... id) {
 		for (Long i : id) {
 			SnakeMap sm = em.find(SnakeMap.class, i);
