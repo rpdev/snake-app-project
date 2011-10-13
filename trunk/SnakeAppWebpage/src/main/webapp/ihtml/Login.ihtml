@@ -1,9 +1,9 @@
 <p>
-    <form action="Login" method="POST">
+    <form action="Login" method="POST" tabindex="1">
     <table>
         <tr>
             <td>
-                <input type="text" name="user_name" id="username" placeholder="Username" style="width: 140px;" />
+                <input type="text" name="user_name" id="username" placeholder="Username" style="width: 140px;" tabindex="2"/>
             </td>
             <td>
                 <input type="button" class="buttonstyle" id="Register" value="Register" />
@@ -11,10 +11,10 @@
         </tr>
         <tr>
             <td>
-                <input type="password" name="password" id="password" style="width: 140px;" />
+                <input type="password" name="password" id="password" style="width: 140px;" tabindex="3"/>
             </td>
             <td>
-               <input type="submit" class="buttonstyle" name="action" value="Login" />
+               <input type="submit" class="buttonstyle" name="action" value="Login" tabindex="4"/>
             </td>
         </tr>
     </table>
