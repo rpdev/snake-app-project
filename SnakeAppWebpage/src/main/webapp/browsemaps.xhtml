@@ -21,34 +21,38 @@
     </ui:define>
     <ui:define name="content">
         <div id="browseMapTable">
-            <table align="center" border="0">
-                <tr bgcolor="#337B3B">
-                    <td><b>Map Name</b></td>
-                    <td><b>Creator</b></td>
-                    <td><b>Average Rating</b></td>
-                    <td><b>Rate</b></td>
-                    <td><b>Download</b></td>
+            <table align="center" border="0" style="border: 3px dotted white; border-spacing: 0px;">
+                <tr style="background-image: url(img/tdbg2.png); background-repeat: repeat-x; background-color: white;">
+                    <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;"><b><h1>Map Name</h1></b></td>
+                    <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;"><b><h1>Creator</h1></b></td>
+                    <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;"><b><h1>Average Rating</h1></b></td>
+                    <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;"><b><h1>Rate</h1></b></td>
+                    <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;"><b><h1>Download</h1></b></td>
                 </tr>    
                 <c:forEach var="snakeMap" items="#{DatabaseBean.snakeMapList}">
-                    <tr bgcolor="#4BB557">
-
-                        <td  class="mapName">
+                    <tr class="mapRow" style="background-image: url(img/tdbg.png); background-repeat: repeat-x; background-color: white;">
+                    
+                        <td  class="mapName" style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;">
                             <div id="#{snakeMap.id}" class="mapNameDiv">
-                                #{snakeMap.mapName}
+                                <h2>#{snakeMap.mapName}</h2>
                             </div>
                         </td>
-                        <td>#{snakeMap.userName.userName}</td>
-                        <td>#{snakeMap.mapRating}</td>
-                        <td>
+                        <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;">
+                            <h2><i>#{snakeMap.userName.userName}</i></h2>
+                        </td>
+                        <td align="center" style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;">
+                            <h2>#{snakeMap.mapRating}</h2>
+                        </td>
+                        <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;">
                             <img src="img/star_gray.png" border="0" class="star" />
                             <img src="img/star_gray.png" border="0" class="star" />
                             <img src="img/star_gray.png" border="0" class="star" />
                             <img src="img/star_gray.png" border="0" class="star" />
                             <img src="img/star_gray.png" border="0" class="star" />
                         </td>
-                        <td>
+                        <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;">
                             <div id="downloadLink">
-                                <a href="./editmap?action=get&amp;id=#{snakeMap.id}">DOWNLOAD</a>
+                                <h2><a href="./editmap?action=get&amp;id=#{snakeMap.id}">DOWNLOAD</a></h2>
                             </div>
                         </td>
                     </tr>    
