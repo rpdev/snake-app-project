@@ -30,12 +30,12 @@ public class Database {
 	 * are two states CREATED and PUBLICHED.
 	 */
 	public enum STATUS {
+
 		/**
 		 * Map is created but not published, only visible
 		 * for the user that created the map.
 		 */
 		CREATED,
-		
 		/**
 		 * The map is created and pulished and is therefor
 		 * visible for everyone.
@@ -114,6 +114,12 @@ public class Database {
 		}
 	}
 
+	public List<UserAcc> getUsersByName(String name) {
+		TypedQuery<UserAcc> query = em.createNamedQuery("UserAcc.findUserName", UserAcc.class);
+		query.setParameter("name", name);
+		return query.getResultList();
+	}
+
 	/**
 	 * Private class for handeling the removal of comment(s).
 	 * @param id Id for those comments that should be removed.
@@ -181,7 +187,7 @@ public class Database {
 		em.getTransaction().commit();
 	}
 
-	synchronized void closeDatabase() {
+	public synchronized void closeDatabase() {
 		em.close();
 		emf.close();
 		instance = null;

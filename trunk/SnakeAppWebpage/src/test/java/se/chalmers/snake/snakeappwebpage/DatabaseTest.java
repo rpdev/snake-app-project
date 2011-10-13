@@ -4,6 +4,7 @@
  */
 package se.chalmers.snake.snakeappwebpage;
 
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -87,6 +88,8 @@ public class DatabaseTest {
         Database.getInstance().mergeObject(u);
         Database.getInstance().mergeObject(m);
         Database.getInstance().mergeObject(c);
+		List<UserAcc> ls = Database.getInstance().getUsersByName("addRemoveMapAndUser");
+		assertTrue(!ls.isEmpty());
         // comment --> map --> user
         //Database.getInstance().removeEnity(c.getClass(), c.getId());
         Database.getInstance().removeEnity(m.getClass(), m.getId());
