@@ -50,6 +50,7 @@ var mapView = function(){
                     var growth = $(snakeMap).find('growth').text();
                     var description = $(snakeMap).find('description').text();
                     mapView.fillSnakeMapDetails(mapName, difficulty, speed, growth, description);
+						  MapEditor('innerreviewmap','./editmap?action=get&id='+snakeMapId,false,true);
                 }
             });
         },
