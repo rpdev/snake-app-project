@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    
     $('#mapView').css({
         "visibility": "hidden"
     })
@@ -11,6 +12,40 @@ $(document).ready(function(){
             mapView.hide();
         }
     });
+    
+    var MAX_STARS = 5;
+    var count = 0;
+    $('img.star').each(
+        function(){
+            $(this).attr('id', '' + count++);
+        }
+        )
+    $('img.star').live({
+        mouseover: function() {
+            var element = $(this).attr('id');
+            var id = +element;
+            var startFrom = id - (id % MAX_STARS);
+            var count = 0;
+            $('img.star').each(
+                function(){
+                    if(count >= startFrom){
+                        var src = "img/star_yellow.png";
+                        $(this).attr("src", src);
+                        if($(this).attr('id') == element){
+                            return false;
+                        }
+                    }
+                    count++;
+                });
+        },
+        mouseout: function() {
+            $('img.star').each(
+                function(){
+                    var src = "img/star_gray.png";
+                    $(this).attr("src", src);
+                });
+        }        
+    })
 
 })
 
@@ -50,7 +85,7 @@ var mapView = function(){
                     var growth = $(snakeMap).find('growth').text();
                     var description = $(snakeMap).find('description').text();
                     mapView.fillSnakeMapDetails(mapName, difficulty, speed, growth, description);
-						  MapEditor('innerreviewmap','./editmap?action=get&id='+snakeMapId,false,true);
+                    MapEditor('innerreviewmap','./editmap?action=get&id='+snakeMapId,false,true);
                 }
             });
         },
