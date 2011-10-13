@@ -81,24 +81,32 @@ public class EditMap extends HttpServletBuilder {
 	 */
 	@Override
 	protected void pageRequest(HttpMeta httpMeta, HttpOutput httpOutput) throws Exception {
-		httpMeta.setContentType("text/xml;charset=UTF-8");
+
 		String action = httpMeta.REQUEST("action"); // Type of action
-		// Allow types is "save","public","get","delete"
+		// Allow types is "save","public","preview"
 
 		if ("get".equals(action)) {
+			httpMeta.setContentType("text/xml;charset=UTF-8");
 			this.getMap(httpMeta, httpOutput);
-		} else if ("save".equals(action)) {
+		} else if ("save".equals(action) || "public".equals(action)) {
+			httpMeta.setContentType("text/plain;charset=UTF-8");
 			try {
-				System.out.println("Trying to save map");
-				this.storeMap(httpMeta, false).generateXML(httpOutput.getWriter());
+				SnakeMap snakeMap = this.storeMap(httpMeta, "public".equals(action) );
+				if (snakeMap!=null) {
+					httpOutput.getWriter().print("public".equals(action)?"Map Save":"Map Save & Published");
+					return;
+				} else {
+					httpOutput.getWriter().print("Error\nYou are not login on the page");;
+					return;
+				}
 			} catch (Exception ex) {
-			}
-		} else if ("public".equals(action)) {
-			try {
-				this.storeMap(httpMeta, true).generateXML(httpOutput.getWriter());
-			} catch (Exception ex) {
+				httpOutput.getWriter().print("Error\nSystem Error\n\n");
+				ex.printStackTrace(httpOutput.getWriter());
+				
+				return;
 			}
 		} else if ("preview".equals(action)) {
+			httpMeta.setContentType("text/xml;charset=UTF-8");
 			this.preView(httpMeta, httpOutput);
 		}
 	}
@@ -127,7 +135,11 @@ public class EditMap extends HttpServletBuilder {
 	 * @return The UserAcc if a user are access to the page, else null.
 	 */
 	private UserAcc getUserAccount(HttpMeta httpMeta) {
-		return LoginServlet.getUserAccount(httpMeta);
+		try {
+			return LoginServlet.getUserAccount(httpMeta);
+		} catch (Exception ex) {
+			return null;
+		}
 	}
 
 	/**
@@ -199,9 +211,10 @@ public class EditMap extends HttpServletBuilder {
 					userAcc.addMap(myMap);
 					Database.getInstance().mergeObject(myMap);
 				}
-				System.out.println(myMap);
 				return myMap;
 			}
+		} else {
+			return null;
 		}
 		throw new Exception("No user are access or allow to edit this map");
 	}
