@@ -177,14 +177,22 @@ public class Database {
 		return query.getResultList();
 	}
 
-	public <T> void mergeObject(T object) {
+	public <T> boolean mergeObject(T object) {
 		em.getTransaction().begin();
 		if (em.contains(object)) {
 			em.refresh(object);
 		} else {
+			if(object.getClass() == UserAcc.class){
+				UserAcc ua = (UserAcc) object;
+				if(!getUsersByName(ua.getUserName()).isEmpty()){
+					em.getTransaction().commit();
+					return false;
+				}
+			}
 			em.persist(object);
 		}
 		em.getTransaction().commit();
+		return true;
 	}
 
 	public synchronized void closeDatabase() {
