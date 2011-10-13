@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package se.chalmers.snake.snakeappwebpage.serverstorage;
 
 import java.io.Serializable;
@@ -17,20 +13,21 @@ import javax.persistence.Id;
  */
 @Entity
 public class MPoint implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private Integer intValue;
-	@Column(length=16, nullable=false)
+	@Column(length = 16, nullable = false)
 	private String type;
 
 	public MPoint() {
 	}
-	
+
 	//<editor-fold defaultstate="collapsed" desc="Getters & setters">
-		/**
+	/**
 	 * @return the id
 	 */
 	public Long getId() {
@@ -44,7 +41,7 @@ public class MPoint implements Serializable {
 		this.id = id;
 	}
 
-		/**
+	/**
 	 * @return the intValue
 	 */
 	public Integer getIntValue() {
@@ -57,7 +54,7 @@ public class MPoint implements Serializable {
 	public void setIntValue(Integer intValue) {
 		this.intValue = intValue;
 	}
-	
+
 	/**
 	 * @return the type
 	 */
@@ -72,16 +69,16 @@ public class MPoint implements Serializable {
 		this.type = type;
 	}
 	//</editor-fold>
-	
+
 	public MPoint(String type, int value) {
-		this.intValue=value;
-		if(type!=null) {
+		this.intValue = value;
+		if (type != null) {
 			this.type = type;
 		} else {
 			this.type = "";
 		}
 	}
-	
+
 	@Override
 	public int hashCode() {
 		int hash = 0;
@@ -91,7 +88,6 @@ public class MPoint implements Serializable {
 
 	@Override
 	public boolean equals(Object object) {
-		// TODO: Warning - this method won't work in the case the id fields are not set
 		if (!(object instanceof MPoint)) {
 			return false;
 		}
@@ -106,6 +102,4 @@ public class MPoint implements Serializable {
 	public String toString() {
 		return "MPoint{" + "id=" + id + ", intValue=" + intValue + ", type=" + type + '}';
 	}
-
-	
 }

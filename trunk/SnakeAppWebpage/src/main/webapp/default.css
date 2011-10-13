@@ -1,58 +1,57 @@
 /*Stylesheet for Android app webpae
     Written by Martin S. Please do not change :)
 */
-
 .buttonstyle{
-    width: 70px;
-    background-color : #006600;
-    border-top : 2px outset #00CC00 ;
-    border-right : 2px outset #003300 ;
-    border-bottom : 2px outset #003300 ;
-    border-left : 2px outset #00CC00 ;
-    font-family : verdana, helvetica, sans-serif;
-    color : white;
+	width: 70px;
+	background-color : #006600;
+	border-top : 2px outset #00CC00 ;
+	border-right : 2px outset #003300 ;
+	border-bottom : 2px outset #003300 ;
+	border-left : 2px outset #00CC00 ;
+	font-family : verdana, helvetica, sans-serif;
+	color : white;
 }
 
 #maptList{
-    text-align: center;
+	text-align: center;
 }
 
 body{
-    background-image: url(img/bg.jpg);
+	background-image: url('img/bg.jpg');
 }
 
 #login p{
-    color: white;
-    font-size: 18px;
-    text-shadow: 3px 3px 3px #000000;
+	color: white;
+	font-size: 18px;
+	text-shadow: 3px 3px 3px #000000;
 }
 
 #snakebend{ 
-    background-image: url(img/snakebody_bend.png);
-    width: 116px;
-    height: 118px;
-    float: left;
-    margin-left: 25px;
+	background-image: url('img/snakebody_bend.png');
+	width: 116px;
+	height: 118px;
+	float: left;
+	margin-left: 25px;
 }
 
 #topmenu{
-    float: right;
-    margin-top: 25px;
+	float: right;
+	margin-top: 25px;
 }
 
 #login{
-    float: left;
-    position: absolute;
-    margin-left: 50px;
-    margin-top: 10px;
+	float: left;
+	position: absolute;
+	margin-left: 50px;
+	margin-top: 10px;
 }
 
 #topmainbar{
-    background-image: url(img/snakebody_top.png);
-    height: 120px;
-    width: 802px;
-    float: left;
-    margin-top: -3px;
+	background-image: url('img/snakebody_top.png');
+	height: 120px;
+	width: 802px;
+	float: left;
+	margin-top: -3px;
 }
 
 #topmainbar a { color:#171151; text-decoration: none; }
@@ -60,49 +59,49 @@ body{
 
 
 #topedge{
-    background-image: url(img/snakebody_head.png);
-    height: 240px;
-    width: 150px;
-    float: left;
-    margin-top: 12px;
+	background-image: url('img/snakebody_head.png');
+	height: 240px;
+	width: 150px;
+	float: left;
+	margin-top: 12px;
 }
 
 #tagdiv{
-    margin-left: 50px;
-    padding-top: 10px;
+	margin-left: 50px;
+	padding-top: 10px;
 }
 #tagdiv p { font-size: 11px; color: white; }
 
 #snakeleft{
-    width: 137px;
-    height:577px;
-    margin-top: -134px;
-    background-image: url(img/snakebody_left.png);	
+	width: 137px;
+	height:577px;
+	margin-top: -134px;
+	background-image: url('img/snakebody_left.png');	
 }
 
 #topcontainer{
-    min-width: 1200px;
+	min-width: 1200px;
 }
 
 #maindiv{
-    float: left;
-    margin-top: 10px;
-    margin-left: 10px;
-    margin-top: -125px;
+	float: left;
+	margin-top: 10px;
+	margin-left: 10px;
+	margin-top: -125px;
 
 }
 
 #maindivtop{
-    background-image: url(img/maindivtop.png);
-    width: 800px;
-    height: 50px;
+	background-image: url('img/maindivtop.png');
+	width: 800px;
+	height: 50px;
 }
 
 #maindivtop p { font-size: 17px; color: #b0f4aa; float: right; margin-top: 10px; margin-right: 50px; }
 
 #maindivmain{
-    background-color: #204932;
-    width: 800px;
+	background-color: #204932;
+	width: 800px;
 }
 
 #content a { color: burlywood; text-decoration: none; }
@@ -110,31 +109,23 @@ body{
 #content p { color: white; margin-left: 15px; margin-top: 0px; font-size: 17px; margin-bottom: 0px;}
 
 #maindivbottom{
-    background-image: url(img/maindivbottom.png);
-    width: 800px;
-    height: 110px;
+	background-image: url('img/maindivbottom.png');
+	width: 800px;
+	height: 110px;
 }
 
 #leftsidecontainer{
-    clear: left;
-    float: left;
+	clear: left;
+	float: left;
 }
 
 #maincontainer{
-    min-width: 1600px;
+	min-width: 1600px;
 }
 
 #bitethis{ 
-    display:block; 
-    margin:0 auto; 
-    text-align:center;
-    border: 1px white solid  }
-
-/*#ads{
-        width: 200px;
-        height:500px;
-        float: left;
-        clear: right;
-        margin-top: 20px;
-        margin-left: 30px;
-}*/
+	display:block; 
+	margin:0 auto; 
+	text-align:center;
+	border: 1px white solid 
+}

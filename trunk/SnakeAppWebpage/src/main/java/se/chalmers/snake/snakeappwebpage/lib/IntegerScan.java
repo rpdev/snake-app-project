@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
  * And give this a a list, the first list is all int read from the first "{...}" 
  */
 public class IntegerScan implements Iterator<List<Integer>>, Iterable<List<Integer>> {
+
 	private static final Pattern REGEX = Pattern.compile("\\{[0-9]+(\\,[0-9]+)*");
 	private static final Pattern REGXPEND = Pattern.compile("\\}");
 	private Scanner scan;
@@ -23,7 +24,6 @@ public class IntegerScan implements Iterator<List<Integer>>, Iterable<List<Integ
 		this.scan = new Scanner(source);
 		this.scan.useDelimiter(IntegerScan.REGXPEND);
 	}
-	
 
 	@Override
 	public synchronized boolean hasNext() {

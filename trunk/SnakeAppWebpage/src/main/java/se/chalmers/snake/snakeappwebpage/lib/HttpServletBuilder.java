@@ -16,16 +16,19 @@ import javax.servlet.http.HttpServletResponse;
  * A API for use the HttpServlet more easy.
  */
 public abstract class HttpServletBuilder extends HttpServlet {
+
 	private static final long serialVersionUID = 6323638897225635090L;
 
 	/**
 	 * This Enum is define what type of requestScope the server is do.
 	 */
 	public static enum MethodType {
+
 		DELETE, GET, HEAD, OPTIONS, POST, PUT, TRACE;
 	}
 
 	public class HttpMeta {
+
 		private final MethodType method;
 		private final HttpServletRequest request;
 		private final HttpServletResponse response;
@@ -33,11 +36,12 @@ public abstract class HttpServletBuilder extends HttpServlet {
 		private final HttpServletBuilderScope<Object> requestObj;
 		private final HttpServletBuilderScope<Object> session;
 
-		private HttpMeta(MethodType method,HttpServletRequest request, HttpServletResponse response) {
+		private HttpMeta(MethodType method, HttpServletRequest request, HttpServletResponse response) {
 			this.request = request;
 			this.response = response;
 			this.method = method;
 			this.cookie = new HttpServletBuilderScope<Cookie>() {
+
 				@Override
 				public void set(String name, Cookie obj) {
 					HttpMeta.this.response.addCookie(obj);
@@ -131,15 +135,15 @@ public abstract class HttpServletBuilder extends HttpServlet {
 		public MethodType getMethod() {
 			return this.method;
 		}
-		
+
 		/**
 		 * Test if the Method of this request is REQUEST or POST
 		 * @return 
 		 */
 		public boolean isMethodPostGet() {
-			return this.method==MethodType.GET || this.method==MethodType.POST;
+			return this.method == MethodType.GET || this.method == MethodType.POST;
 		}
-		
+
 		/**
 		 * Get the row level of the HttpServletRequest
 		 * @return 
@@ -164,6 +168,7 @@ public abstract class HttpServletBuilder extends HttpServlet {
 
 			return this.request.getRequestURI();
 		}
+
 		/**
 		 * Get the request URL.
 		 * @return 
@@ -207,6 +212,7 @@ public abstract class HttpServletBuilder extends HttpServlet {
 	}
 
 	public interface HttpServletBuilderScope<T> {
+
 		/**
 		 * Set a value to the select scope if the scope support this method.
 		 * @param name
@@ -240,7 +246,7 @@ public abstract class HttpServletBuilder extends HttpServlet {
 		private HttpServletResponse response;
 		private PrintWriter printWriter;
 
-		private HttpOutput(HttpServletRequest request, HttpServletResponse response,PrintWriter printWriter) {
+		private HttpOutput(HttpServletRequest request, HttpServletResponse response, PrintWriter printWriter) {
 			this.request = request;
 			this.response = response;
 			this.printWriter = printWriter;
@@ -269,7 +275,7 @@ public abstract class HttpServletBuilder extends HttpServlet {
 			try {
 				this.response.sendError(httpError);
 				return true;
-			} catch(Exception ex) {
+			} catch (Exception ex) {
 				return false;
 			}
 		}
@@ -285,7 +291,7 @@ public abstract class HttpServletBuilder extends HttpServlet {
 			try {
 				this.response.sendRedirect(url);
 				return true;
-			} catch(Exception ex) {
+			} catch (Exception ex) {
 				return false;
 			}
 		}
@@ -301,7 +307,7 @@ public abstract class HttpServletBuilder extends HttpServlet {
 			try {
 				this.request.getRequestDispatcher(JSPFileName).forward(this.request, this.response);
 				return true;
-			} catch(Exception ex) {
+			} catch (Exception ex) {
 				return false;
 			}
 		}
@@ -317,13 +323,12 @@ public abstract class HttpServletBuilder extends HttpServlet {
 			try {
 				this.request.getRequestDispatcher(JSPFileName).include(this.request, this.response);
 				return true;
-			} catch(Exception ex) {
+			} catch (Exception ex) {
 				return false;
 			}
 		}
 	}
 
-	
 	/**
 	 * Processes all HTTP requests, 
 	 * use <code>httpMeta.isMethodPostGet()</code> for test if POST or GET Method.
@@ -382,8 +387,8 @@ public abstract class HttpServletBuilder extends HttpServlet {
 	private void doRequest(MethodType method, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		PrintWriter pw = response.getWriter();
 		try {
-			this.pageRequest(new HttpMeta(method,request, response), new HttpOutput(request, response,pw));
-		} catch(Exception ex) {
+			this.pageRequest(new HttpMeta(method, request, response), new HttpOutput(request, response, pw));
+		} catch (Exception ex) {
 		} finally {
 			pw.close();
 		}
