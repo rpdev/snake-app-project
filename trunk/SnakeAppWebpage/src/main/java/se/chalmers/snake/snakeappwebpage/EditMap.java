@@ -93,7 +93,7 @@ public class EditMap extends HttpServletBuilder {
 			try {
 				SnakeMap snakeMap = this.storeMap(httpMeta, "public".equals(action) );
 				if (snakeMap!=null) {
-					httpOutput.getWriter().print("public".equals(action)?"Map Save":"Map Save & Published");
+					httpOutput.getWriter().print("public".equals(action)?"Map Save & Published":"Map Save");
 					return;
 				} else {
 					httpOutput.getWriter().print("Error\nYou are not login on the page");;
