@@ -6,76 +6,80 @@
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<ui:define name="title">
+    <ui:define name="title">
 		Browse maps - 
-	</ui:define>
+    </ui:define>
 
-	<ui:define name="extrascript">
-		<script type="text/javascript" src="./js/Star.js" />
-		<script type="text/javascript" src="./js/browsemaps.js" />
-		<script type="text/javascript" src="./mapeditor/MapEditor.js" />
-	</ui:define>
+    <ui:define name="extrascript">
+        <script type="text/javascript" src="./js/Star.js" />
+        <script type="text/javascript" src="./js/browsemaps.js" />
+        <script type="text/javascript" src="./mapeditor/MapEditor.js" />
+    </ui:define>
 
-	<ui:define name="PageName">
+    <ui:define name="PageName">
 		Browse Maps
-	</ui:define>
-	<ui:define name="content">
-		<div id="browseMapTable">
-			<table align="center" border="1" bgcolor="white">
-				<tr>
-					<td>Map Name</td>
-					<td>Creator</td>
-					<td>Average Rating</td>
-					<td>Rate</td>
-					<td>Download</td>
-				</tr>    
-				<c:forEach var="snakeMap" items="#{DatabaseBean.snakeMapList}">
-					<tr>
+    </ui:define>
+    <ui:define name="content">
+        <div id="browseMapTable">
+            <table align="center" border="0">
+                <tr bgcolor="#337B3B">
+                    <td><b>Map Name</b></td>
+                    <td><b>Creator</b></td>
+                    <td><b>Average Rating</b></td>
+                    <td><b>Rate</b></td>
+                    <td><b>Download</b></td>
+                </tr>    
+                <c:forEach var="snakeMap" items="#{DatabaseBean.snakeMapList}">
+                    <tr bgcolor="#4BB557">
 
-						<td  class="mapName">
-							<div id="#{snakeMap.id}" class="mapNameDiv">
-								#{snakeMap.mapName}
-							</div>
-						</td>
-						<td>#{snakeMap.userName.userName}</td>
-						<td>#{snakeMap.mapRating}</td>
-						<td>
-							<img src="img/star_gray.png" border="0" class="star" />
-							<img src="img/star_gray.png" border="0" class="star" />
-							<img src="img/star_gray.png" border="0" class="star" />
-							<img src="img/star_gray.png" border="0" class="star" />
-							<img src="img/star_gray.png" border="0" class="star" />
-						</td>
-						<td><a href="./editmap?action=get&amp;id=#{snakeMap.id}">DOWNLOAD</a></td>
-					</tr>    
-				</c:forEach>
-			</table>
-		</div>
+                        <td  class="mapName">
+                            <div id="#{snakeMap.id}" class="mapNameDiv">
+                                #{snakeMap.mapName}
+                            </div>
+                        </td>
+                        <td>#{snakeMap.userName.userName}</td>
+                        <td>#{snakeMap.mapRating}</td>
+                        <td>
+                            <img src="img/star_gray.png" border="0" class="star" />
+                            <img src="img/star_gray.png" border="0" class="star" />
+                            <img src="img/star_gray.png" border="0" class="star" />
+                            <img src="img/star_gray.png" border="0" class="star" />
+                            <img src="img/star_gray.png" border="0" class="star" />
+                        </td>
+                        <td>
+                            <div id="downloadLink">
+                                <a href="./editmap?action=get&amp;id=#{snakeMap.id}">DOWNLOAD</a>
+                            </div>
+                        </td>
+                    </tr>    
+                </c:forEach>
+            </table>
+        </div>
 
-		<div id="mapView" style="visibility: hidden; position: fixed;">
-			<table border="1" style="border-color: #5cff5c;">
-				<tr>
-					<td align="center" rowspan="2">
-						<div id="innerreviewmap">  
-						</div>
-					</td>
-					<td valign="top" align="left">
-						<b>Map name:</b><br />
-						<b>Level:</b><br />
-						<b>Speed:</b><br />
-						<b>Growth:</b><br />
-					</td>
-					<td valign="top" align="left" width="140">
-						<div id="mapDetails"/>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2" height="280" valign="top">
-						<b>Description:</b>
-						<div id="mapDescription" ></div>
-					</td>
-				</tr>
-			</table>
-		</div>
-	</ui:define>
+        <div id="mapView" style="visibility: hidden; position: fixed;">
+            <table border="1" style="border-color: #5cff5c;">
+                <tr>
+                    <td align="center" rowspan="2">
+                        <div id="innerreviewmap">  
+                        </div>
+                    </td>
+                    <td valign="top" align="left">
+                        <b>Map name:</b><br />
+                        <b>Level:</b><br />
+                        <b>Speed:</b><br />
+                        <b>Growth:</b><br />
+                    </td>
+                    <td valign="top" align="left" width="140">
+                        <div id="mapDetails"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" height="280" valign="top">
+                        <b>Description:</b>
+                        <div id="mapDescription" ></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </ui:define>
 </ui:composition>
