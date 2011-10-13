@@ -108,6 +108,8 @@ body{
 #content a:hover { color:#9e0b0f; text-decoration: underline; }
 #content p { color: white; margin-left: 15px; margin-top: 0px; font-size: 17px; margin-bottom: 0px;}
 
+#downloadLink a { }
+
 #maindivbottom{
 	background-image: url('img/maindivbottom.png');
 	width: 800px;
