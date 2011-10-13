@@ -4,41 +4,41 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
 
-    <ui:define name="title">
-        Register - 
-    </ui:define>
-    
-    <ui:define name="PageName">
-        Register
-    </ui:define>
+	<ui:define name="title">
+		Register - 
+	</ui:define>
 
-    <ui:define name="content">
-        <form action="Login" method="POST">
-            <table align="center">
-                <tr>
-                    <td><p>Username</p></td>
-                    <td><input type="text" name="user_name" id="username" style="width: 200px;" /></td>
-                </tr>
-                <tr>
-                    <td><p>E-mail</p></td>
-                    <td>
-                        <input type="text" name="email" id="email" style="width: 200px;" />
-                    </td>
-                </tr>
-                <tr>
-                    <td><p>Password</p></td>
-                    <td><input type="password" name="password" id="password" style="width: 200px;" /></td>
-                </tr>
-                <tr>
-                    <td><p>Re-type password</p></td>
-                    <td><input type="password" name="password2" id="password2" style="width: 200px;" /></td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="center">
-                        <input type="submit" name="action" value="Register" class="buttonstyle" />
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </ui:define>
+	<ui:define name="PageName">
+		Register
+	</ui:define>
+
+	<ui:define name="content">
+		<form action="Login" method="POST">
+			<table align="center">
+				<tr>
+					<td><p>Username</p></td>
+					<td><input type="text" name="user_name" id="username" style="width: 200px;" /></td>
+				</tr>
+				<tr>
+					<td><p>E-mail</p></td>
+					<td>
+						<input type="text" name="email" id="email" style="width: 200px;" />
+					</td>
+				</tr>
+				<tr>
+					<td><p>Password</p></td>
+					<td><input type="password" name="password" id="password" style="width: 200px;" /></td>
+				</tr>
+				<tr>
+					<td><p>Re-type password</p></td>
+					<td><input type="password" name="password2" id="password2" style="width: 200px;" /></td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center">
+						<input type="submit" name="action" value="Register" class="buttonstyle" />
+					</td>
+				</tr>
+			</table>
+		</form>
+	</ui:define>
 </ui:composition>

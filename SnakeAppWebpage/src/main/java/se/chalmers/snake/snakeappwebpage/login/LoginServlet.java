@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package se.chalmers.snake.snakeappwebpage.login;
 
 import java.io.PrintWriter;
@@ -13,7 +9,6 @@ import se.chalmers.snake.snakeappwebpage.lib.HttpServletBuilder;
 import se.chalmers.snake.snakeappwebpage.lib.HttpServletBuilder.HttpMeta;
 import se.chalmers.snake.snakeappwebpage.lib.HttpServletBuilder.HttpOutput;
 import se.chalmers.snake.snakeappwebpage.serverstorage.Database;
-import se.chalmers.snake.snakeappwebpage.serverstorage.SnakeMap;
 import se.chalmers.snake.snakeappwebpage.serverstorage.UserAcc;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -52,8 +47,8 @@ public class LoginServlet extends HttpServletBuilder {
 	public static UserAcc getUserAccount(HttpMeta httpMeta) {
 		try {
 			Object obj = httpMeta.sessionScope().get("user");
-			if(obj instanceof UserAcc) {
-				return (UserAcc)obj;
+			if (obj instanceof UserAcc) {
+				return (UserAcc) obj;
 			}
 		} catch (Exception ex) {
 		}
@@ -87,7 +82,6 @@ public class LoginServlet extends HttpServletBuilder {
 				httpOutput.redirect("main.jsf");
 			} else if (action.equals("getForm")) {
 				httpMeta.setContentType("text/xml;charset=UTF-8");
-				PrintWriter out = httpOutput.getWriter();
 				UserAcc user = (UserAcc) httpMeta.sessionScope().get("user");
 				User wrapper = new User(user);
 				JAXBContext jc;
@@ -97,11 +91,8 @@ public class LoginServlet extends HttpServletBuilder {
 					m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
 							  Boolean.TRUE);
 					// Dump XML data
-					m.marshal(wrapper, out);
+					m.marshal(wrapper, httpOutput.getWriter());
 				} catch (JAXBException ex) {
-					Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
-				} finally {
-					out.close();
 				}
 			}
 		}

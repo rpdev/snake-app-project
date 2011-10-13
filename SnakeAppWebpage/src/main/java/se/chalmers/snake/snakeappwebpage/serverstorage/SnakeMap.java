@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package se.chalmers.snake.snakeappwebpage.serverstorage;
 
 import java.io.Serializable;
@@ -146,19 +142,19 @@ public class SnakeMap implements Serializable {
 			Document xmlDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 			Element rootNode = xmlDocument.createElement(XMLKeys.ROOT.key);
 			rootNode.setAttribute(XMLKeys.ROOT_ID.key, id.toString());
-			
+
 
 			if (mapName != null) {
 				Element nameNode = xmlDocument.createElement(XMLKeys.NAME.key);
 				nameNode.appendChild(xmlDocument.createTextNode(mapName));
 				rootNode.appendChild(nameNode);
 			}
-			if(difficuly!=null) {
+			if (difficuly != null) {
 				Element descriptionNode = xmlDocument.createElement(XMLKeys.DIFFICULY.key);
 				descriptionNode.appendChild(xmlDocument.createTextNode(this.difficuly.toString()));
 				rootNode.appendChild(descriptionNode);
 			}
-			
+
 			if (mapDescription != null) {
 				Element descriptionNode = xmlDocument.createElement(XMLKeys.DESCRIPTION.key);
 				descriptionNode.appendChild(xmlDocument.createTextNode(mapDescription));
@@ -232,19 +228,19 @@ public class SnakeMap implements Serializable {
 		return false;
 	}
 
-    /**
-     * @return the mapRating
-     */
-    public Double getMapRating() {
-        return mapRating;
-    }
+	/**
+	 * @return the mapRating
+	 */
+	public Double getMapRating() {
+		return mapRating;
+	}
 
-    /**
-     * @param mapRating the mapRating to set
-     */
-    public void setMapRating(Double mapRating) {
-        this.mapRating = mapRating;
-    }
+	/**
+	 * @param mapRating the mapRating to set
+	 */
+	public void setMapRating(Double mapRating) {
+		this.mapRating = mapRating;
+	}
 
 	private enum XMLKeys {
 
@@ -579,7 +575,6 @@ public class SnakeMap implements Serializable {
 
 	@Override
 	public boolean equals(Object object) {
-		// TODO: Warning - this method won't work in the case the id fields are not set
 		if (!(object instanceof SnakeMap)) {
 			return false;
 		}
@@ -594,6 +589,4 @@ public class SnakeMap implements Serializable {
 	public String toString() {
 		return "SnakeMap{" + "id=" + id + ", userName=" + userName + ", mapRating=" + mapRating + ", status=" + status + ", comments=" + comments + ", creationDate=" + creationDate + ", publicedDate=" + publicedDate + ", editedDate=" + editedDate + ", snakeMeta=" + snakeMeta + ", snakeAngle=" + snakeAngle + ", snakeSize=" + snakeSize + ", obstacle=" + obstacle + ", mapSize=" + mapSize + ", gameSpeed=" + gameSpeed + ", growthspeed=" + growthspeed + ", levelgoal=" + levelgoal + ", itemPoint=" + itemPoint + ", itemSize=" + itemSize + ", mapName=" + mapName + ", mapDescription=" + mapDescription + ", difficuly=" + difficuly + '}';
 	}
-
-	
 }

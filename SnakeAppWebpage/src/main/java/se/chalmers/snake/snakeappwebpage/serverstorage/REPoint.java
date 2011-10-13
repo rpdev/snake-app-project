@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package se.chalmers.snake.snakeappwebpage.serverstorage;
 
 import java.io.Serializable;
@@ -18,19 +14,21 @@ import javax.persistence.Id;
  */
 @Entity
 public class REPoint implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private Integer x;
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private Integer y;
 	@Column
 	private Integer r;
-	
-	public REPoint(){}
-	
+
+	public REPoint() {
+	}
+
 	/**
 	 * Try to read the 3 first post as X,Y,R
 	 * This will throws NullPointerException if not the list have last 3 post
@@ -38,18 +36,18 @@ public class REPoint implements Serializable {
 	 * 
 	 */
 	public REPoint(List<Integer> iList) throws NullPointerException {
-		if(iList!=null && iList.size()>=3) {
+		if (iList != null && iList.size() >= 3) {
 			this.x = iList.get(0);
 			this.y = iList.get(1);
 			this.r = iList.get(2);
 		} else {
 			throw new NullPointerException("Can not make REPoint from the List<Integer>");
 		}
-		
-		
+
+
 	}
-	
-	public REPoint(int x, int y, int r){
+
+	public REPoint(int x, int y, int r) {
 		this.x = x;
 		this.y = y;
 		this.r = r;
@@ -122,7 +120,6 @@ public class REPoint implements Serializable {
 
 	@Override
 	public boolean equals(Object object) {
-		// TODO: Warning - this method won't work in the case the id fields are not set
 		if (!(object instanceof REPoint)) {
 			return false;
 		}
@@ -137,6 +134,4 @@ public class REPoint implements Serializable {
 	public String toString() {
 		return "REPoint{" + "id=" + id + ", x=" + x + ", y=" + y + ", r=" + r + '}';
 	}
-
-	
 }
