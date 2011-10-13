@@ -37,9 +37,9 @@
 				<c:forEach var="snakeMap" items="#{DatabaseBean.snakeMapList}">
 					<tr>
 
-						<td>
-							<div id="#{snakeMap.id}" class="mapName">
-								#{snakeMap.mapName}
+						<td  class="mapName">
+							<div id="#{snakeMap.id}" class="mapNameDiv">
+							#{snakeMap.mapName}
 							</div>
 						</td>
 						<td>#{snakeMap.userName.userName}</td>

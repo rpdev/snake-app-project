@@ -3,9 +3,9 @@ $(document).ready(function(){
         "visibility": "hidden"
     })
     
-    $('div.mapName').live({
+    $('td.mapName').live({
         mouseover: function(){
-            mapView.showMapDialog($(this));
+            mapView.showMapDialog($(this).find("div.mapNameDiv"));
         },
         mouseout: function(){
             mapView.hide();
