@@ -11,8 +11,9 @@
     </ui:define>
 
     <ui:define name="extrascript">
-        <script type="text/javascript" src="js/Star.js" />
-        <script type="text/javascript" src="js/browsemaps.js" />
+        <script type="text/javascript" src="./js/Star.js" />
+        <script type="text/javascript" src="./js/browsemaps.js" />
+		  <script type="text/javascript" src="./mapeditor/MapEditor.js" />
     </ui:define>
 
     <ui:define name="PageName">
@@ -50,7 +51,7 @@
                             <img src="img/star_gray.png" border="0" class="star" />
                             <img src="img/star_gray.png" border="0" class="star" />
                         </td>
-                        <td><a href="">DOWNLOAD</a></td>
+                        <td><a href="./editmap?action=get&amp;id=#{snakeMap.id}">DOWNLOAD</a></td>
                     </tr>    
                 </c:forEach>
             </table>
@@ -60,7 +61,8 @@
             <table border="1" style="border-color: #5cff5c;">
                 <tr>
                     <td align="center">
-                        <img src="mapeditor/background.png" id="mappic" border="2" />
+							  <div id="innerreviewmap">  
+							  </div>
                     </td>
                     <td valign="top" align="left">
                         <b>Map name:</b><br />
