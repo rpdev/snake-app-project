@@ -40,8 +40,8 @@ var mapView = function(){
         setSnakeMapDetails: function(snakeMapId){
             $.ajax({
                 type: "GET",
-                url: "./DatabaseServlet",
-                data: 'action=getSnakeMap&id=' + snakeMapId,
+                url: "./editmap",
+                data: 'action=preview&id=' + snakeMapId,
                 dataType: "xml",
                 success: function(snakeMap) {
                     var mapName = $(snakeMap).find('mapName').text();

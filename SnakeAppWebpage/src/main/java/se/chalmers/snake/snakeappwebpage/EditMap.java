@@ -3,6 +3,11 @@ package se.chalmers.snake.snakeappwebpage;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import se.chalmers.snake.snakeappwebpage.lib.HttpServletBuilder;
 import se.chalmers.snake.snakeappwebpage.lib.IntegerScan;
 import se.chalmers.snake.snakeappwebpage.login.LoginServlet;
@@ -21,7 +26,53 @@ import se.chalmers.snake.snakeappwebpage.serverstorage.UserAcc;
 @WebServlet(name = "EditMap", urlPatterns = {"/editmap"})
 public class EditMap extends HttpServletBuilder {
 
-    private static final long serialVersionUID = 2244928737289982716L;
+	private static final long serialVersionUID = 2244928737289982716L;
+
+	@XmlRootElement
+	static class SnakeMapXml {
+
+		@XmlElement
+		private String mapName;
+		@XmlElement
+		private String difficulty;
+		@XmlElement
+		private int speed;
+		@XmlElement
+		private int growth;
+		@XmlElement
+		private String description;
+
+		public SnakeMapXml() {
+		}
+
+		public SnakeMapXml(SnakeMap snakeMap) {
+			if (snakeMap != null) {
+				if (snakeMap.getMapName() != null) {
+					this.mapName = snakeMap.getMapName();
+				} else {
+					this.mapName = "";
+				}
+				switch (snakeMap.getDifficuly()) {
+					case 1:
+						this.difficulty = "Easy";
+						break;
+					case 2:
+						this.difficulty = "Normal";
+						break;
+					case 3:
+						this.difficulty = "Hard";
+						break;
+					case 4:
+						this.difficulty = "Very Hard";
+						break;
+				}
+
+				this.speed = snakeMap.getGameSpeed().getIntValue();
+				this.growth = snakeMap.getGrowthspeed().getIntValue();
+				this.description = snakeMap.getMapDescription();
+			}
+		}
+	}
 
 	/**
 	 * The main function of the Servlets and handle the first call of this Servlet.
@@ -35,23 +86,42 @@ public class EditMap extends HttpServletBuilder {
 		String action = httpMeta.REQUEST("action"); // Type of action
 		// Allow types is "save","public","get","delete"
 
-        if ("get".equals(action)) {
-            this.getMap(httpMeta, httpOutput);
-        } else if ("save".equals(action)) {
-            try {
-                System.out.println("Trying to save map");
-                this.storeMap(httpMeta, false).generateXML(httpOutput.getWriter());
-            } catch (Exception ex) {
-            }
-        } else if ("public".equals(action)) {
-            try {
-                this.storeMap(httpMeta, true).generateXML(httpOutput.getWriter());
-            } catch (Exception ex) {
-            }
-        }
-    }
+		if ("get".equals(action)) {
+			this.getMap(httpMeta, httpOutput);
+		} else if ("save".equals(action)) {
+			try {
+				System.out.println("Trying to save map");
+				this.storeMap(httpMeta, false).generateXML(httpOutput.getWriter());
+			} catch (Exception ex) {
+			}
+		} else if ("public".equals(action)) {
+			try {
+				this.storeMap(httpMeta, true).generateXML(httpOutput.getWriter());
+			} catch (Exception ex) {
+			}
+		} else if ("preview".equals(action)) {
+			this.preView(httpMeta, httpOutput);
+		}
+	}
 
-	
+	private void preView(HttpMeta httpMeta, HttpOutput httpOutput) {
+		int mapID = this.getIntFromRequest(httpMeta, "id", -1);
+		if (mapID > 0) {
+			SnakeMap snakeMap = Database.getInstance().getEntity(SnakeMap.class, Long.valueOf(mapID));
+			SnakeMapXml wrapper = new SnakeMapXml(snakeMap);
+			JAXBContext jc;
+			try {
+				jc = JAXBContext.newInstance(SnakeMapXml.class);
+				Marshaller m = jc.createMarshaller();
+				m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
+						  Boolean.TRUE);
+				// Dump XML data
+				m.marshal(wrapper, httpOutput.getWriter());
+			} catch (Exception ex) {
+			}
+		}
+	}
+
 	/**
 	 * Get the current user account that has access the page
 	 * @param httpMeta
@@ -81,7 +151,6 @@ public class EditMap extends HttpServletBuilder {
 		httpOutput.forward("mapeditor/template.xml");
 	}
 
-	
 	/**
 	 * Save a map to the database. A map can be save as a new post or edit of a old map.
 	 * And the map can be mark with public state while save.
@@ -96,46 +165,47 @@ public class EditMap extends HttpServletBuilder {
 			int mapID = this.getIntFromRequest(httpMeta, "id", -1);
 			SnakeMap myMap = null;
 
-            if (mapID > 0) {
-                try {
-                    myMap = Database.getInstance().getEntity(SnakeMap.class, Long.valueOf(mapID));
-                } catch (Exception ex) {}
-            }
-            
-            if (myMap == null) {
-                myMap = new SnakeMap(userAcc);
-            }
-            // Now we have the map Obj, test if this user are onwer of this map.
-            if (myMap.getUserName().equals(userAcc)) {
-                // You is allow to edit the map.
+			if (mapID > 0) {
+				try {
+					myMap = Database.getInstance().getEntity(SnakeMap.class, Long.valueOf(mapID));
+				} catch (Exception ex) {
+				}
+			}
 
-                myMap.setMapName(this.getStringFromRequest(httpMeta, "name", ""));
-                myMap.setMapDescription(this.getStringFromRequest(httpMeta, "description", ""));
-                myMap.setDifficuly(this.getIntFromRequest(httpMeta, "difficuly", 2, 1, 4));
-                myMap.setGameSpeed(new MPoint("simple", this.getIntFromRequest(httpMeta, "gamespeed", 5, 1, Integer.MAX_VALUE)));
-                myMap.setGrowthspeed(new MPoint("simple", this.getIntFromRequest(httpMeta, "growth", 2, 0, Integer.MAX_VALUE)));
-                myMap.setItemPoint(new MPoint("simple", this.getIntFromRequest(httpMeta, "collectiblecount", 1, 1, Integer.MAX_VALUE)));
-                myMap.setItemSize(this.getIntFromRequest(httpMeta, "collectiblesize", 10, 1, Integer.MAX_VALUE));
-                myMap.setLevelgoal(new MPoint("simple", 0));
-                myMap.setMapSize(this.getMapSize(httpMeta));
-                this.setSnakeMeta(httpMeta, myMap);
-                myMap.setObstacle(this.getObstacle(httpMeta));
+			if (myMap == null) {
+				myMap = new SnakeMap(userAcc);
+			}
+			// Now we have the map Obj, test if this user are onwer of this map.
+			if (myMap.getUserName().equals(userAcc)) {
+				// You is allow to edit the map.
 
-                if (publicMap) {
-                    myMap.setStatus(Database.STATUS.PUBLICHED);
-                }
+				myMap.setMapName(this.getStringFromRequest(httpMeta, "name", ""));
+				myMap.setMapDescription(this.getStringFromRequest(httpMeta, "description", ""));
+				myMap.setDifficuly(this.getIntFromRequest(httpMeta, "difficuly", 2, 1, 4));
+				myMap.setGameSpeed(new MPoint("simple", this.getIntFromRequest(httpMeta, "gamespeed", 5, 1, Integer.MAX_VALUE)));
+				myMap.setGrowthspeed(new MPoint("simple", this.getIntFromRequest(httpMeta, "growth", 2, 0, Integer.MAX_VALUE)));
+				myMap.setItemPoint(new MPoint("simple", this.getIntFromRequest(httpMeta, "collectiblecount", 1, 1, Integer.MAX_VALUE)));
+				myMap.setItemSize(this.getIntFromRequest(httpMeta, "collectiblesize", 10, 1, Integer.MAX_VALUE));
+				myMap.setLevelgoal(new MPoint("simple", 0));
+				myMap.setMapSize(this.getMapSize(httpMeta));
+				this.setSnakeMeta(httpMeta, myMap);
+				myMap.setObstacle(this.getObstacle(httpMeta));
 
-                if (myMap != null) {
-                    Database.getInstance().mergeObject(userAcc);
-                    userAcc.addMap(myMap);
-                    Database.getInstance().mergeObject(myMap);
-                }
-                System.out.println(myMap);
-                return myMap;
-            }
-        }
-        throw new Exception("No user are access or allow to edit this map");
-    }
+				if (publicMap) {
+					myMap.setStatus(Database.STATUS.PUBLICHED);
+				}
+
+				if (myMap != null) {
+					Database.getInstance().mergeObject(userAcc);
+					userAcc.addMap(myMap);
+					Database.getInstance().mergeObject(myMap);
+				}
+				System.out.println(myMap);
+				return myMap;
+			}
+		}
+		throw new Exception("No user are access or allow to edit this map");
+	}
 
 	/**
 	 * Get a list of all Obstract that is store in the POST call while save data.
@@ -152,7 +222,7 @@ public class EditMap extends HttpServletBuilder {
 		}
 		return points;
 	}
-        
+
 	/**
 	 * Return a int from the Request, or return a default value if not value are allow. 
 	 * @param httpMeta
@@ -167,7 +237,7 @@ public class EditMap extends HttpServletBuilder {
 			return nullValue;
 		}
 	}
-        
+
 	/**
 	 * Return a int from the Request, or return a default value if not value are allow
 	 * or in given limit.
@@ -186,7 +256,7 @@ public class EditMap extends HttpServletBuilder {
 			return nullValue;
 		}
 	}
-        
+
 	/**
 	 * Return a String from the request by a key, if the value exist and can be use.
 	 * @param httpMeta
@@ -198,7 +268,7 @@ public class EditMap extends HttpServletBuilder {
 		String value = httpMeta.REQUEST(key);
 		return value != null ? value : nullValue;
 	}
-        
+
 	/**
 	 * Read the map size from the post data on save or public call.
 	 * @param httpMeta
@@ -215,7 +285,7 @@ public class EditMap extends HttpServletBuilder {
 		}
 		throw new NullPointerException("Can not read the MapSize");
 	}
-        
+
 	/**
 	 * Read the SnakeMeta from the post data on save or public call.
 	 * @param httpMeta
@@ -233,7 +303,7 @@ public class EditMap extends HttpServletBuilder {
 				return;
 			}
 
-        }
-        throw new NullPointerException("Can not read the SnakeMeta");
-    }
+		}
+		throw new NullPointerException("Can not read the SnakeMeta");
+	}
 }
