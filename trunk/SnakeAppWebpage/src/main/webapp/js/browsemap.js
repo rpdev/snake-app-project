@@ -146,9 +146,7 @@ var commentView = function(){
                 "z-index": "2",
                 "margin-left": "100px",
                 "visibility" : "visible",
-                "background-image": "url(img/mapDetailsBg.PNG)",
-                "background-color": "white",
-                "background-repeat": "repeat-x"
+                "background-color": "#ACD373"
             })
             $('#commentView').css({ 
                 "visibility": "visible",
