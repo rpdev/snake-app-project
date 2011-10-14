@@ -1,7 +1,23 @@
 $(document).ready(function(){
     
+    var MAX_STARS = 5;
+    var count = 0;
+    
     $('#mapView').css({
         "visibility": "hidden"
+    })
+    
+    $('div.commentButtons input').each(
+        function(){
+            $(this).attr('id', '' + count++);
+        }
+    ) 
+    count = 0;
+    
+    $('div.commentButtons input').live({
+        click: function(){
+            alert('test');
+        }
     })
     
     $('td.mapName').live({
@@ -13,13 +29,12 @@ $(document).ready(function(){
         }
     });
     
-    var MAX_STARS = 5;
-    var count = 0;
     $('img.star').each(
         function(){
             $(this).attr('id', '' + count++);
         }
-        )
+    )
+        
     $('img.star').live({
         mouseover: function() {
             var element = $(this).attr('id');
