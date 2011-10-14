@@ -25,13 +25,6 @@
       		style="@style/customText"
 			android:visibility="gone"/>
 			
-			<TextView android:id="@+id/you_didnt_make_it_text"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/sorry"
-      		style="@style/customText"
-			android:visibility="gone"/>
-			
 			<EditText android:id="@+id/input_edittext"
        		android:layout_width="fill_parent"
        		android:layout_height="wrap_content"
