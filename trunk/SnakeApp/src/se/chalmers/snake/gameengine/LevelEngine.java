@@ -12,6 +12,7 @@ import se.chalmers.snake.interfaces.util.XYPoint;
  * This is the part of the GameEngine that hold a single level and this data.
  */
 class LevelEngine {
+	private int score;
 
 	/**
 	 * Private class for hold count of all items and how long time each item has be on the game map.
@@ -52,6 +53,7 @@ class LevelEngine {
 	 */
 	LevelEngine(LevelIC level, XYPoint gameFiledSize) {
 		this.level = level;
+		this.score = 0;
 		this.calcScal(gameFiledSize);
 
 		this.itemsRadius = (int) (this.fixScal * level.getItemsRadius());
@@ -109,13 +111,24 @@ class LevelEngine {
 		Iterator<LEIPoint> itPoint = this.items.iterator();
 		int addsItemCount = 0;
 		while (itPoint.hasNext()) {
+			
 			LEIPoint item = itPoint.next();
+			item.time++;
 			if (playerHead.isCollideWith(item)) {
 				this.itemsCollect.add(item.time);
 				this.stepLength = (int) (this.level.getSpeed(this.itemsCollect) * this.fixScal);
 				this.playerBody.addSeg(this.level.getBodyGrowth(item.time, this.itemsCollect.size() + 1));
+				this.calcScore(item.time, this.itemsCollect.size());
+				
 				itPoint.remove();
+				
+				
+				
 				addsItemCount += this.level.getAddItems(this.itemsCollect.size(), this.items.size() + addsItemCount);
+				
+				
+				
+				
 			}
 		}
 
@@ -123,6 +136,18 @@ class LevelEngine {
 		return true;
 	}
 
+	private void calcScore(int time, int itemCollect) {
+		int cPoint = 0;
+		if(time<100) {
+			cPoint = (int) ((100-time)/20.0+itemCollect*0.3);
+		} else {
+			cPoint = (int) (itemCollect*0.3);
+		}
+		cPoint = (int) (cPoint*this.level.getLevel()/2.0);
+		
+		this.score += cPoint+1;
+	}
+	
 	/**
 	 * Test if the player has reached the goal of this map.
 	 * @return 
@@ -165,8 +190,8 @@ class LevelEngine {
 	 * @return 
 	 */
 	int getScore() {
-		//return this.score;
-		return this.itemsCollect.size();
+		return this.score;
+		
 	}
 
 	/**
