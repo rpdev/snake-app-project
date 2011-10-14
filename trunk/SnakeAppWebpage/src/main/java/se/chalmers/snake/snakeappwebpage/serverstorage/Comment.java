@@ -35,7 +35,7 @@ public class Comment implements Serializable {
 
 	public Comment(String commentText, SnakeMap map, UserAcc user) {
 		if (commentText.length() < 1) {
-			throw new IllegalArgumentException("Comment have to contian charachters");
+			throw new IllegalArgumentException("Comment must contian charachters");
 		}
 		this.commentText = commentText;
 		commentMade = new Date();
