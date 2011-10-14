@@ -12,21 +12,22 @@ import se.chalmers.snake.interfaces.util.XYPoint;
  * This is the part of the GameEngine that hold a single level and this data.
  */
 class LevelEngine {
+
 	private int score;
 
 	/**
 	 * Private class for hold count of all items and how long time each item has be on the game map.
 	 */
 	private class LEIPoint extends REPoint {
-
+		
 		private static final long serialVersionUID = 5037544644353660074L;
 		private int time = 0;
-
+		
 		private LEIPoint(XYPoint xyPoint, int radius) {
 			super(REPoint.REType.ITEM, xyPoint, radius, 0);
-
+			
 		}
-
+		
 		private LEIPoint(int x, int y, int radius) {
 			super(REPoint.REType.ITEM, x, y, radius, 0);
 		}
@@ -55,7 +56,7 @@ class LevelEngine {
 		this.level = level;
 		this.score = 0;
 		this.calcScal(gameFiledSize);
-
+		
 		this.itemsRadius = (int) (this.fixScal * level.getItemsRadius());
 		this.playerBodyWidth = (int) (this.fixScal * level.getPlayerBodyWidth());
 		this.isRunning = true;
@@ -63,9 +64,9 @@ class LevelEngine {
 		this.itemsCollect = new ArrayList<Integer>();
 		this.stepLength = (int) (level.getSpeed(this.itemsCollect) * this.fixScal);
 		XYPoint startPoint = new XYPoint((int) (this.xScal * level.getSnakeHeadStartLocation().x), (int) (this.yScal * level.getSnakeHeadStartLocation().y));
-
+		
 		this.playerBody = new PlayerBody(gameFiledSize, startPoint, this.level.getStartAngle(), (int) (this.playerBodyWidth * this.fixScal), level.getSnakeStartLength(), 0);
-
+		
 		this.obstacles = Collections.unmodifiableList(this.listStaticElement());
 		/**
 		 * create a source of possible locations of items to be place at.
@@ -119,35 +120,26 @@ class LevelEngine {
 				this.stepLength = (int) (this.level.getSpeed(this.itemsCollect) * this.fixScal);
 				this.playerBody.addSeg(this.level.getBodyGrowth(item.time, this.itemsCollect.size() + 1));
 				this.calcScore(item.time, this.itemsCollect.size());
-				
 				itPoint.remove();
-				
-				
-				
 				addsItemCount += this.level.getAddItems(this.itemsCollect.size(), this.items.size() + addsItemCount);
-				
-				
-				
-				
 			}
 		}
-
+		
 		this.addItems(addsItemCount);
 		return true;
 	}
-
+	
 	private void calcScore(int time, int itemCollect) {
 		int cPoint = 0;
-		if(time<100) {
-			cPoint = (int) ((100-time)/20.0+itemCollect*0.3);
+		if (time < 100) {
+			cPoint = (int) ((100 - time) / 20.0 + itemCollect * 0.3);
 		} else {
-			cPoint = (int) (itemCollect*0.3);
+			cPoint = (int) (itemCollect * 0.3);
 		}
-		cPoint = (int) (cPoint*this.level.getLevel()*0.75);
-		
-		this.score += cPoint+1;
+		cPoint = (int) (cPoint * this.level.getLevel() * 0.75);
+		this.score += cPoint + 1;
 	}
-	
+
 	/**
 	 * Test if the player has reached the goal of this map.
 	 * @return 
