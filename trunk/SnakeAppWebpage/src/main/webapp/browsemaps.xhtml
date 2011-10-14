@@ -7,18 +7,18 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <ui:define name="title">
-		Browse maps - 
+        Browse maps - 
     </ui:define>
 
     <ui:define name="extrascript">
-        <script type="text/javascript" src="./js/browsemaps.js" />
         <script type="text/javascript" src="./mapeditor/MapEditor.js" />
+        <script type="text/javascript" src="./js/browsemap.js" />
     </ui:define>
 
     <ui:define name="PageName">
-		Browse Maps
+        Browse Maps
     </ui:define>
-    
+
     <ui:define name="content">
         <div id="browseMapTable">
             <table align="center" border="0" style="border: 3px dotted white; border-spacing: 0px;">
@@ -31,7 +31,7 @@
                 </tr>    
                 <c:forEach var="snakeMap" items="#{DatabaseBean.snakeMapList}">
                     <tr class="mapRow" style="background-image: url(img/tdbg.png); background-repeat: repeat-x; background-color: white;">
-                    
+
                         <td  class="mapName" style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;">
                             <div id="#{snakeMap.id}" class="mapNameDiv">
                                 <h2>#{snakeMap.mapName}</h2>
@@ -52,8 +52,10 @@
                                 <h2><a href="./editmap?action=get&amp;id=#{snakeMap.id}">DOWNLOAD</a></h2>
                             </div>
                         </td>
-                        <td class="commentButtons" style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;">
-                            <input type="button" value="Add comment" class="buttonStyle"/>
+                        <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;">
+                            <div class="commentButtons" style="cursor : pointer;">
+                                <div class="buttonstyle" id="#{snakeMap.id}" style="cursor : pointer; width : 120px;"><h3>Add Comment</h3></div>
+                            </div>
                         </td>
                     </tr>    
                 </c:forEach>
@@ -81,6 +83,26 @@
                     <td colspan="2" height="280" valign="top">
                         <b>Description:</b>
                         <div id="mapDescription" ></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="commentView" style="visibility: hidden; position: fixed; background-color: #66FF66;">
+            <table border="0">
+                <tr>
+                    <td>
+                        <p>Insert comment:</p><br/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" style="width: 200px; height: 70px;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" id="commentButton" value="Add comment"/>
                     </td>
                 </tr>
             </table>
