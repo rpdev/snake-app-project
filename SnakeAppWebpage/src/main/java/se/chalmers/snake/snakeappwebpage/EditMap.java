@@ -41,6 +41,8 @@ public class EditMap extends HttpServletBuilder {
 		private int growth;
 		@XmlElement
 		private String description;
+		@XmlElement
+		private List<String> comment;
 
 		public SnakeMapXml() {
 		}
@@ -70,6 +72,7 @@ public class EditMap extends HttpServletBuilder {
 				this.speed = snakeMap.getGameSpeed().getIntValue();
 				this.growth = snakeMap.getGrowthspeed().getIntValue();
 				this.description = snakeMap.getMapDescription();
+                                this.comment = snakeMap.getCommentsToString();
 			}
 		}
 	}
