@@ -7,18 +7,18 @@ $(document).ready(function(){
         "visibility": "hidden"
     })
     
-    $('div.commentButtons input').each(
-        function(){
-            $(this).attr('id', '' + count++);
-        }
-    ) 
-    count = 0;
-    
-    $('div.commentButtons input').live({
+    $('div.commentButtons').live({
         click: function(){
-            alert('test');
+            commentView.showCommentViewDialog($(this));
         }
-    })
+    });
+    
+    
+    $('#commentButton').live({
+        click: function(){
+            commentView.hide();
+        }
+    });
     
     $('td.mapName').live({
         mouseover: function(){
@@ -110,6 +110,26 @@ var mapView = function(){
             $('#mapDescription').empty().append(description);
         }
         
+    }
+}();
+
+var commentView = function(){
+    return{
+        showCommentViewDialog: function(commentButton){
+            $('#commentView').insertAfter(commentButton);
+            $('#commentView').css({
+                "border": "2px solid black",
+                "position": "absolute",
+                "z-index": "2",
+                "margin-left": "100px",
+                "visibility" : "visible"
+            })
+        },
+        hide: function(){
+            $('#commentView').css({
+                "visibility" : "hidden"
+            })
+        }
     }
 }();
 
