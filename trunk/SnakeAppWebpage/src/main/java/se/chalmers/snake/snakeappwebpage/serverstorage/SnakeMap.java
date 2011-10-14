@@ -324,6 +324,20 @@ public class SnakeMap implements Serializable {
 	public List<Comment> getComments() {
 		return comments;
 	}
+        
+        /**
+         * @return the comments as strings
+         */
+        public List<String> getCommentsToString(){
+            List<String> commentList = new ArrayList<String>();
+            for(Comment comment : getComments()){
+                commentList.add(comment.toSimpleString());
+            }
+            if(commentList.isEmpty()){
+                commentList.add("No comments yet.");
+            }
+            return commentList;
+        }
 
 	/**
 	 * @param comments the comments to set

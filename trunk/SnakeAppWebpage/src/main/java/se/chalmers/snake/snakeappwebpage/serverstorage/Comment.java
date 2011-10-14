@@ -165,4 +165,8 @@ public class Comment implements Serializable {
 	public String toString() {
 		return "Comment{" + "id=" + id + ", commentText=" + commentText + ", commentMade=" + commentMade + ", commentLatestEdit=" + commentLatestEdit + ", map=" + map + ", userCommentViolate=" + userCommentViolate + '}';
 	}
+        
+        public String toSimpleString(){
+            return this.userCommentViolate.getUserName() + ": " + this.commentText;
+        }
 }

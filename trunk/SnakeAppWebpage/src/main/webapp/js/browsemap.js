@@ -115,15 +115,21 @@ var mapView = function(){
                     var speed = $(snakeMap).find('speed').text();
                     var growth = $(snakeMap).find('growth').text();
                     var description = $(snakeMap).find('description').text();
-                    mapView.fillSnakeMapDetails(mapName, difficulty, speed, growth, description);
+                    var comments = snakeMap.getElementsByTagName('comment');
+                    mapView.fillSnakeMapDetails(mapName, difficulty, speed, growth, description, comments);
                     MapEditor('innerreviewmap','./editmap?action=get&id='+snakeMapId,false,true);
                 }
             });
         },
-        fillSnakeMapDetails: function(mapName, difficulty, speed, growth, description){
+        fillSnakeMapDetails: function(mapName, difficulty, speed, growth, description, comments){
             $('#mapDetails').empty().append(mapName + "<br />" + difficulty 
                 + "<br />" + speed + "<br />" + growth);
             $('#mapDescription').empty().append(description);
+            $('#mapComments').empty();
+            for(var i = 0; i < comments.length; i++){
+                var comment = comments[i].lastChild.nodeValue + '<br/>';
+                $('#mapComments').append(comment);
+            }
         }
         
     }
