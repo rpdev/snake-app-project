@@ -28,7 +28,7 @@ public class LevelDefault implements LevelIC {
 
 	@Override
 	public int getLevel() {
-		return 1;
+		return 0;
 	}
 
 	@Override

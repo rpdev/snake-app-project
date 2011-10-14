@@ -155,7 +155,12 @@ class XMLLevel implements LevelIC {
 			Element rootDoc = xmlDoc.getDocumentElement();
 			if (rootDoc.getNodeName().equals(XML.ROOT)) { // Root Node Exist.
 				this.mapID = XR.attributeInt(rootDoc, XML.ROOT_ID);
-				this.level = XR.attributeInt(rootDoc, XML.LEVEL);
+				if(rowData.level>0) {
+					this.level = rowData.level;
+				} else {
+					this.level = XR.attributeInt(rootDoc, XML.LEVEL);
+				}
+				
 				this.name = XR.val(XR.find(rootDoc, XML.NAME));
 				this.description = XR.val(XR.find(rootDoc, XML.DESCRIPTION));
 				Node map = XR.find(rootDoc, XML.MAPSIZE);
