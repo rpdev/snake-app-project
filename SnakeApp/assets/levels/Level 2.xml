@@ -7,7 +7,6 @@
 	<gamespeed type="simple">4</gamespeed>
 	<growthspeed type="simple">4</growthspeed>
 	<levelgoal type="greater">15</levelgoal>
-	
 	<item type="simple" r="10">1</item>
 	<player x="150" y="200" r="15" a="90" s="4" />
 	<obstacles>
