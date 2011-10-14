@@ -143,7 +143,7 @@ class LevelEngine {
 		} else {
 			cPoint = (int) (itemCollect*0.3);
 		}
-		cPoint = (int) (cPoint*this.level.getLevel()/2.0);
+		cPoint = (int) (cPoint*this.level.getLevel()*0.75);
 		
 		this.score += cPoint+1;
 	}

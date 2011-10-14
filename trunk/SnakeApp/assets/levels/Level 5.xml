@@ -4,7 +4,7 @@
 	<description>The Snake Maze</description>
 	<difficuly>3</difficuly>
 	<map x="300" y="400" />
-	<gamespeed type="simple">3</gamespeed>
+	<gamespeed type="simple">4</gamespeed>
 	<growthspeed type="simple">4</growthspeed>
 	<item type="simple" r="10">1</item>
 	<levelgoal type="greater">9999</levelgoal>
