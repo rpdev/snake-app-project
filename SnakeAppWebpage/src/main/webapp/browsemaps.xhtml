@@ -27,6 +27,7 @@
                     <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;"><b><h1>Creator</h1></b></td>
                     <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;"><b><h1>Rate</h1></b></td>
                     <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;"><b><h1>Download</h1></b></td>
+                    <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;"><b><h1>Comment</h1></b></td>
                 </tr>    
                 <c:forEach var="snakeMap" items="#{DatabaseBean.snakeMapList}">
                     <tr class="mapRow" style="background-image: url(img/tdbg.png); background-repeat: repeat-x; background-color: white;">
@@ -51,8 +52,8 @@
                                 <h2><a href="./editmap?action=get&amp;id=#{snakeMap.id}">DOWNLOAD</a></h2>
                             </div>
                         </td>
-                        <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;">
-                            <h2><i>Button here soon</i></h2>
+                        <td class="commentButtons" style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;">
+                            <input type="button" value="Add comment" class="buttonStyle"/>
                         </td>
                     </tr>    
                 </c:forEach>
