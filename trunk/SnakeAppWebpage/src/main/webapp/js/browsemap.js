@@ -145,8 +145,19 @@ var commentView = function(){
                 "position": "absolute",
                 "z-index": "2",
                 "margin-left": "100px",
-                "visibility" : "visible"
+                "visibility" : "visible",
+                "background-image": "url(img/mapDetailsBg.PNG)",
+                "background-color": "white",
+                "background-repeat": "repeat-x"
             })
+            $('#commentView').css({ 
+                "visibility": "visible",
+                "position": "absolute",
+                "z-index": "2",
+                
+                "border": "2px solid black",
+                "margin-left": "100px"
+            });
         },
         hide: function(){
             $('#commentView').css({
