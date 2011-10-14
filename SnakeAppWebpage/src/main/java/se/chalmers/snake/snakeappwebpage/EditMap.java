@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import se.chalmers.snake.snakeappwebpage.lib.HttpServletBuilder;
 import se.chalmers.snake.snakeappwebpage.lib.IntegerScan;
 import se.chalmers.snake.snakeappwebpage.login.LoginServlet;
+import se.chalmers.snake.snakeappwebpage.serverstorage.Comment;
 import se.chalmers.snake.snakeappwebpage.serverstorage.Database;
 import se.chalmers.snake.snakeappwebpage.serverstorage.MPoint;
 import se.chalmers.snake.snakeappwebpage.serverstorage.REPoint;
@@ -108,7 +109,9 @@ public class EditMap extends HttpServletBuilder {
 		} else if ("preview".equals(action)) {
 			httpMeta.setContentType("text/xml;charset=UTF-8");
 			this.preView(httpMeta, httpOutput);
-		}
+		} else if("comment".equals(action)){
+                    this.addComment(httpMeta, httpOutput);
+                }
 	}
 
 	private void preView(HttpMeta httpMeta, HttpOutput httpOutput) {
@@ -128,6 +131,16 @@ public class EditMap extends HttpServletBuilder {
 			}
 		}
 	}
+        
+        private void addComment(HttpMeta httpMeta, HttpOutput httpOutput){
+            int mapID = this.getIntFromRequest(httpMeta, "id", -1);
+            if(mapID > 0){
+                String commentString = this.getStringFromRequest(httpMeta, "commentString", "empty");
+                SnakeMap snakeMap = Database.getInstance().getEntity(SnakeMap.class, Long.valueOf(mapID));
+                Comment comment = new Comment(commentString, snakeMap, this.getUserAccount(httpMeta));
+                snakeMap.addComment(comment);
+            }
+        }
 
 	/**
 	 * Get the current user account that has access the page
