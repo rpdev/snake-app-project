@@ -5,10 +5,10 @@ import java.util.HashSet;
 import java.util.Set;
 import se.chalmers.snake.interfaces.LevelHistoryIC;
 
-public class LevelHistory implements LevelHistoryIC, Serializable {
+class LevelHistory implements LevelHistoryIC, Serializable {
+
 	private static final long serialVersionUID = -1153388461696947441L;
 	public static final String SAVE_NAME = "levelhistory";
-
 	private final Set<String> set;
 
 	public LevelHistory() {
@@ -31,5 +31,4 @@ public class LevelHistory implements LevelHistoryIC, Serializable {
 		this.set.clear();
 		ControlResources.get().getStorage().storeObject(SAVE_NAME, this);
 	}
-
 }

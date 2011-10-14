@@ -260,7 +260,7 @@ class PlayerBody implements Iterable<REPoint> {
 
 		}
 		return false;
-		
+
 	}
 
 	/**

@@ -9,7 +9,7 @@ public interface HighscoreDatabaseIC {
 	 * @return True if it was a new highscore, false if the score isn't high enough
 	 */
 	public boolean addPlayerToHighscore(String playerName, int points);
-	
+
 	/**
 	 * Adds the player's name, score and last level to the highscore database
 	 * @param playerName
@@ -25,8 +25,8 @@ public interface HighscoreDatabaseIC {
 	 */
 	@Override
 	public String toString();
-	
+
 	public boolean checkIfEnoughPoints(int points);
-	
-	public boolean saveHighscore(); 
+
+	public boolean saveHighscore();
 }

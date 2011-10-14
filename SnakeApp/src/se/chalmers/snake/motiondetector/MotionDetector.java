@@ -13,8 +13,6 @@ public class MotionDetector implements SensorEventListener, MotionDetectorIC {
 
 	private static final double RAD_TO_DEG = (180.0f / Math.PI);
 	private static final double PI_TIMES_2 = Math.PI * 2;
-	
-	
 	private MotionDetectorIC.ReferenceSurface referenceSurface;
 	private SensorManager sensorManager;
 	private boolean run;
@@ -36,7 +34,7 @@ public class MotionDetector implements SensorEventListener, MotionDetectorIC {
 		this.radianus = 0.0;
 		this.referenceSurface = null;
 		this.callWhileUpdate = null;
-		this.setSensitivity(5);
+		this.setSensitivity(7);
 	}
 
 	public MotionDetector(SensorManager sensorManager, Runnable callWhileUpdate) {
@@ -46,7 +44,7 @@ public class MotionDetector implements SensorEventListener, MotionDetectorIC {
 		this.radianus = 0.0;
 		this.referenceSurface = null;
 		this.callWhileUpdate = callWhileUpdate;
-		this.setSensitivity(5);
+		this.setSensitivity(7);
 
 	}
 
@@ -109,52 +107,59 @@ public class MotionDetector implements SensorEventListener, MotionDetectorIC {
 
 	@Override
 	public int getAngleByDegrees() {
-		this.start();
-		this.recalc();
+		if (this.run == false) {
+			this.start();
+		}
+		if (this.isUpdate == false) {
+			this.recalc();
+		}
 		return this.degrees;
 	}
 
 	@Override
 	public double getAngleByRadians() {
-		this.start();
-		this.recalc();
+		if (this.run == false) {
+			this.start();
+		}
+		if (this.isUpdate == false) {
+			this.recalc();
+		}
 		return this.radianus;
 	}
 
 	private void recalc() {
-		if (this.isUpdate == false) {
-			if (SensorManager.getRotationMatrix(this.mR, null, this.mGData, this.mMData)) {
-				SensorManager.getOrientation(this.mR, this.mOrientation);
-				if (this.referenceSurface != null) {
 
-					switch (this.referenceSurface) {
-						case FLAT_TOP: {
-							if (Math.sqrt(this.mOrientation[1] * this.mOrientation[1] + this.mOrientation[2] * this.mOrientation[2]) > this.sensitivity) {
-								this.radianus = Math.atan2(this.mOrientation[1], -this.mOrientation[2]);
-							}
-						}
-						break;
+		if (SensorManager.getRotationMatrix(this.mR, null, this.mGData, this.mMData)) {
+			SensorManager.getOrientation(this.mR, this.mOrientation);
+			if (this.referenceSurface != null) {
 
-						default: {
-							if (Math.sqrt(this.mOrientation[1] * this.mOrientation[1] + this.mOrientation[2] * this.mOrientation[2]) > this.sensitivity) {
-								this.radianus = -Math.atan2(this.mOrientation[1], this.mOrientation[2]);
-							}
+				switch (this.referenceSurface) {
+					case FLAT_TOP: {
+						if (Math.sqrt(this.mOrientation[1] * this.mOrientation[1] + this.mOrientation[2] * this.mOrientation[2]) > this.sensitivity) {
+							this.radianus = Math.atan2(this.mOrientation[1], -this.mOrientation[2]);
 						}
 					}
+					break;
 
-				} else {
-					if (Math.sqrt(this.mOrientation[1] * this.mOrientation[1] + this.mOrientation[2] * this.mOrientation[2]) > this.sensitivity) {
-						this.radianus = -Math.atan2(this.mOrientation[1], this.mOrientation[2]);
+					default: {
+						if (Math.sqrt(this.mOrientation[1] * this.mOrientation[1] + this.mOrientation[2] * this.mOrientation[2]) > this.sensitivity) {
+							this.radianus = -Math.atan2(this.mOrientation[1], this.mOrientation[2]);
+						}
 					}
 				}
-				if (this.radianus < 0) {
-					this.radianus += PI_TIMES_2;
-				}
 
-				this.degrees = (int) (this.radianus * MotionDetector.RAD_TO_DEG);
-				this.count++;
-				this.isUpdate = true;
+			} else {
+				if (Math.sqrt(this.mOrientation[1] * this.mOrientation[1] + this.mOrientation[2] * this.mOrientation[2]) > this.sensitivity) {
+					this.radianus = -Math.atan2(this.mOrientation[1], this.mOrientation[2]);
+				}
 			}
+			if (this.radianus < 0) {
+				this.radianus += PI_TIMES_2;
+			}
+
+			this.degrees = (int) (this.radianus * MotionDetector.RAD_TO_DEG);
+			this.count++;
+			this.isUpdate = true;
 		}
 	}
 

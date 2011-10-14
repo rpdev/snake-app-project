@@ -1,4 +1,5 @@
 package se.chalmers.snake.util;
+
 /**
  * This interface represents an observable object, and can hold multi 
  * EnumObserver object.
@@ -22,25 +23,22 @@ public interface EnumObservableInterface<E extends Enum<E>, A, R> {
 	 * @return True if this EnumObserver has be add, otherwise false.
 	 */
 	public boolean addObserver(E key, EnumObserver<E, A, R> observer);
-	
-	    /**
-     * Remove a EnumObserver from this EnumObservable,
-     * This will remove the EnumObserver from all events type.
-     * @param observer The EnumObserver to remove.
-     * @return Return true if the EnumObserver has been removed from at
-     * least one event type, otherwise false.
-     */
-    public boolean removeObserver(EnumObserver<E, A, R> observer);
-	 
-	 
-    /**
-     * Remove a EnumObserver from this EnumObservable for select event type.
-     * @param key The event type to remove from.
-     * @param observer The EnumObserver to remove from.
-     * @return Return true if the EnumObserver has been removed the event type,
-     * otherwise false.
-     */
-    public boolean removeObserver(E key, EnumObserver<E, A, R> observer);
-	 
-	 
+
+	/**
+	 * Remove a EnumObserver from this EnumObservable,
+	 * This will remove the EnumObserver from all events type.
+	 * @param observer The EnumObserver to remove.
+	 * @return Return true if the EnumObserver has been removed from at
+	 * least one event type, otherwise false.
+	 */
+	public boolean removeObserver(EnumObserver<E, A, R> observer);
+
+	/**
+	 * Remove a EnumObserver from this EnumObservable for select event type.
+	 * @param key The event type to remove from.
+	 * @param observer The EnumObserver to remove from.
+	 * @return Return true if the EnumObserver has been removed the event type,
+	 * otherwise false.
+	 */
+	public boolean removeObserver(E key, EnumObserver<E, A, R> observer);
 }

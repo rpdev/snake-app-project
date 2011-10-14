@@ -60,11 +60,11 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		this.paint = new Paint();
 		this.paint.setStyle(Paint.Style.FILL);
 		this.addGameEngine(gameEngine);
-		
+
 		Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.spelplan_bg);
 		BitmapDrawable bitmapDrawable = new BitmapDrawable(bmp);
 		bitmapDrawable.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-		
+
 		this.setBackgroundDrawable(bitmapDrawable);
 		this.initLevel();
 	}
@@ -115,7 +115,7 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 
 		Bitmap bodySeg = Bitmap.createScaledBitmap(
 				  BitmapFactory.decodeResource(this.mRes, recID), playerBodyWidth, playerBodyWidth, true);
-		
+
 		List<Bitmap> segs = new ArrayList<Bitmap>(90);
 		for (int i = 0; i < 90; i++) {
 			Matrix matrix = new Matrix();
@@ -146,7 +146,7 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 	 */
 	@Override
 	public void onDraw(Canvas canvas) {
-		double PI_VALUE = 45/Math.PI;
+		double PI_VALUE = 45 / Math.PI;
 
 		if (this.snakeBody != null) {
 			for (REPoint reP : this.snakeBody) {

@@ -13,58 +13,10 @@ import android.widget.TextView;
 import se.chalmers.snake.interfaces.HighscoreDatabaseIC;
 import se.chalmers.snake.mastercontroller.ControlResources;
 
-public class StartActivity extends Activity { // implements SensorEventListener
+public class StartActivity extends Activity {
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.snake_layout);
-
-
-
-		//Instantiate layouts
-		background = (RelativeLayout) findViewById(R.id.backgroundImage);
-		menu = (LinearLayout) findViewById(R.id.menu_buttons);
-
-		//Instantiate buttons
-		newGameButton = (Button) findViewById(R.id.snake_new_game_button);
-		
-		helpButton = (Button) findViewById(R.id.snake_help_button);
-		highscoreButton = (Button) findViewById(R.id.snake_highscore_button);
-
-		//Instantiate texts
-		helpText = (TextView) findViewById(R.id.helpText);
-		highscoreText = (TextView) findViewById(R.id.highscoreText);
-		back = (Button) findViewById(R.id.back_button);
-
-		this.selectLevel = (Button) this.findViewById(R.id.select_level_button);
-		this.selectLevel.setOnClickListener(new OnClickListener() {
-			public void onClick(View view) {
-				ControlResources.make(StartActivity.this, R.id.spelplan);
-				Intent gameIntent = new Intent(StartActivity.this, SelectLevelActivity.class);
-				StartActivity.this.startActivity(gameIntent);
-				
-			}
-		});
-
-
-		switchToStartMenu();
-
-		show();
-		newGameButton.setOnClickListener(newGameListener);
-		//resumeGame.setOnClickListener(resumeGameListener);
-		helpButton.setOnClickListener(helpListener);
-		highscoreButton.setOnClickListener(highscoreListener);
-		back.setOnClickListener(backListener);
-
-
-
-
-	}
 	/**
-	 * 
 	 * Takes care of the Menu
-	 * 
 	 */
 	private RelativeLayout background;
 	private LinearLayout menu;
@@ -88,6 +40,49 @@ public class StartActivity extends Activity { // implements SensorEventListener
 	};
 	private MenuState menuState;
 	private MenuState previousMenuState;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.snake_layout);
+
+
+
+		//Instantiate layouts
+		background = (RelativeLayout) findViewById(R.id.backgroundImage);
+		menu = (LinearLayout) findViewById(R.id.menu_buttons);
+
+		//Instantiate buttons
+		newGameButton = (Button) findViewById(R.id.snake_new_game_button);
+
+		helpButton = (Button) findViewById(R.id.snake_help_button);
+		highscoreButton = (Button) findViewById(R.id.snake_highscore_button);
+
+		//Instantiate texts
+		helpText = (TextView) findViewById(R.id.helpText);
+		highscoreText = (TextView) findViewById(R.id.highscoreText);
+		back = (Button) findViewById(R.id.back_button);
+
+		this.selectLevel = (Button) this.findViewById(R.id.select_level_button);
+		this.selectLevel.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View view) {
+				ControlResources.make(StartActivity.this, R.id.spelplan);
+				Intent gameIntent = new Intent(StartActivity.this, SelectLevelActivity.class);
+				StartActivity.this.startActivity(gameIntent);
+
+			}
+		});
+
+
+		switchToStartMenu();
+
+		show();
+		newGameButton.setOnClickListener(newGameListener);
+		helpButton.setOnClickListener(helpListener);
+		highscoreButton.setOnClickListener(highscoreListener);
+		back.setOnClickListener(backListener);
+	}
 
 	public void show() {
 		menu.setVisibility(View.VISIBLE);
