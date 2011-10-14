@@ -8,10 +8,10 @@ $(document).ready(function(){
         "visibility": "hidden"
     })
     
-    $('div.commentButtons').live({
+    $('td.commentButtons').live({
         click: function(){
             commentView.showCommentViewDialog($(this));
-            snakeMapID = $(this).attr('id');
+            snakeMapID = $(this).find('div.buttonstyle').attr('id');
         }
     });
     
@@ -21,7 +21,7 @@ $(document).ready(function(){
             $.ajax({
                 type: "POST",
                 url: "./editmap",
-                data: 'action=comment&id=' + snakeMapID + 'commentString=' + document.getElementById('commentText').value,
+                data: 'action=comment&id=' + snakeMapID + '&commentString=' + document.getElementById('commentText').value,
                 dataType: "xml",
                 success: function() {}
             });
