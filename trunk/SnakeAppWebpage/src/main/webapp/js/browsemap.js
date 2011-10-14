@@ -2,6 +2,7 @@ $(document).ready(function(){
     
     var MAX_STARS = 5;
     var count = 0;
+    var snakeMapID;
     
     $('#mapView').css({
         "visibility": "hidden"
@@ -10,11 +11,24 @@ $(document).ready(function(){
     $('div.commentButtons').live({
         click: function(){
             commentView.showCommentViewDialog($(this));
+            snakeMapID = $(this).attr('id');
         }
     });
     
     
     $('#commentButton').live({
+        click: function(){
+            $.ajax({
+                type: "POST",
+                url: "./editmap",
+                data: 'action=comment&id=' + snakeMapID + 'commentString=' + document.getElementById('commentText').value,
+                dataType: "xml",
+                success: function() {}
+            });
+        }
+    });
+    
+    $('#cancelCommentButton').live({
         click: function(){
             commentView.hide();
         }
