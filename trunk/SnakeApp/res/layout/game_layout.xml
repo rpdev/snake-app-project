@@ -3,12 +3,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/game_layout"	
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:background="@drawable/spelplan_bg">
+	android:layout_height="fill_parent">
     
 	<RelativeLayout android:id="@+id/game_view_holder"  
 	android:layout_width="fill_parent" 
-	android:layout_height="fill_parent" />
+	android:layout_height="fill_parent"
+	android:tileMode="repeat"
+	/>
     
     
 	<RelativeLayout  

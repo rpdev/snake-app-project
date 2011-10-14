@@ -8,6 +8,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +60,12 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		this.paint = new Paint();
 		this.paint.setStyle(Paint.Style.FILL);
 		this.addGameEngine(gameEngine);
-		this.setBackgroundResource(R.drawable.spelplan_bg);
+		
+		Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.spelplan_bg);
+		BitmapDrawable bitmapDrawable = new BitmapDrawable(bmp);
+		bitmapDrawable.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+		
+		this.setBackgroundDrawable(bitmapDrawable);
 		this.initLevel();
 	}
 

@@ -37,14 +37,6 @@ public class StartActivity extends Activity { // implements SensorEventListener
 		highscoreText = (TextView) findViewById(R.id.highscoreText);
 		back = (Button) findViewById(R.id.back_button);
 
-		this.exitGame = (Button) this.findViewById(R.id.exit_button);
-		this.exitGame.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View view) {
-				StartActivity.this.finish();
-			}
-		});
-
 		this.selectLevel = (Button) this.findViewById(R.id.select_level_button);
 		this.selectLevel.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
@@ -82,7 +74,6 @@ public class StartActivity extends Activity { // implements SensorEventListener
 	private Button highscoreButton;
 	private Button back;
 	private Button selectLevel;
-	private Button exitGame;
 	//Texts
 	private TextView helpText;
 	private TextView highscoreText;
@@ -117,7 +108,6 @@ public class StartActivity extends Activity { // implements SensorEventListener
 		newGameButton.setVisibility(View.VISIBLE);
 		helpButton.setVisibility(View.VISIBLE);
 		highscoreButton.setVisibility(View.VISIBLE);
-		this.exitGame.setVisibility(View.VISIBLE);
 		this.selectLevel.setVisibility(View.VISIBLE);
 		//These shouldn't
 		back.setVisibility(View.GONE);
@@ -137,7 +127,6 @@ public class StartActivity extends Activity { // implements SensorEventListener
 		highscoreButton.setVisibility(View.GONE);
 		newGameButton.setVisibility(View.GONE);
 		helpText.setVisibility(View.GONE);
-		this.exitGame.setVisibility(View.GONE);
 		this.selectLevel.setVisibility(View.GONE);
 	}
 
@@ -153,7 +142,6 @@ public class StartActivity extends Activity { // implements SensorEventListener
 		highscoreButton.setVisibility(View.GONE);
 		newGameButton.setVisibility(View.GONE);
 		highscoreText.setVisibility(View.GONE);
-		this.exitGame.setVisibility(View.GONE);
 		this.selectLevel.setVisibility(View.GONE);
 	}
 	private OnClickListener backListener = new OnClickListener() {
