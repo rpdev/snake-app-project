@@ -18,13 +18,13 @@
     <ui:define name="PageName">
 		Browse Maps
     </ui:define>
+    
     <ui:define name="content">
         <div id="browseMapTable">
             <table align="center" border="0" style="border: 3px dotted white; border-spacing: 0px;">
                 <tr style="background-image: url(img/tdbg2.png); background-repeat: repeat-x; background-color: white;">
                     <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;"><b><h1>Map Name</h1></b></td>
                     <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;"><b><h1>Creator</h1></b></td>
-                    <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;"><b><h1>Average Rating</h1></b></td>
                     <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;"><b><h1>Rate</h1></b></td>
                     <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;"><b><h1>Download</h1></b></td>
                 </tr>    
@@ -39,9 +39,6 @@
                         <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;">
                             <h2><i>#{snakeMap.userName.userName}</i></h2>
                         </td>
-                        <td align="center" style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;">
-                            <h2>#{snakeMap.mapRating}</h2>
-                        </td>
                         <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;">
                             <img src="img/star_gray.png" border="0" class="star" />
                             <img src="img/star_gray.png" border="0" class="star" />
@@ -53,6 +50,9 @@
                             <div id="downloadLink">
                                 <h2><a href="./editmap?action=get&amp;id=#{snakeMap.id}">DOWNLOAD</a></h2>
                             </div>
+                        </td>
+                        <td style="border-right: 1px solid black; padding-left: 10px; padding-right: 10px;">
+                            <h2><i>Button here soon</i></h2>
                         </td>
                     </tr>    
                 </c:forEach>
