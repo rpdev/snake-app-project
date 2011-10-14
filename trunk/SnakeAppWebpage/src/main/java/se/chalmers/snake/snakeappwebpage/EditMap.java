@@ -110,7 +110,7 @@ public class EditMap extends HttpServletBuilder {
 			httpMeta.setContentType("text/xml;charset=UTF-8");
 			this.preView(httpMeta, httpOutput);
 		} else if("comment".equals(action)){
-                    this.addComment(httpMeta, httpOutput);
+                    this.addComment(httpMeta);
                 }
 	}
 
@@ -132,13 +132,19 @@ public class EditMap extends HttpServletBuilder {
 		}
 	}
         
-        private void addComment(HttpMeta httpMeta, HttpOutput httpOutput){
+        private void addComment(HttpMeta httpMeta){
             int mapID = this.getIntFromRequest(httpMeta, "id", -1);
+            System.out.println("" + mapID);
             if(mapID > 0){
                 String commentString = this.getStringFromRequest(httpMeta, "commentString", "empty");
+                System.out.println(commentString);
                 SnakeMap snakeMap = Database.getInstance().getEntity(SnakeMap.class, Long.valueOf(mapID));
-                Comment comment = new Comment(commentString, snakeMap, this.getUserAccount(httpMeta));
-                snakeMap.addComment(comment);
+                UserAcc user = this.getUserAccount(httpMeta);
+                System.out.println(user.getUserName());
+                Comment comment = new Comment(commentString, snakeMap, user);
+                Database.getInstance().mergeObject(comment);
+                Database.getInstance().mergeObject(user);
+                Database.getInstance().mergeObject(snakeMap);
             }
         }
 
