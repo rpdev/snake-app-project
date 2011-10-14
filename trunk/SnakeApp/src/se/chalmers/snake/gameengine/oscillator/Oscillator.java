@@ -25,14 +25,15 @@ public class Oscillator {
 		this.interval = interval;
 		this.calls = call;
 	}
-	
+
 	/**
 	 * Start the Oscillator and this will call a method in a regular intervall
 	 */
 	public synchronized void start() {
-		if (this.timer==null && this.calls!=null) {
+		if (this.timer == null && this.calls != null) {
 			this.timer = new Timer("Oscillator", false);
 			TimerTask tt = new TimerTask() {
+
 				@Override
 				public void run() {
 					Oscillator.this.calls.run();
@@ -46,9 +47,9 @@ public class Oscillator {
 	 * Stop the Oscillator.
 	 */
 	public synchronized void stop() {
-		if(this.timer!=null) {
+		if (this.timer != null) {
 			this.timer.cancel();
-			this.timer=null;
+			this.timer = null;
 		}
 	}
 }

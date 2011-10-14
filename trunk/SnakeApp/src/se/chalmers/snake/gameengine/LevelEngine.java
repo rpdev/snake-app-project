@@ -12,23 +12,24 @@ import se.chalmers.snake.interfaces.util.XYPoint;
  * This is the part of the GameEngine that hold a single level and this data.
  */
 class LevelEngine {
+
 	/**
 	 * Private class for hold count of all items and how long time each item has be on the game map.
 	 */
 	private class LEIPoint extends REPoint {
+
 		private static final long serialVersionUID = 5037544644353660074L;
 		private int time = 0;
+
 		private LEIPoint(XYPoint xyPoint, int radius) {
-			super(REPoint.REType.ITEM, xyPoint, radius,0);
+			super(REPoint.REType.ITEM, xyPoint, radius, 0);
 
 		}
+
 		private LEIPoint(int x, int y, int radius) {
-			super(REPoint.REType.ITEM,x, y, radius,0);
+			super(REPoint.REType.ITEM, x, y, radius, 0);
 		}
 	}
-	
-	
-	
 	private final LevelIC level;
 	final PlayerBody playerBody;
 	// Holds data for place items in the game, and hold history of collect items.
@@ -52,17 +53,17 @@ class LevelEngine {
 	LevelEngine(LevelIC level, XYPoint gameFiledSize) {
 		this.level = level;
 		this.calcScal(gameFiledSize);
-		
+
 		this.itemsRadius = (int) (this.fixScal * level.getItemsRadius());
 		this.playerBodyWidth = (int) (this.fixScal * level.getPlayerBodyWidth());
 		this.isRunning = true;
 		this.items = new ArrayList<LEIPoint>();
 		this.itemsCollect = new ArrayList<Integer>();
-		this.stepLength = (int) (level.getSpeed(this.itemsCollect)*this.fixScal);
+		this.stepLength = (int) (level.getSpeed(this.itemsCollect) * this.fixScal);
 		XYPoint startPoint = new XYPoint((int) (this.xScal * level.getSnakeHeadStartLocation().x), (int) (this.yScal * level.getSnakeHeadStartLocation().y));
-		
-		this.playerBody = new PlayerBody(gameFiledSize, startPoint, this.level.getStartAngle(), (int)(this.playerBodyWidth*this.fixScal), level.getSnakeStartLength(), 0);
-		
+
+		this.playerBody = new PlayerBody(gameFiledSize, startPoint, this.level.getStartAngle(), (int) (this.playerBodyWidth * this.fixScal), level.getSnakeStartLength(), 0);
+
 		this.obstacles = Collections.unmodifiableList(this.listStaticElement());
 		/**
 		 * create a source of possible locations of items to be place at.
@@ -111,7 +112,7 @@ class LevelEngine {
 			LEIPoint item = itPoint.next();
 			if (playerHead.isCollideWith(item)) {
 				this.itemsCollect.add(item.time);
-				this.stepLength = (int) (this.level.getSpeed(this.itemsCollect)*this.fixScal);
+				this.stepLength = (int) (this.level.getSpeed(this.itemsCollect) * this.fixScal);
 				this.playerBody.addSeg(this.level.getBodyGrowth(item.time, this.itemsCollect.size() + 1));
 				itPoint.remove();
 				addsItemCount += this.level.getAddItems(this.itemsCollect.size(), this.items.size() + addsItemCount);
@@ -158,6 +159,7 @@ class LevelEngine {
 		}
 		return al;
 	}
+
 	/**
 	 * Get the current score of this map.
 	 * @return 
@@ -195,7 +197,7 @@ class LevelEngine {
 	private List<REPoint> listStaticElement() {
 		ArrayList<REPoint> alRE = new ArrayList<REPoint>();
 		for (REPoint rsp : this.level.getObstacles()) {
-				alRE.add(new REPoint(REPoint.REType.WALL, (int) (this.xScal * rsp.x), (int) (this.yScal * rsp.y), (int) (this.fixScal * rsp.radius),0));
+			alRE.add(new REPoint(REPoint.REType.WALL, (int) (this.xScal * rsp.x), (int) (this.yScal * rsp.y), (int) (this.fixScal * rsp.radius), 0));
 		}
 		return alRE;
 	}
@@ -273,15 +275,14 @@ class LevelEngine {
 		int countY = gameSize.y / itemSize3;
 		for (int x = 0; x < countX; x++) {
 			for (int y = 0; y < countY; y++) {
-				REPoint point = new REPoint(REPoint.REType.ITEM, startX + x * itemSize3, startY + y * itemSize3, itemSize2,0);
+				REPoint point = new REPoint(REPoint.REType.ITEM, startX + x * itemSize3, startY + y * itemSize3, itemSize2, 0);
 				if (!this.isStaticElementCollision(point)) {
 					this.allPossibleItems.add(point);
 				}
 			}
 		}
 	}
-	
-	
+
 	/**
 	 * Get the first REPoint in the Player Body Call Head.
 	 * @return 
@@ -289,5 +290,4 @@ class LevelEngine {
 	REPoint getPlayerHead() {
 		return this.playerBody.getHead();
 	}
-	
 }

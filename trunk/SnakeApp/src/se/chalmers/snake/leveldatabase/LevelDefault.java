@@ -12,9 +12,10 @@ import se.chalmers.snake.interfaces.util.XYPoint;
  * it dosen't contain any obstacles it's simply a 'blank' map.
  */
 public class LevelDefault implements LevelIC {
+
 	private final XYPoint MAP_SIZE = new XYPoint(150, 200);
 	private final int RADIUS = 5;
-	
+
 	@Override
 	public String getLevelName() {
 		return "Default level";
@@ -42,12 +43,12 @@ public class LevelDefault implements LevelIC {
 
 	@Override
 	public XYPoint getSnakeHeadStartLocation() {
-		return new XYPoint(MAP_SIZE.x/2, MAP_SIZE.y/2);
+		return new XYPoint(MAP_SIZE.x / 2, MAP_SIZE.y / 2);
 	}
 
 	@Override
 	public double getStartAngle() {
-		return Math.PI/2;
+		return Math.PI / 2;
 	}
 
 	@Override
@@ -72,13 +73,14 @@ public class LevelDefault implements LevelIC {
 
 	@Override
 	public boolean hasReachedGoal(List<Integer> collectTime) {
-		 return false;
+		return false;
 	}
 
 	@Override
 	public int getAddItems(int totalCollected, int totalItemInGame) {
-		if(totalItemInGame == 0)
+		if (totalItemInGame == 0) {
 			return 1;
+		}
 		return 0;
 	}
 
@@ -86,5 +88,4 @@ public class LevelDefault implements LevelIC {
 	public int getBodyGrowth(int collectTime, int totalCollected) {
 		return 1;
 	}
-
 }

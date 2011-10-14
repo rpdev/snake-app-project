@@ -31,15 +31,15 @@ public class SelectLevelActivity extends Activity {
 		LevelHistoryIC isPlay = ControlResources.get().getLevelHistory();
 		int levelCount = 0;
 
-		
-	LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-     LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-	layoutParams.setMargins(0,0,0,4);
+
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+				  LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		layoutParams.setMargins(0, 0, 0, 4);
 
 		LinearLayout layout = (LinearLayout) this.findViewById(R.id.select_level_layout_inner);
 		for (String level : allLevels) {
 			Button button = new Button(this);
-			
+
 			button.setOnClickListener(this.onClick(level));
 			if (levelCount == 0 || isPlay.is(level)) {
 				button.setText(level);
@@ -47,7 +47,7 @@ public class SelectLevelActivity extends Activity {
 				button.setText("[" + level + "]");
 				button.setEnabled(false);
 			}
-			layout.addView(button,layoutParams);
+			layout.addView(button, layoutParams);
 			levelCount++;
 		}
 	}

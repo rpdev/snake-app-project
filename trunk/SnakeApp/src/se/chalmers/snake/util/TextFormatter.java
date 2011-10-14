@@ -52,7 +52,7 @@ public class TextFormatter {
 	public static TextStyle TS(Object text, String style) {
 		return new TextStyle(text, style, null);
 	}
-	
+
 	public static CharSequence FT(Object... textSeg) {
 		SpannableStringBuilder ssb = new SpannableStringBuilder();
 		for (Object text : textSeg) {

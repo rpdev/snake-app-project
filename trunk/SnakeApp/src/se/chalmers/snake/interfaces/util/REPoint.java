@@ -6,6 +6,7 @@ import java.io.Serializable;
  * REPoint ( Radius Enum Point ) is use for store a data point for each Game REType, as Snake, Walls, Apple.
  */
 public class REPoint extends XYPoint implements Serializable, Cloneable {
+
 	private static final long serialVersionUID = -1408202542090251833L;
 
 	public static enum REType {
@@ -45,7 +46,7 @@ public class REPoint extends XYPoint implements Serializable, Cloneable {
 			throw new NullPointerException("Null Error, or value out of rang.");
 		}
 	}
-	
+
 	public REPoint(REType type, XYPoint xyPoint, int radius, double angle) {
 		super(xyPoint);
 		if (type != null && radius >= 0) {
@@ -80,7 +81,7 @@ public class REPoint extends XYPoint implements Serializable, Cloneable {
 	public double getAngle() {
 		return this.angle;
 	}
-	
+
 	/**
 	 * Calculating the distance between two points, the calculating refer to the midpoint of each Point
 	 * @param gp A point
@@ -108,14 +109,11 @@ public class REPoint extends XYPoint implements Serializable, Cloneable {
 		int xx = Math.abs(this.x - gp.x);
 		int yy = Math.abs(this.y - gp.y);
 		int limit = (this.radius + gp.radius);
-		return xx<limit && yy<limit && ((int) Math.sqrt(xx * xx + yy * yy)) < (limit);
+		return xx < limit && yy < limit && ((int) Math.sqrt(xx * xx + yy * yy)) < (limit);
 	}
 
 	@Override
 	public String toString() {
-		return "REPoint{xy=["+this.x+":"+this.y + "], type=" + type + ", radius=" + radius + '}';
+		return "REPoint{xy=[" + this.x + ":" + this.y + "], type=" + type + ", radius=" + radius + '}';
 	}
-
-
-	
 }

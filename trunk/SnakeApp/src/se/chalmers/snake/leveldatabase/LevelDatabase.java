@@ -20,6 +20,7 @@ import android.content.res.AssetManager;
  * a default level.
  */
 public class LevelDatabase implements LevelDatabaseIC {
+
 	private final String PATH = "levels";
 	private final AssetManager am;
 	private final List<String> levelNameList = new ArrayList<String>();
@@ -42,7 +43,7 @@ public class LevelDatabase implements LevelDatabaseIC {
 	@Override
 	public LevelIC getByLevel(int level) {
 		LevelDatabaseData data = levelValues.get(level);
-		if (data != null){ //return new Level(data);
+		if (data != null) { //return new Level(data);
 			try {
 				return new XMLLevel(data);
 			} catch (IOException e) {
@@ -102,14 +103,14 @@ public class LevelDatabase implements LevelDatabaseIC {
 		}
 		Iterator<LevelDatabaseData> it = levelValues.values().iterator();
 		while (it.hasNext()) {
-			this.levelNameList.add(it.next().name);			
+			this.levelNameList.add(it.next().name);
 		}
 	}
 
 	@Override
 	public String getNextLevel(String level) {
 		if (this.levelNames.containsKey(level)) {
-			int levelID = this.levelNames.get(level).level+1;
+			int levelID = this.levelNames.get(level).level + 1;
 			if (this.levelValues.containsKey(levelID)) {
 				return this.levelValues.get(levelID).name;
 			}
@@ -133,6 +134,7 @@ public class LevelDatabase implements LevelDatabaseIC {
 	 * info about the level.
 	 */
 	class LevelDatabaseData {
+
 		final String name, fileName;
 		final int level;
 

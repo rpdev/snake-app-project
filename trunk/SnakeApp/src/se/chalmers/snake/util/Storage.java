@@ -1,6 +1,5 @@
 package se.chalmers.snake.util;
 
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -25,20 +24,21 @@ import java.io.Serializable;
  * {@link Storage#getObject(String)}.
  */
 public class Storage {
+
 	private static final String PREFS_NAME = "SnakeApp";
 	private final SharedPreferences settings;
 	private final Activity activity;
-	
+
 	/**
 	 * Constructor for the Storage class, to be able to store object
 	 * those this class require access to an activity.
 	 * @param activity A class that extends Activity for the application using this class.
 	 */
-	public Storage(Activity activity){
-		 settings = activity.getSharedPreferences(PREFS_NAME, 0);
-		 this.activity = activity;
+	public Storage(Activity activity) {
+		settings = activity.getSharedPreferences(PREFS_NAME, 0);
+		this.activity = activity;
 	}
-			
+
 	/**
 	 * Store an primitive type, these types are booleans, floats, ints,
 	 * longs, and strings. If the type is non of these will
@@ -48,23 +48,24 @@ public class Storage {
 	 * @param name Key for the value to be stored.
 	 * @param value The actual value.
 	 */
-	public <T> void storePrimitive(Type type, String name, T value){
+	public <T> void storePrimitive(Type type, String name, T value) {
 		SharedPreferences.Editor editor = settings.edit();
-		if(type == Boolean.class)
+		if (type == Boolean.class) {
 			editor.putBoolean(name, (Boolean) value);
-		else if(type == Float.class)
+		} else if (type == Float.class) {
 			editor.putFloat(name, (Float) value);
-		else if(type == Integer.class)
+		} else if (type == Integer.class) {
 			editor.putInt(name, (Integer) value);
-		else if(type == Long.class)
+		} else if (type == Long.class) {
 			editor.putLong(name, (Long) value);
-		else if(type == String.class)
+		} else if (type == String.class) {
 			editor.putString(name, (String) value);
-		else
-			throw new IllegalArgumentException("Type: "+type+" , isn't a primitive type");
+		} else {
+			throw new IllegalArgumentException("Type: " + type + " , isn't a primitive type");
+		}
 		editor.commit();
 	}
-	
+
 	/**
 	 * Fetch an primitive type from memory, primitive types are booleans, floats, ints,
 	 * longs, and strings. If the method is called with any other type will illegal argument
@@ -77,21 +78,22 @@ public class Storage {
 	 * @return The fetched key's value or the default value if key not found.
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T getPrimitive(Type type, String name, T defaultValue){
-		if(type == Boolean.class)
+	public <T> T getPrimitive(Type type, String name, T defaultValue) {
+		if (type == Boolean.class) {
 			return (T) new Boolean(settings.getBoolean(name, (Boolean) defaultValue));
-		else if(type == Float.class)
+		} else if (type == Float.class) {
 			return (T) new Float(settings.getFloat(name, (Float) defaultValue));
-		else if(type == Integer.class)
+		} else if (type == Integer.class) {
 			return (T) new Integer(settings.getInt(name, (Integer) defaultValue));
-		else if(type == Long.class)
+		} else if (type == Long.class) {
 			return (T) new Long(settings.getLong(name, (Long) defaultValue));
-		else if(type == String.class)
+		} else if (type == String.class) {
 			return (T) settings.getString(name, (String) defaultValue);
-		else
-			throw new IllegalArgumentException("Type: "+type+" , isn't a primitive type");
+		} else {
+			throw new IllegalArgumentException("Type: " + type + " , isn't a primitive type");
+		}
 	}
-	
+
 	/**
 	 * Store an object to a file as bytes, note that this function do <b>not</b> store
 	 * values in the same place as {@link Storage#storePrimitive(Type, String, Object)}.
@@ -100,7 +102,7 @@ public class Storage {
 	 * @param value The actual value.
 	 * @return True if successful otherwise false.
 	 */
-	public <T extends Serializable> boolean storeObject(String name, T value){
+	public <T extends Serializable> boolean storeObject(String name, T value) {
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(activity.openFileOutput(name, Context.MODE_PRIVATE));
 			oos.writeObject(value);
@@ -111,7 +113,7 @@ public class Storage {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Get the object that was stored by the name in the <code>name</code> argument.
 	 * If the value isn't found or if any exception occur will the return value be
@@ -121,7 +123,7 @@ public class Storage {
 	 * @return Object of the type <code>T</code> if successful otherwise null.
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends Serializable> T getObject(String name){
+	public <T extends Serializable> T getObject(String name) {
 		try {
 			ObjectInputStream ois = new ObjectInputStream(this.activity.openFileInput(name));
 			return (T) ois.readObject();

@@ -16,7 +16,7 @@ import se.chalmers.snake.interfaces.util.XYPoint;
 import se.chalmers.snake.leveldatabase.LevelDatabase.LevelDatabaseData;
 
 /**
- *
+ * The XML file load level.
  */
 class XMLLevel implements LevelIC {
 
@@ -147,7 +147,7 @@ class XMLLevel implements LevelIC {
 	 * @throws IOException Will be throw if the file not can be read as a Level.
 	 */
 	public XMLLevel(LevelDatabaseData rowData) throws IOException {
-		InputStream ioStream=null;
+		InputStream ioStream = null;
 		try {
 			ioStream = rowData.getInputSteam();
 			Document xmlDoc = DocumentBuilderFactory.newInstance().
@@ -198,83 +198,84 @@ class XMLLevel implements LevelIC {
 		} catch (Exception ex) {
 			throw new IOException("Can not read select level, " + ex.getMessage());
 		} finally {
-			if(ioStream!=null) {
-			ioStream.close();
+			if (ioStream != null) {
+				ioStream.close();
 			}
 		}
 	}
 	//<editor-fold defaultstate="collapsed" desc="LevelIC Override">
+
 	@Override
 	public String getLevelName() {
 		return this.name;
 	}
-	
+
 	@Override
 	public String getLevelDescription() {
 		return this.description;
 	}
-	
+
 	@Override
 	public int getLevel() {
 		return this.level;
 	}
-	
+
 	@Override
 	public XYPoint getMapSize() {
 		return this.mapSize;
 	}
-	
+
 	@Override
 	public int getSnakeStartLength() {
 		return this.playerLength;
 	}
-	
+
 	@Override
 	public XYPoint getSnakeHeadStartLocation() {
 		return this.player;
 	}
-	
+
 	@Override
 	public double getStartAngle() {
 		return this.player.angle;
 	}
-	
+
 	@Override
 	public int getPlayerBodyWidth() {
 		return this.player.radius;
 	}
-	
+
 	@Override
 	public List<REPoint> getObstacles() {
 		return this.obstacles;
 	}
-	
+
 	@Override
 	public int getItemsRadius() {
 		return this.items.radius;
 	}
-	
+
 	@Override
 	public float getSpeed(List<Integer> collectTime) {
 		return this.speed.calc(collectTime.size());
 	}
-	
+
 	@Override
 	public boolean hasReachedGoal(List<Integer> collectTime) {
 		return this.goal.calc(collectTime.size()) > 0;
 	}
-	
+
 	@Override
 	public int getAddItems(int totalCollected, int totalItemInGame) {
 		return (int) this.items.calc(totalCollected);
 	}
-	
+
 	@Override
 	public int getBodyGrowth(int collectTime, int totalCollected) {
 		return (int) this.growth.calc(totalCollected);
 	}
 	//</editor-fold>
-	
+
 	@Override
 	public String toString() {
 		return "XMLLevel{" + "mapID=" + mapID + ", level=" + level + ", name=" + name + ", description=" + description + ", mapSize=" + mapSize + ", speed=" + speed + ", growth=" + growth + ", goal=" + goal + ", items=" + items + ", player=" + player + ", playerLength=" + playerLength + '}';

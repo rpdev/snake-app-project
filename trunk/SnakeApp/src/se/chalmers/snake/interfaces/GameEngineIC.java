@@ -1,7 +1,5 @@
 package se.chalmers.snake.interfaces;
 
-
-
 import se.chalmers.snake.interfaces.util.REPoint;
 import java.util.List;
 import se.chalmers.snake.interfaces.util.XYPoint;
@@ -11,11 +9,13 @@ import se.chalmers.snake.util.EnumObserver;
 /**
  * This is the main interface for the GameEngine for the Snake Game.
  */
-public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameEngineEvent, Void,Void>  {
+public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameEngineEvent, Void, Void> {
+
 	/**
 	 * This hold event the GameEngine can send to the Observer.
 	 */
 	public static enum GameEngineEvent {
+
 		/**
 		 * A new game has be load into the game.
 		 */
@@ -45,8 +45,9 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 		 */
 		PLAYER_LOSE
 	}
-	
+
 	public static enum GameEngineStatus {
+
 		NO_LEVEL_LOAD,
 		NEW_LEVEL,
 		RUNNING,
@@ -54,8 +55,6 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 		LEVEL_END
 	}
 
-
-	
 	/**
 	 * Call this method for start a pause game or
 	 * start a new game that has start but wait on redy.
@@ -75,20 +74,20 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 	 * @return Return true if the game is running.
 	 */
 	public boolean isRun();
-	
+
 	/**
 	 * Call this method for restart a load game.
 	 * This will be sam as call GameEngineIC.loadLevel(GameEngineIC.getLevelName());
 	 * @return True if this action are allow and a load level exist.
 	 */
 	public boolean restartGame();
-	
+
 	/**
 	 * Return the current status of the GameEngine
 	 * @return 
 	 */
 	public GameEngineStatus getStatus();
-	
+
 	/**
 	 * Load select level, this will reset the GameEngine to default state.
 	 * @param level The level to be load,
@@ -100,8 +99,7 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 	 * Test if a level has be load into the GameEngine
 	 */
 	public boolean isLevelLoad();
-	
-	
+
 	/**
 	 * Return the current state of points the use haves.
 	 * @return 
@@ -114,7 +112,6 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 	 */
 	public String getLevelName();
 
-	
 	/**
 	 * Add a listened to receive events from the GameEngine about current game state.
 	 * A modul can listened to one of the events in the {@link GameEngineIC.GameEngineEvent}
@@ -125,25 +122,20 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 	 */
 	@Override
 	public boolean addObserver(GameEngineIC.GameEngineEvent key, EnumObserver<GameEngineIC.GameEngineEvent, Void, Void> observer);
-	
-	
-	
+
 	/**
 	 * Return the Game Filed Size
 	 * @return 
 	 */
 	public XYPoint getGameFieldSize();
-	
-	
-	
+
 	/**
 	 * This will return a list of all segments that define the players body.
 	 * The list will be in the logical order of the player body, with head frist and tail last of the list.
 	 * @return Return a list of GamePoints, or a empty list if no player body exist.
 	 */
 	public List<REPoint> getPlayerBody();
-	
-	
+
 	/**
 	 * This will return the first point in the player body call head.
 	 * @return Return a REPoint or null in case the player body not exist.
@@ -155,7 +147,7 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 	 * @return 
 	 */
 	public List<REPoint> getItems();
-	
+
 	/**
 	 * Return the size of each item will have.
 	 * @return 
@@ -169,14 +161,13 @@ public interface GameEngineIC extends EnumObservableInterface<GameEngineIC.GameE
 	 * @return 
 	 */
 	public List<REPoint> getObstacles();
-	
+
 	/**
 	 * Get the Level's metadata, contains, original elements data, image data and more.
 	 * 
 	 * @return  Return the a level, or null if no level are load.
 	 */
 	public LevelIC getLevelMetaData();
-	
-	
+
 	public void setStartScore(int score);
 }
