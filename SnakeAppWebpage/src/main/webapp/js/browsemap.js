@@ -26,6 +26,7 @@ $(document).ready(function(){
                 success: function() {}
             });
             alert('Comment added!');
+            document.getElementById('commentText').value = "";
             commentView.hide();
         }
     });
