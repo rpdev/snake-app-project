@@ -25,6 +25,8 @@ $(document).ready(function(){
                 dataType: "xml",
                 success: function() {}
             });
+            alert('Comment added!');
+            commentView.hide();
         }
     });
     
