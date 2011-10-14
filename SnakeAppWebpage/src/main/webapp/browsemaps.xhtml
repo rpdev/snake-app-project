@@ -63,49 +63,11 @@
         </div>
 
         <div id="mapView" style="visibility: hidden; position: fixed;">
-            <table border="1" style="border-color: #5cff5c;">
-                <tr>
-                    <td align="center" rowspan="2">
-                        <div id="innerreviewmap">  
-                        </div>
-                    </td>
-                    <td valign="top" align="left">
-                        <b>Map name:</b><br />
-                        <b>Level:</b><br />
-                        <b>Speed:</b><br />
-                        <b>Growth:</b><br />
-                    </td>
-                    <td valign="top" align="left">
-                        <div id="mapDetails"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" height="280" valign="top">
-                        <b>Description:</b>
-                        <div id="mapDescription" ></div>
-                    </td>
-                </tr>
-            </table>
+            <ui:include src="browsemaps-Content/mapView.xhtml"/>
         </div>
 
         <div id="commentView" style="visibility: hidden; position: fixed; background-color: #66FF66;">
-            <table border="0">
-                <tr>
-                    <td>
-                        <p>Insert comment:</p><br/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="text" style="width: 200px; height: 70px;"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="button" id="commentButton" value="Add comment"/>
-                    </td>
-                </tr>
-            </table>
+            <ui:include src="browsemaps-Content/commentView.xhtml"/>
         </div>
     </ui:define>
 </ui:composition>
