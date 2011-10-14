@@ -113,6 +113,7 @@ body{
 
 #browseMapTable h1 { font-family: Verdana; font-size: 18px; margin-bottom: 0px; margin-top: 0px; color: GoldenRod; text-shadow: 3px 3px 3px #000000; }
 #browseMapTable h2 { font-family: Verdana; font-size: 14px; margin-bottom: 0px; margin-top: 0px; }
+#browseMapTable h3 { font-family: Verdana; font-size: 13px; margin-bottom: 0px; margin-top: 0px; }
 
 #maindivbottom{
 	background-image: url('img/maindivbottom.png');
