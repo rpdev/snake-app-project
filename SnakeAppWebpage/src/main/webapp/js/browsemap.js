@@ -181,6 +181,18 @@ var mapRating = function(){
                 dataType: "xml",
                 success: function() {}
             });
+        },
+        getMapRating: function(snakeMapID){
+            $.ajax({
+                type: "GET",
+                url: "./editmap",
+                data: 'action=getRating&id=' + snakeMapID,
+                dataType: "xml",
+                success: function(snakeMap) {
+                    var mapRating = +$(snakeMap).find('mapRating').text();
+                    alert("" + mapRating);
+                }
+            });
         }
     }
 }();

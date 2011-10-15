@@ -1,5 +1,6 @@
 package se.chalmers.snake.snakeappwebpage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
@@ -7,6 +8,17 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import se.chalmers.snake.snakeappwebpage.lib.HttpServletBuilder;
 import se.chalmers.snake.snakeappwebpage.lib.IntegerScan;
 import se.chalmers.snake.snakeappwebpage.login.LoginServlet;
@@ -117,14 +129,27 @@ public class EditMap extends HttpServletBuilder {
         } else if ("rate".equals(action)) {
             this.rateMap(httpMeta);
         } else if (("getRating").equals(action)) {
-            this.getMapRating(httpMeta);
+            this.getMapRating(httpMeta, httpOutput);
         }
     }
     
-    private void getMapRating(HttpMeta httpMeta){
+    private void getMapRating(HttpMeta httpMeta, HttpOutput httpOutput) throws ParserConfigurationException, TransformerConfigurationException, IOException, TransformerException{
         int mapID = this.getIntFromRequest(httpMeta, "id", -1);
         if(mapID > 0){
-            //comming soon
+            SnakeMap snakeMap = Database.getInstance().getEntity(SnakeMap.class, Long.valueOf(mapID));
+            Document xmlDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            Element rootNode = xmlDocument.createElement("snakeappmap");
+            
+            Element mapRatingNode = xmlDocument.createElement("mapRating");
+            mapRatingNode.appendChild(xmlDocument.createTextNode("" + snakeMap.getRoundedMapRating()));
+            rootNode.appendChild(mapRatingNode);
+            
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+            StreamResult result = new StreamResult(httpOutput.getWriter());
+            DOMSource source = new DOMSource(rootNode);
+            transformer.transform(source, result);
         }
     }
 
@@ -134,7 +159,6 @@ public class EditMap extends HttpServletBuilder {
         if (mapID > 0 && mapRating > 0) {
             SnakeMap snakeMap = Database.getInstance().getEntity(SnakeMap.class, Long.valueOf(mapID));
             snakeMap.rateMap(mapRating);
-            System.out.println("" + mapRating + mapID);
             UserAcc user = this.getUserAccount(httpMeta);
             Database.getInstance().mergeObject(user);
             Database.getInstance().mergeObject(snakeMap);
