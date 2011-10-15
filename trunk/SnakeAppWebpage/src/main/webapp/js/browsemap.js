@@ -65,6 +65,7 @@ $(document).ready(function(){
                     var rating = +$(snakeMap).find('mapRating').text();
                     var element = star.attr('id');
                     var id = +element;
+                    id %= MAX_STARS;
                     id += 1;
                     var holeStar = "img/star_yellow.png";
                     var halfStar = "img/halfstar.png";
