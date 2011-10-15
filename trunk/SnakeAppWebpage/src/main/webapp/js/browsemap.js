@@ -46,19 +46,19 @@ $(document).ready(function(){
         }
     });
     
-    $('img.star').each(
+    $('td.stars img').each(
         function(){
             $(this).attr('id', '' + count++);
         }
-    )
+        )
         
-    $('img.star').live({
+    $('td.stars img').live({
         mouseover: function() {
             var element = $(this).attr('id');
             var id = +element;
             var startFrom = id - (id % MAX_STARS);
             var count = 0;
-            $('img.star').each(
+            $('td.stars img').each(
                 function(){
                     if(count >= startFrom){
                         var src = "img/star_yellow.png";
@@ -71,12 +71,18 @@ $(document).ready(function(){
                 });
         },
         mouseout: function() {
-            $('img.star').each(
+            $('td.stars img').each(
                 function(){
                     var src = "img/star_gray.png";
                     $(this).attr("src", src);
                 });
-        }        
+        },
+        click: function(){
+            var starId = +$(this).attr('id');
+            var starValue = (starId % MAX_STARS) + 1;
+            snakeMapID = $(this).attr('class');
+            mapRating.rateMap(starValue, snakeMapID);
+        }
     })
 
 })
@@ -161,6 +167,20 @@ var commentView = function(){
             $('#commentView').css({
                 "visibility" : "hidden"
             })
+        }
+    }
+}();
+
+var mapRating = function(){
+    return{
+        rateMap: function(mapRating, snakeMapID){
+             $.ajax({
+                type: "POST",
+                url: "./editmap",
+                data: 'action=rate&id=' + snakeMapID + '&mapRating=' + mapRating,
+                dataType: "xml",
+                success: function() {}
+            });
         }
     }
 }();
