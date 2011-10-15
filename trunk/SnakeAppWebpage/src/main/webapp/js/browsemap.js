@@ -83,7 +83,7 @@ $(document).ready(function(){
         )
         
     $('td.stars img').live({
-        /*mouseover: function() {
+        mouseover: function() {
             var element = $(this).attr('id');
             var id = +element;
             var startFrom = id - (id % MAX_STARS);
@@ -91,6 +91,7 @@ $(document).ready(function(){
             $('td.stars img').each(
                 function(){
                     if(count >= startFrom){
+                        $(this).attr("alt", $(this).attr("src"));
                         var src = "img/star_yellow.png";
                         $(this).attr("src", src);
                         if($(this).attr('id') == element){
@@ -103,10 +104,9 @@ $(document).ready(function(){
         mouseout: function() {
             $('td.stars img').each(
                 function(){
-                    var src = "img/star_gray.png";
-                    $(this).attr("src", src);
+                    $(this).attr("src", $(this).attr("alt"));
                 });
-        },*/
+        },
         click: function(){
             var starId = +$(this).attr('id');
             var starValue = (starId % MAX_STARS) + 1;
