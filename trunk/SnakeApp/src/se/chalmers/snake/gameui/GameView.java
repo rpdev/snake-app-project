@@ -77,9 +77,9 @@ public class GameView extends View implements EnumObserver<GameEngineIC.GameEngi
 		int appleWidth = this.gameEngine.getItemRadius() * 2;
 
 
-		this.bodySegs = this.getBodySegBitMap(R.drawable.snake_body1, playerBodyWidth);
-		this.headSegs = this.getBodySegBitMap(R.drawable.snake_head2, playerBodyWidth);
-		this.tailSegs = this.getBodySegBitMap(R.drawable.snake_tail2, playerBodyWidth);
+		this.bodySegs = this.getBodySegBitMap(R.drawable.snakebody, playerBodyWidth);
+		this.headSegs = this.getBodySegBitMap(R.drawable.snakehead, playerBodyWidth);
+		this.tailSegs = this.getBodySegBitMap(R.drawable.snaketail, playerBodyWidth);
 
 
 		this.apple = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(mRes, R.drawable.apple),

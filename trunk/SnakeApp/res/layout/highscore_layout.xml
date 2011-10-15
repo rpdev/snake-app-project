@@ -7,7 +7,7 @@
     
     
 	<RelativeLayout  android:id="@+id/losewin_background"
-	android:background="@drawable/youwon"
+	android:background="@drawable/scorescreen"
 	android:layout_width="fill_parent" 
 	android:layout_height="fill_parent">
 	
