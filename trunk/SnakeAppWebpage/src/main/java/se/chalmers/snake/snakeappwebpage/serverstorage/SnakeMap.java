@@ -245,8 +245,9 @@ public class SnakeMap implements Serializable {
     public Double getRoundedMapRating(){
         Double result = getMapRating();
         result *= 2;
-        result = Math.floor(this.mapRating + 0.5);
-        return result /= 2;
+        result = Math.floor(result + 0.5);
+        result /= 2;
+        return result;
     }
 
     /**
@@ -269,7 +270,6 @@ public class SnakeMap implements Serializable {
             this.mapRateCount++;
             this.mapRating /= this.mapRateCount;
         }
-        System.out.println("" + getMapRating());
     }
 
     private enum XMLKeys {
