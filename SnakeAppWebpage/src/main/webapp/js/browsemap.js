@@ -70,7 +70,7 @@ $(document).ready(function(){
                     var holeStar = "img/star_yellow.png";
                     var halfStar = "img/halfstar.png";
                     var emptyStar = "img/star_gray.png";
-                    if(rating > id){
+                    if(rating >= id){
                         star.attr("src", holeStar);
                     } else if(rating < id && rating > (id - 1)){
                         star.attr("src", halfStar);
@@ -112,6 +112,7 @@ $(document).ready(function(){
             var starValue = (starId % MAX_STARS) + 1;
             snakeMapID = $(this).attr('class');
             mapRating.rateMap(starValue, snakeMapID);
+            window.location.reload();
         }
     })
 
@@ -211,8 +212,6 @@ var mapRating = function(){
                 dataType: "xml",
                 success: function() {}
             });
-        },
-        setStarImg: function(starImg, snakeMapID){
         }
     }
 }();
