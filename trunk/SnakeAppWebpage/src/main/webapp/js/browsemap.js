@@ -52,8 +52,37 @@ $(document).ready(function(){
         }
         )
         
+    $('td.stars img').each(
+        function(){
+            snakeMapID = $(this).attr('class');
+            var star = $(this);
+            $.ajax({
+                type: "GET",
+                url: "./editmap",
+                data: 'action=getRating&id=' + snakeMapID,
+                dataType: "xml",
+                success: function(snakeMap) {
+                    var rating = +$(snakeMap).find('mapRating').text();
+                    var element = star.attr('id');
+                    var id = +element;
+                    id += 1;
+                    var holeStar = "img/star_yellow.png";
+                    var halfStar = "img/halfstar.png";
+                    var emptyStar = "img/star_gray.png";
+                    if(rating > id){
+                        star.attr("src", holeStar);
+                    } else if(rating < id && rating > (id - 1)){
+                        star.attr("src", halfStar);
+                    } else {
+                        star.attr("src", emptyStar);
+                    }
+                }
+            });
+        }
+        )
+        
     $('td.stars img').live({
-        mouseover: function() {
+        /*mouseover: function() {
             var element = $(this).attr('id');
             var id = +element;
             var startFrom = id - (id % MAX_STARS);
@@ -76,7 +105,7 @@ $(document).ready(function(){
                     var src = "img/star_gray.png";
                     $(this).attr("src", src);
                 });
-        },
+        },*/
         click: function(){
             var starId = +$(this).attr('id');
             var starValue = (starId % MAX_STARS) + 1;
@@ -174,7 +203,7 @@ var commentView = function(){
 var mapRating = function(){
     return{
         rateMap: function(mapRating, snakeMapID){
-             $.ajax({
+            $.ajax({
                 type: "POST",
                 url: "./editmap",
                 data: 'action=rate&id=' + snakeMapID + '&mapRating=' + mapRating,
@@ -182,17 +211,7 @@ var mapRating = function(){
                 success: function() {}
             });
         },
-        getMapRating: function(snakeMapID){
-            $.ajax({
-                type: "GET",
-                url: "./editmap",
-                data: 'action=getRating&id=' + snakeMapID,
-                dataType: "xml",
-                success: function(snakeMap) {
-                    var mapRating = +$(snakeMap).find('mapRating').text();
-                    alert("" + mapRating);
-                }
-            });
+        setStarImg: function(starImg, snakeMapID){
         }
     }
 }();
