@@ -74,7 +74,8 @@ class PlayerBody implements Iterable<REPoint> {
 
 		this.seg = new LinkedList<PBFPoint>();
 		this.gameSize = gameSize;
-		this.bodySpaceSize = bodySegmentRadius;
+		// Set how long space betwin each body seg will be
+		this.bodySpaceSize = (float) (bodySegmentRadius*1.15);
 		this.bodySegmentRadius = bodySegmentRadius;
 		this.bodySegmentRadius2 = 2 * this.bodySegmentRadius;
 		this.bufferBodySegment = startBufferSegNumber;
