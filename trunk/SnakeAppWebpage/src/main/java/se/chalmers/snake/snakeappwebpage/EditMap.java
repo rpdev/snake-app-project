@@ -137,6 +137,7 @@ public class EditMap extends HttpServletBuilder {
         int mapID = this.getIntFromRequest(httpMeta, "id", -1);
         if(mapID > 0){
             SnakeMap snakeMap = Database.getInstance().getEntity(SnakeMap.class, Long.valueOf(mapID));
+				if(snakeMap!=null) {
             Document xmlDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element rootNode = xmlDocument.createElement("snakeappmap");
             
@@ -150,6 +151,7 @@ public class EditMap extends HttpServletBuilder {
             StreamResult result = new StreamResult(httpOutput.getWriter());
             DOMSource source = new DOMSource(rootNode);
             transformer.transform(source, result);
+				}
         }
     }
 
@@ -158,10 +160,10 @@ public class EditMap extends HttpServletBuilder {
         int mapRating = this.getIntFromRequest(httpMeta, "mapRating", -1);
         if (mapID > 0 && mapRating > 0) {
             SnakeMap snakeMap = Database.getInstance().getEntity(SnakeMap.class, Long.valueOf(mapID));
+				if(snakeMap!=null) {
             snakeMap.rateMap(mapRating);
-            UserAcc user = this.getUserAccount(httpMeta);
-            Database.getInstance().mergeObject(user);
             Database.getInstance().mergeObject(snakeMap);
+				}
         }
     }
 
