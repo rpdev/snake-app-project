@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import se.chalmers.snake.snakeappwebpage.serverstorage.Database;
 import se.chalmers.snake.snakeappwebpage.serverstorage.SnakeMap;
 
@@ -13,7 +12,7 @@ import se.chalmers.snake.snakeappwebpage.serverstorage.SnakeMap;
  * @author rafaelm
  */
 @ManagedBean(name = "DatabaseBean")
-@SessionScoped
+@javax.faces.bean.RequestScoped
 public class DatabaseBean implements Serializable {
 
 	private static final long serialVersionUID = -7839226307524402862L;
