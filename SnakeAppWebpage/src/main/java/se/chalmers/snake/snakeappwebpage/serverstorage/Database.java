@@ -180,6 +180,7 @@ public class Database {
 	public <T> boolean mergeObject(T object) {
 		em.getTransaction().begin();
 		if (em.contains(object)) {
+			em.merge(object);
 			em.refresh(object);
 		} else {
 			if(object.getClass() == UserAcc.class){
