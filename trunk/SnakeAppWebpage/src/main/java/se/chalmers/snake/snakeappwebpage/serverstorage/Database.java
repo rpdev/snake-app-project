@@ -102,7 +102,7 @@ public class Database {
 	 * UserAcc, SnakeMap and Comment.
 	 * @param id Id of those object that should be removed.
 	 */
-	public void removeEnity(Class<?> type, Long... id) {
+	public synchronized void removeEnity(Class<?> type, Long... id) {
 		if (type == UserAcc.class) {
 			removeUser(id);
 		} else if (type == SnakeMap.class) {
@@ -177,7 +177,7 @@ public class Database {
 		return query.getResultList();
 	}
 
-	public <T> boolean mergeObject(T object) {
+	public synchronized <T> boolean mergeObject(T object) {
 		em.getTransaction().begin();
 		if (em.contains(object)) {
 			em.merge(object);
