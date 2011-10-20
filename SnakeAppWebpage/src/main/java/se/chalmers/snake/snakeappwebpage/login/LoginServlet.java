@@ -1,9 +1,6 @@
 package se.chalmers.snake.snakeappwebpage.login;
 
-import java.io.PrintWriter;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.annotation.WebServlet;
 import se.chalmers.snake.snakeappwebpage.lib.HttpServletBuilder;
 import se.chalmers.snake.snakeappwebpage.lib.HttpServletBuilder.HttpMeta;
@@ -77,8 +74,8 @@ public class LoginServlet extends HttpServletBuilder {
 				httpOutput.forward("main.jsf");
 			} else if (action.equals("Register")) {
 				UserAcc newUser = new UserAcc(httpMeta.REQUEST("user_name"), httpMeta.REQUEST("password"), "emalme");
-				Database.getInstance().mergeObject(newUser);
-				httpMeta.sessionScope().set("user", newUser);
+				if(Database.getInstance().mergeObject(newUser))
+					httpMeta.sessionScope().set("user", newUser);
 				httpOutput.redirect("main.jsf");
 			} else if (action.equals("getForm")) {
 				httpMeta.setContentType("text/xml;charset=UTF-8");
