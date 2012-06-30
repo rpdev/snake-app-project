@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<snakeappmap id="1">
+	<name>Big Stone</name>
+	<description>Big Stone, And have fun</description>
+	<difficuly>1</difficuly>
+	<map x="300" y="400" /> 
+	<gamespeed type="simple">4</gamespeed>
+	<growthspeed type="simple">4</growthspeed>
+	<levelgoal type="greater">15</levelgoal>
+	<item type="simple" r="10">1</item>
+	<player x="150" y="200" r="15" a="90" s="4" />
+	<obstacles>
+		<item x="75" y="75" r="50" />
+		<item x="225" y="325" r="50" />
+	</obstacles>
+</snakeappmap>

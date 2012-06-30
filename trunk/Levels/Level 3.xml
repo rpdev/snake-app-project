@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<snakeappmap id="-1">
+	<name>Stonehenge</name>
+	<description>Five stones in a circle, since the beginning of time.</description>
+	<difficuly>2</difficuly>
+	<map x="300" y="400" />
+	<gamespeed type="simple">4</gamespeed>
+	<growthspeed type="simple">5</growthspeed>
+	<item type="simple" r="10">1</item>
+	<levelgoal type="greater">15</levelgoal>
+	<player x="152" y="238" r="14" a="90" s="4" />
+	<obstacles>
+		<item x="43" y="173" r="20" />
+		<item x="94" y="299" r="20" />
+		<item x="266" y="181" r="20" />
+		<item x="210" y="301" r="20" />
+		<item x="162" y="79" r="20" />
+	</obstacles>
+</snakeappmap>

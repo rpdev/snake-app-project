@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<snakeappmap id="1">
+	<name>My First Level</name>
+	<description>My First Level, Collect 15 Apples</description>
+	<difficuly>1</difficuly>
+	<map x="300" y="400" />
+	<gamespeed type="simple">4</gamespeed>
+	<growthspeed type="simple">2</growthspeed>
+	<levelgoal type="greater">15</levelgoal>
+	<item type="simple" r="10">1</item>
+	<player x="150" y="200" r="15" a="90" s="4" /> 
+	<obstacles>
+	</obstacles>
+</snakeappmap>
