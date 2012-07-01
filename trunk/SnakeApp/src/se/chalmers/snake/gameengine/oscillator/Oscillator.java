@@ -31,7 +31,7 @@ public class Oscillator {
 	 */
 	public synchronized void start() {
 		if (this.timer == null && this.calls != null) {
-			this.timer = new Timer("Oscillator", false);
+			this.timer = new Timer("Oscillator", true);
 			TimerTask tt = new TimerTask() {
 
 				@Override
@@ -40,6 +40,7 @@ public class Oscillator {
 				}
 			};
 			this.timer.scheduleAtFixedRate(tt, new Date(), this.interval);
+                        
 		}
 	}
 
