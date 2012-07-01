@@ -50,9 +50,9 @@ class InformationPanel extends JPanel{
 		add(new JLabel("Description"), c);
 		c.insets.left = 0;
 		c.gridx++;
-		add(new JTextField(10), c); // desc
+		add(setupFTF(new JTextField(), K.description), c); // desc
 		c.gridy--;
-		add(new JTextField(10), c); // name
+		add(setupFTF(new JTextField(), K.name), c); // name
 	}
 	
 	private enum K{
@@ -69,8 +69,8 @@ class InformationPanel extends JPanel{
 		}
 	}
 	
-	private JFormattedTextField setupFTF(final JFormattedTextField ftf, final K k){
-		ftf.setColumns(5);
+	private JTextField setupFTF(final JTextField ftf, final K k){
+		ftf.setColumns((ftf instanceof JTextField) ? 10 : 5);
 		ftf.getDocument().addDocumentListener(new DocumentListener() {
 			
 			@Override
@@ -89,7 +89,11 @@ class InformationPanel extends JPanel{
 			}
 			
 			private void u(){
-				values.put(k.toString(), Integer.toString(((Number) ftf.getValue()).intValue()));
+				if(ftf instanceof JFormattedTextField){
+					JFormattedTextField f = (JFormattedTextField) ftf;
+					values.put(k.toString(), Integer.toString(((Number) f.getValue()).intValue()));
+				} else
+					values.put(k.toString(), ftf.getText());
 			}
 		});
 		return ftf;

@@ -7,21 +7,26 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 @SuppressWarnings("serial")
 class Frame extends JFrame {
 	private ArrayList<DotData> dots = new ArrayList<>();
 	private DrawPanel draw;
+	private JPanel main = new JPanel();
 	private DotList list = new DotList(this);
 	private OptionPanel options = new OptionPanel(this);
 	private InformationPanel info = new InformationPanel();
-	private int radius = 10;
+	private int radius = 10, snakeSeg = 4;
+	private SnakeData snakeData;
+	private boolean snake = false;
 
 	private Frame(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		add(options, BorderLayout.EAST);
+		add(main, BorderLayout.CENTER);
 		add(new JScrollPane(list), BorderLayout.WEST);
 		add(info, BorderLayout.SOUTH);
 		pack();
@@ -35,11 +40,11 @@ class Frame extends JFrame {
 			@Override
 			public void run() {
 				if(draw != null)
-					remove(draw);
+					main.remove(draw);
 				dots.clear();
 				list.clear();
 				list.getPreferredSize().height = y;
-				add(draw = new DrawPanel(Frame.this, new Dimension(x, y)), BorderLayout.CENTER);
+				main.add(draw = new DrawPanel(Frame.this, new Dimension(x, y)), BorderLayout.CENTER);
 				draw.repaint();
 				validate();
 				pack();
@@ -52,11 +57,18 @@ class Frame extends JFrame {
 	}
 	
 	void addDot(Point point){
-		DotData data = new DotData(point, radius);
-		dots.add(data);
-		list.addDot(data);
-		list.repaint();
-		draw.repaint();
+		if(snake && snakeData == null){
+			DotData data;
+			if(snake){
+				snakeData = new SnakeData(point, radius, snakeSeg);
+				data = snakeData;
+			} else
+				data = new DotData(point, radius);
+			dots.add(data);
+			list.addDot(data);
+			list.repaint();
+			draw.repaint();
+		}
 	}
 	
 	
@@ -66,18 +78,27 @@ class Frame extends JFrame {
 
 	void setRadius(int value) {
 		radius = value;
+		if(snake && snakeData != null){
+			((DotData) snakeData).diameter = value;
+			draw.repaint();
+		}
 	}
 
 	class DotData {
-		final int x, y, diameter;
+		final int x, y;
+		private int diameter;
 		private boolean mark = false;
 		
-		private DotData(Point point, int diamter){
-			point.x -= diamter/2;
-			point.y -= diamter/2;
+		private DotData(Point point, int diameter){
+			point.x -= diameter/2;
+			point.y -= diameter/2;
 			x = point.x;
 			y = point.y;
-			this.diameter = diamter;
+			this.diameter = diameter;
+		}
+		
+		int getDiameter(){
+			return diameter;
 		}
 		
 		boolean getMark(){
@@ -87,6 +108,20 @@ class Frame extends JFrame {
 		@Override
 		public String toString(){
 			return "Dot{"+x+","+y+"}";
+		}
+	}
+	
+	class SnakeData extends DotData{
+		private int rotation;
+		
+		private SnakeData(Point point, int diameter, int rotation){
+			super(point, diameter);
+			this.rotation = rotation;
+		}
+		
+		@Override
+		public String toString(){
+			return "Snake{"+x+","+y+"}";
 		}
 	}
 
@@ -101,6 +136,8 @@ class Frame extends JFrame {
 	}
 
 	void removeDot(final DotData data) {
+		if(data == snakeData)
+			snakeData = null;
 		dots.remove(data);
 		EventQueue.invokeLater(new Runnable() {
 			
@@ -114,5 +151,19 @@ class Frame extends JFrame {
 
 	ArrayList<DotData> getDots() {
 		return dots;
+	}
+
+	void setRotation(int intValue) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	void setSnakeSegments(int intValue) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	void setSnakeActive(boolean selected) {
+		snake = selected;
 	}
 }
