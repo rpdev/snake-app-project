@@ -1,0 +1,5 @@
+package mapeditor;
+
+class ExportXML {
+
+}
