@@ -53,7 +53,7 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 	}
 
 	/**
-	 * Driv the game 1 step further on.
+	 * Run the game 1 step further on.
 	 */
 	private void step() {
 
@@ -64,10 +64,11 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 				double P = this.currentAngle - newAngle;
 				double M = ((newAngle < this.currentAngle) ? -PI_TIMES_2 : PI_TIMES_2) + P;
 				newAngle += ((Math.abs(P) < Math.abs(M) ? P : M)) * 0.65;
+                                
 				if (this.currentLevel.step(newAngle)) {
+                                    
 					this.currentAngle = newAngle;
 					if (this.currentLevel.hasReachedGoal()) {
-						System.out.println("GameEngine Run - Level End - Goal");
 						this.pauseGame();
 						this.currentStatus = GameEngineStatus.LEVEL_END;
 						this.fireObserver(GameEngineEvent.LEVEL_END);
@@ -78,7 +79,6 @@ public class GameEngine extends EnumObservable<GameEngineIC.GameEngineEvent, Voi
 
 				} else {
 					this.pauseGame();
-					System.out.println("GameEngine Run - Level End - Player Lose");
 					this.currentStatus = GameEngineStatus.LEVEL_END;
 					this.fireObserver(GameEngineEvent.PLAYER_LOSE);
 
