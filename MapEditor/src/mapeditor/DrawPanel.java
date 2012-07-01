@@ -13,6 +13,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import mapeditor.Frame.DotData;
+import mapeditor.Frame.SnakeData;
 
 @SuppressWarnings("serial")
 class DrawPanel extends JPanel {
@@ -36,14 +37,20 @@ class DrawPanel extends JPanel {
 		g.clearRect(0, 0, getWidth(), getHeight());
 		Graphics2D g2 = (Graphics2D) g;
 		for(DotData e : frame.getDots()){
-			g2.fillOval(e.x, e.y, e.diameter, e.diameter);
+			if(e instanceof SnakeData)
+				g2.setColor(Color.GREEN);
+			g2.fillOval(e.x, e.y, e.getDiameter(), e.getDiameter());
+			if( e instanceof SnakeData){
+				//g2.drawLine(e.x, e.y, x2, y2);
+				g2.setColor(Color.BLACK);
+			}
 			if(e.getMark()){
 				Stroke s = g2.getStroke();
 				g2.setStroke(new BasicStroke(3f));
 				Color tmp = g.getColor();
 				g2.setColor(Color.RED);
 				
-				g2.drawOval(e.x, e.y, e.diameter, e.diameter);
+				g2.drawOval(e.x, e.y, e.getDiameter(), e.getDiameter());
 				g2.setColor(tmp);
 				g2.setStroke(s);
 			}
