@@ -1,6 +1,7 @@
 package mapeditor;
 
 import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -17,21 +18,24 @@ import java.util.HashMap;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import mapeditor.Frame.DotData;
 
 @SuppressWarnings("serial")
-public class DotList extends JPanel {
+class DotList extends JPanel {
 	private final Dimension labelDim = new Dimension(120,15);
 	private static final int size = 10;
 	private final HashMap<DotData, DotObject> panels = new HashMap<>();
 	private final GridBagConstraints c = new GridBagConstraints();
 	private final Frame frame;
+	private final JPanel panel = new JPanel(new GridBagLayout());
 	
 	DotList(Frame frame) {
 		this.frame = frame;
 		this.setPreferredSize(new Dimension(labelDim.width + size + 10, 50));
-		setLayout(new GridBagLayout());
+		setLayout(new BorderLayout());
+		add(new JScrollPane(panel), BorderLayout.CENTER);
 		c.gridx = c.gridy = 0;
 		c.weightx = 1d;
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -39,22 +43,23 @@ public class DotList extends JPanel {
 	
 	void addDot(DotData data){
 		DotObject o = new DotObject(data, frame);
-		add(o, c);
+		panel.add(o, c);
 		c.gridy++;
 		panels.put(data, o);
-		revalidate();
+		panel.revalidate();
 	}
 	
 	void clear(){
 		c.gridy = 0;
-		this.removeAll();
+		panel.removeAll();
 		panels.clear();
-		revalidate();
+		panel.invalidate();
+		panel.repaint();
 	}
 	
 	void removeDot(DotData data){
-		remove(panels.remove(data));
-		invalidate();
+		panel.remove(panels.remove(data));
+		panel.invalidate();
 	}
 	
 	private class DotObject extends JPanel{

@@ -16,7 +16,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 @SuppressWarnings("serial")
-public class OptionPanel extends JPanel {
+class OptionPanel extends JPanel {
 
 	OptionPanel(Frame frame){
 		setupPanel(frame);

@@ -7,23 +7,26 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 
 @SuppressWarnings("serial")
-public class Frame extends JFrame {
+class Frame extends JFrame {
 	private ArrayList<DotData> dots = new ArrayList<>();
 	private DrawPanel draw;
 	private DotList list = new DotList(this);
 	private OptionPanel options = new OptionPanel(this);
+	private InformationPanel info = new InformationPanel();
 	private int radius = 10;
 
 	private Frame(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		add(options, BorderLayout.EAST);
-		add(list, BorderLayout.WEST);
+		add(new JScrollPane(list), BorderLayout.WEST);
+		add(info, BorderLayout.SOUTH);
 		pack();
 		setVisible(true);
-		//setResizable(false);
+		setResizable(false);
 	}
 	
 	void generate(final int x, final int y){
@@ -34,7 +37,8 @@ public class Frame extends JFrame {
 				if(draw != null)
 					remove(draw);
 				dots.clear();
-				list.repaint();
+				list.clear();
+				list.getPreferredSize().height = y;
 				add(draw = new DrawPanel(Frame.this, new Dimension(x, y)), BorderLayout.CENTER);
 				draw.repaint();
 				validate();
@@ -88,12 +92,12 @@ public class Frame extends JFrame {
 
 	void removeMark(DotData data) {
 		data.mark = false;
-		draw.invalidate();
+		draw.repaint();
 	}
 
 	void setMark(DotData data) {
 		data.mark = true;
-		draw.invalidate();
+		draw.repaint();
 	}
 
 	void removeDot(final DotData data) {
