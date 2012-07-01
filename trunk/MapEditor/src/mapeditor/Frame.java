@@ -41,6 +41,7 @@ class Frame extends JFrame {
 			public void run() {
 				if(draw != null)
 					main.remove(draw);
+				snakeData = null;
 				dots.clear();
 				list.clear();
 				list.getPreferredSize().height = y;
@@ -57,13 +58,13 @@ class Frame extends JFrame {
 	}
 	
 	void addDot(Point point){
+		DotData data = null;
 		if(snake && snakeData == null){
-			DotData data;
-			if(snake){
-				snakeData = new SnakeData(point, radius, snakeSeg);
-				data = snakeData;
-			} else
-				data = new DotData(point, radius);
+			snakeData = new SnakeData(point, radius, snakeSeg);
+			data = snakeData;
+		} else if(!snake)
+			data = new DotData(point, radius);
+		if(data != null){
 			dots.add(data);
 			list.addDot(data);
 			list.repaint();
@@ -90,10 +91,8 @@ class Frame extends JFrame {
 		private boolean mark = false;
 		
 		private DotData(Point point, int diameter){
-			point.x -= diameter/2;
-			point.y -= diameter/2;
-			x = point.x;
-			y = point.y;
+			x = point.x + diameter/2;
+			y = point.y + diameter/2;
 			this.diameter = diameter;
 		}
 		
@@ -117,6 +116,10 @@ class Frame extends JFrame {
 		private SnakeData(Point point, int diameter, int rotation){
 			super(point, diameter);
 			this.rotation = rotation;
+		}
+		
+		int getRot(){
+			return rotation;
 		}
 		
 		@Override
@@ -154,13 +157,19 @@ class Frame extends JFrame {
 	}
 
 	void setRotation(int intValue) {
-		// TODO Auto-generated method stub
-		
+		if(snakeData != null){
+			snakeData.rotation = intValue;
+			draw.repaint();
+		}
 	}
 
 	void setSnakeSegments(int intValue) {
-		// TODO Auto-generated method stub
-		
+		snakeSeg = intValue;
+		draw.repaint();
+	}
+	
+	int getSnakeSegments(){
+		return snakeSeg;
 	}
 
 	void setSnakeActive(boolean selected) {

@@ -37,11 +37,16 @@ class DrawPanel extends JPanel {
 		g.clearRect(0, 0, getWidth(), getHeight());
 		Graphics2D g2 = (Graphics2D) g;
 		for(DotData e : frame.getDots()){
+			int dim = e.getDiameter();
 			if(e instanceof SnakeData)
 				g2.setColor(Color.GREEN);
-			g2.fillOval(e.x, e.y, e.getDiameter(), e.getDiameter());
+			g2.fillOval(e.x-dim/2, e.y-dim/2, dim, dim);
 			if( e instanceof SnakeData){
-				//g2.drawLine(e.x, e.y, x2, y2);
+				g2.drawLine(
+						e.x, 
+						e.y, 
+						(int) (e.x + dim/2 * frame.getSnakeSegments() * Math.cos(Math.toRadians(((SnakeData) e).getRot()))), 
+						(int) (e.y + dim/2 * frame.getSnakeSegments() * Math.sin(Math.toRadians(((SnakeData) e).getRot()))));
 				g2.setColor(Color.BLACK);
 			}
 			if(e.getMark()){
