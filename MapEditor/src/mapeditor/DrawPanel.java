@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import mapeditor.Frame.DotData;
 
 @SuppressWarnings("serial")
-public class DrawPanel extends JPanel {
+class DrawPanel extends JPanel {
 	private final Frame frame;
 	
 	DrawPanel(final Frame frame, Dimension dim){
@@ -33,6 +33,7 @@ public class DrawPanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponents(g);
+		g.clearRect(0, 0, getWidth(), getHeight());
 		Graphics2D g2 = (Graphics2D) g;
 		for(DotData e : frame.getDots()){
 			g2.fillOval(e.x, e.y, e.diameter, e.diameter);
@@ -40,7 +41,7 @@ public class DrawPanel extends JPanel {
 				Stroke s = g2.getStroke();
 				g2.setStroke(new BasicStroke(3f));
 				Color tmp = g.getColor();
-				g2.setColor(Color.ORANGE);
+				g2.setColor(Color.RED);
 				
 				g2.drawOval(e.x, e.y, e.diameter, e.diameter);
 				g2.setColor(tmp);
