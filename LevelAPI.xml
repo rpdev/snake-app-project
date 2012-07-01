@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<snakeappmap id="[id, interger, level id]">
+	<name>[level name]</name>
+	
+	<description>[level description, describe level's goal]</description>
+	
+	
+	<map x="300" y="400" /><!-- The map size, each given point most be in the map size, the system auto scale the map size, good value is 300x400-->
+	
+	<!-- For some of the object, gamespeed, growthspeed, levelgoal, etc 
+	-- has a attr "type" that is a keyword and say what type it is.
+	-- The Java type for it object is CFunc, ( see, se.chalmers.snake.leveldatabase.XMLLevel.CFunc )
+	-- This is a type of value that can be change over time or can be test what value this will use.
+	-- The support types is:
+	-- * simple: return the same value as enter as childen, and has childer of type interger.
+	-- Exmple: <gamespeed type="simple">3</gamespeed>, will say the game will have same in the game all time.
+	-- * greater: return 1 if this value is biger then a value the game give, in case levelgoal number of apple the player has take.
+	-- Example: <levelgoal type="greater">15</levelgoal>, will say the game is win where the use has eat 15 apple.
+	--
+	-- This is easy to add more typs for diffrens object, and in case this is need support mulit list of values, as <t type="xxx">10,20,3</t>
+	--
+	-- In the code for the app, say 'gamespeed' and 'levelgoal', take in "List<Integer> collectTime", that is a list of each apple
+	-- The use has eat and how long time this take for the use to get to this apple.
+	-- For 'growthspeed' and 'item', this take in toalt number of collect item, and current number of item on the map.
+	-- 
+	-- I say this base on this two data is most easy to create a CFunc for do the game more variety.
+	-->
+	
+	<gamespeed type="simple">[game speed, normal rang 2-5, interger]</gamespeed><!-- Is CFunc,  -->
+	
+	<growthspeed type="simple">[how many body part the player will growth for each apple, normal rang 1-3, interger]</growthspeed><!-- Is CFunc -->
+	
+	<!-- For levelgoal, this is easy to crate a goal of type, take a apple or more apple in a short time, base on the system 
+	-- save how long time this take to be eaten -->
+	<levelgoal type="greater">[how many apple the player has to eat, normal rang 15-Inf, last level use inf value as 99999]</levelgoal><!-- Is CFunc -->
+	
+	<item type="simple" r="[How big each apple will be]">[how many apple that will exist on the map at same time]</item><!-- Is CFunc -->
+	
+	<!-- The player point, 
+	-- x,y = as point on the map base on the map size,
+	-- r = is how big the player body will be.
+	-- a = what angle the player will start in deg.
+	-- s = how may bodypart the player will start with, min, 4-->
+	<player x="150" y="200" r="15" a="90" s="4" /> 7
+	<!-- List of all obstacles or stone that is on the map, a obstacles is object that do the player dead if hit. -->
+	<obstacles>
+		<!-- Each obstacles have this tample, and this exist no upper limit, but hold this number low, to many will do
+		-- the game slow -->
+		<!-- Create a obstacles 
+		-- x,y = as point on the map base on the map size,
+		-- r = is how big the obstacles will be.
+		-->
+		<item x="232" y="287" r="15" />
+			...
+		<item x="232" y="287" r="15" />
+	</obstacles>
+</snakeappmap>

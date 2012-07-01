@@ -112,7 +112,7 @@ class XMLLevel implements LevelIC {
 			if ("greater".equals(this.type)) {
 				return x >= this.i ? 1 : 0;
 			}
-			return i;
+			return this.i;
 		}
 
 		@Override
@@ -162,9 +162,14 @@ class XMLLevel implements LevelIC {
 				}
 				
 				this.name = XR.val(XR.find(rootDoc, XML.NAME));
+                                
+                                
 				this.description = XR.val(XR.find(rootDoc, XML.DESCRIPTION));
 				Node map = XR.find(rootDoc, XML.MAPSIZE);
+                                
+                                
 				this.mapSize = new XYPoint(XR.attributeInt(map, "x"), XR.attributeInt(map, "y"));
+                                
 
 				this.speed = new CFunc(XR.find(rootDoc, XML.GAMESPEED));
 
@@ -172,6 +177,8 @@ class XMLLevel implements LevelIC {
 
 				this.goal = new CFunc(XR.find(rootDoc, XML.GOAL));
 
+                                
+                                
 				this.items = new CRFunc(XR.find(rootDoc, XML.ITEMS));
 				//<player x="150" y="200" r="10" a="90" s="4" />
 				Node playerNode = XR.find(rootDoc, XML.PLAYER);
