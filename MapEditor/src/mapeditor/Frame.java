@@ -84,6 +84,20 @@ class Frame extends JFrame {
 			draw.repaint();
 		}
 	}
+	
+	enum K{
+		name, 
+		description, 
+		difficuly, 
+		gamespeed, 
+		growthspeed, 
+		levelgoal;
+		
+		@Override
+		public String toString(){
+			return super.toString().toLowerCase();
+		}
+	}
 
 	class DotData {
 		final int x, y;
