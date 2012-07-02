@@ -17,7 +17,7 @@ import se.chalmers.snake.interfaces.util.XYPoint;
 import se.chalmers.snake.leveldatabase.LevelDatabase.LevelDatabaseData;
 
 /**
- * The XML file load level.
+ * The XMLString file load level.
  */
 class XMLLevel implements LevelIC {
 
@@ -27,15 +27,15 @@ class XMLLevel implements LevelIC {
     private final String name;
     private final String description;
     private final XYPoint mapSize;
-    private final CFunc speed;
-    private final CFunc growth;
-    private final CFunc goal;
-    private final CRFunc items;
+    private final LevelCFunc speed;
+    private final LevelCFunc growth;
+    private final LevelCFunc goal;
+    private final LevelCRFunc items;
     private final REPoint player;
     private final int playerLength;
     private final List<REPoint> obstacles;
 
-    private static class XML {
+    static class XMLString {
 
         private static final String ROOT = "snakeappmap";
         private static final String ROOT_ID = "id";
@@ -45,7 +45,7 @@ class XMLLevel implements LevelIC {
         private static final String GAMESPEED = "gamespeed";
         private static final String GROWTHSPEED = "growthspeed";
         private static final String GOAL = "levelgoal";
-        private static final String CFUNC = "type";
+        static final String CFUNC = "type";
         private static final String RADIUS = "r";
         private static final String ITEMS = "item";
         private static final String LEVEL = "level";
@@ -57,78 +57,13 @@ class XMLLevel implements LevelIC {
         private static final String OBSTACLES = "obstacles";
     }
 
-    private static class XR {
-
-        private static Node find(Node node, String tagName) throws Exception {
-            NodeList nl = node.getChildNodes();
-            for (int i = 0; i < nl.getLength(); i++) {
-                if (nl.item(i).getNodeName().equals(tagName)) {
-                    return nl.item(i);
-                }
-            }
-            throw new Exception("Node has no childen with tag '" + tagName + "'");
-
-        }
-
-        private static String attribute(Node node, String name) {
-            if (node instanceof Element) {
-                final Element e = (Element) node;
-                if (e.hasAttribute(name)) {
-                    return e.getAttribute(name);
-                }
-            }
-            return null;
-        }
-
-        private static int attributeInt(Node node, String name) {
-            if (node instanceof Element) {
-                final Element e = (Element) node;
-                if (e.hasAttribute(name)) {
-                    return Integer.parseInt(e.getAttribute(name));
-                }
-            }
-            return 0;
-        }
-
-        private static String val(Node node) {
-            if (node == null) {
-                throw new NullPointerException("Node not Exist");
-            }
-            String val = node.getFirstChild().getNodeValue();
-            return val != null ? val : "";
-        }
-    }
-
-    private static class CFunc {
-
-        String type;
-        float i;
-
-        private CFunc(Node nodeMeta) throws Exception {
-            this.type = XR.attribute(nodeMeta, XML.CFUNC);
-            this.i = Float.parseFloat(XR.val(nodeMeta));
-        }
-
-        public float calc(int x) {
-            if ("greater".equals(this.type)) {
-                return x >= this.i ? 1 : 0;
-            }
-            return this.i;
-        }
-
-        @Override
-        public String toString() {
-            return "CFunc{" + "type=" + type + ", i=" + i + '}';
-        }
-    }
-
-    private static class CRFunc extends CFunc {
+    private static class LevelCRFunc extends LevelCFunc {
 
         private final int radius;
 
-        private CRFunc(Node nodeMeta) throws Exception {
+        private LevelCRFunc(Node nodeMeta) throws Exception {
             super(nodeMeta);
-            int r = XR.attributeInt(nodeMeta, XML.RADIUS);
+            int r = XMLReader.attributeInt(nodeMeta, XMLString.RADIUS);
             if (r > 0) {
                 this.radius = r;
             } else {
@@ -136,14 +71,10 @@ class XMLLevel implements LevelIC {
             }
         }
 
-        @Override
-        public String toString() {
-            return "CRFunc{" + "radius=" + radius + ", type=" + type + ", i=" + i + '}';
-        }
     }
 
     /**
-     * Load A Level by a XML file,
+     * Load A Level by a XMLString file,
      *
      * @param rowData
      * @throws IOException Will be throw if the file not can be read as a Level.
@@ -155,53 +86,53 @@ class XMLLevel implements LevelIC {
             Document xmlDoc = DocumentBuilderFactory.newInstance().
                     newDocumentBuilder().parse(ioStream);
             Element rootDoc = xmlDoc.getDocumentElement();
-            if (rootDoc.getNodeName().equals(XML.ROOT)) { // Root Node Exist.
-                this.mapID = XR.attributeInt(rootDoc, XML.ROOT_ID);
+            if (rootDoc.getNodeName().equals(XMLString.ROOT)) { // Root Node Exist.
+                this.mapID = XMLReader.attributeInt(rootDoc, XMLString.ROOT_ID);
                 if (rowData.level > 0) {
                     this.level = rowData.level;
                 } else {
-                    this.level = XR.attributeInt(rootDoc, XML.LEVEL);
+                    this.level = XMLReader.attributeInt(rootDoc, XMLString.LEVEL);
                 }
 
-                this.name = XR.val(XR.find(rootDoc, XML.NAME));
+                this.name = XMLReader.val(XMLReader.find(rootDoc, XMLString.NAME));
 
 
-                this.description = XR.val(XR.find(rootDoc, XML.DESCRIPTION));
-                Node map = XR.find(rootDoc, XML.MAPSIZE);
+                this.description = XMLReader.val(XMLReader.find(rootDoc, XMLString.DESCRIPTION));
+                Node map = XMLReader.find(rootDoc, XMLString.MAPSIZE);
 
 
-                this.mapSize = new XYPoint(XR.attributeInt(map, "x"), XR.attributeInt(map, "y"));
+                this.mapSize = new XYPoint(XMLReader.attributeInt(map, "x"), XMLReader.attributeInt(map, "y"));
 
 
-                this.speed = new CFunc(XR.find(rootDoc, XML.GAMESPEED));
+                this.speed = new LevelCFunc(XMLReader.find(rootDoc, XMLString.GAMESPEED));
 
-                this.growth = new CFunc(XR.find(rootDoc, XML.GROWTHSPEED));
+                this.growth = new LevelCFunc(XMLReader.find(rootDoc, XMLString.GROWTHSPEED));
 
-                this.goal = new CFunc(XR.find(rootDoc, XML.GOAL));
+                this.goal = new LevelCFunc(XMLReader.find(rootDoc, XMLString.GOAL));
 
 
 
-                this.items = new CRFunc(XR.find(rootDoc, XML.ITEMS));
+                this.items = new LevelCRFunc(XMLReader.find(rootDoc, XMLString.ITEMS));
                 //<player x="150" y="200" r="10" a="90" s="4" />
-                Node playerNode = XR.find(rootDoc, XML.PLAYER);
+                Node playerNode = XMLReader.find(rootDoc, XMLString.PLAYER);
                 this.player = new REPoint(REPoint.REType.HEADSEG,
-                        XR.attributeInt(playerNode, XML.X),
-                        XR.attributeInt(playerNode, XML.Y),
-                        XR.attributeInt(playerNode, XML.RADIUS),
-                        XR.attributeInt(playerNode, XML.ANGLE) * XMLLevel.DEG_TO_RAD);
-                this.playerLength = XR.attributeInt(playerNode, XML.PLAYER_LENGTH);
+                        XMLReader.attributeInt(playerNode, XMLString.X),
+                        XMLReader.attributeInt(playerNode, XMLString.Y),
+                        XMLReader.attributeInt(playerNode, XMLString.RADIUS),
+                        XMLReader.attributeInt(playerNode, XMLString.ANGLE) * XMLLevel.DEG_TO_RAD);
+                this.playerLength = XMLReader.attributeInt(playerNode, XMLString.PLAYER_LENGTH);
 
 
                 //<obstacles>...</obstacles>
-                NodeList obstaclesNode = XR.find(rootDoc, XML.OBSTACLES).getChildNodes();
+                NodeList obstaclesNode = XMLReader.find(rootDoc, XMLString.OBSTACLES).getChildNodes();
                 List<REPoint> obstaclesPoints = new ArrayList<REPoint>(obstaclesNode.getLength());
                 for (int i = 0; i < obstaclesNode.getLength(); i++) {
                     Node obstacle = obstaclesNode.item(i);
                     if (obstacle != null && obstacle.getNodeType() != Node.TEXT_NODE) {
                         REPoint wallPoint = new REPoint(REPoint.REType.WALL,
-                                XR.attributeInt(obstacle, XML.X),
-                                XR.attributeInt(obstacle, XML.Y),
-                                XR.attributeInt(obstacle, XML.RADIUS),
+                                XMLReader.attributeInt(obstacle, XMLString.X),
+                                XMLReader.attributeInt(obstacle, XMLString.Y),
+                                XMLReader.attributeInt(obstacle, XMLString.RADIUS),
                                 0);
 
 
@@ -210,7 +141,7 @@ class XMLLevel implements LevelIC {
                 }
                 this.obstacles = Collections.unmodifiableList(obstaclesPoints);
             } else {
-                throw new Exception("Root Node is not '" + XML.ROOT + "'");
+                throw new Exception("Root Node is not '" + XMLString.ROOT + "'");
             }
         } catch (Exception ex) {
             throw new IOException("Can not read select level, " + ex.getMessage());
@@ -274,22 +205,22 @@ class XMLLevel implements LevelIC {
 
     @Override
     public float getSpeed(List<Integer> collectTime) {
-        return this.speed.calc(collectTime.size());
+        return this.speed.calc(collectTime);
     }
 
     @Override
     public boolean hasReachedGoal(List<Integer> collectTime) {
-        return this.goal.calc(collectTime.size()) > 0;
+        return this.goal.calc(collectTime) > 0;
     }
 
     @Override
     public int getAddItems(int totalCollected, int totalItemInGame) {
-        return (int) this.items.calc(totalCollected);
+        return (int) this.items.calc(totalCollected, totalItemInGame);
     }
 
     @Override
     public int getBodyGrowth(int collectTime, int totalCollected) {
-        return (int) this.growth.calc(totalCollected);
+        return (int) this.growth.calc(totalCollected, totalCollected);
     }
     //</editor-fold>
 
