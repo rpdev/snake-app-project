@@ -60,7 +60,7 @@ class Frame extends JFrame {
 	void addDot(Point point){
 		DotData data = null;
 		if(snake && snakeData == null){
-			snakeData = new SnakeData(point, radius, snakeSeg);
+			snakeData = new SnakeData(point, radius, snakeSeg, snakeSeg);
 			data = snakeData;
 		} else if(!snake)
 			data = new DotData(point, radius);
@@ -91,7 +91,7 @@ class Frame extends JFrame {
 		difficuly, 
 		gamespeed, 
 		growthspeed, 
-		levelgoal;
+		levelgoal, map, x, y, item, player, item_count, item_radius;
 		
 		@Override
 		public String toString(){
@@ -125,11 +125,12 @@ class Frame extends JFrame {
 	}
 	
 	class SnakeData extends DotData{
-		private int rotation;
+		private int rotation, snakeSeg;
 		
-		private SnakeData(Point point, int diameter, int rotation){
+		private SnakeData(Point point, int diameter, int rotation, int snakeSeg){
 			super(point, diameter);
 			this.rotation = rotation;
+			this.snakeSeg = snakeSeg;
 		}
 		
 		int getRot(){
@@ -139,6 +140,10 @@ class Frame extends JFrame {
 		@Override
 		public String toString(){
 			return "Snake{"+x+","+y+"}";
+		}
+		
+		int getSnakeSeg() {
+			return snakeSeg;
 		}
 	}
 
@@ -178,6 +183,8 @@ class Frame extends JFrame {
 	}
 
 	void setSnakeSegments(int intValue) {
+		if(snakeData != null)
+			snakeSeg = intValue;
 		snakeSeg = intValue;
 		draw.repaint();
 	}
@@ -188,5 +195,9 @@ class Frame extends JFrame {
 
 	void setSnakeActive(boolean selected) {
 		snake = selected;
+	}
+
+	void save() {
+		ExportXML.storeXML(info.getValues(), dots, snakeData);
 	}
 }

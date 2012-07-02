@@ -134,5 +134,15 @@ class OptionPanel extends JPanel {
 		p.add(new JLabel("Rotation"));
 		p.add(rot);
 		add(p, c);
+		c.gridy++;
+		JButton save = new JButton("SAVE");
+		save.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				frame.save();
+			}
+		});
+		add(save, c);
 	}
 }

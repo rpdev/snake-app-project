@@ -55,6 +55,18 @@ class InformationPanel extends JPanel{
 		add(setupFTF(new JTextField(), K.description), c); // desc
 		c.gridy--;
 		add(setupFTF(new JTextField(), K.name), c); // name
+		
+		c.gridx++;
+		c.gridy = 0;
+		c.insets.left = 5;
+		add(new JLabel("Item radius"), c);
+		c.gridy++;
+		add(new JLabel("Item count"), c);
+		c.gridx++;
+		c.insets.bottom = 0;
+		add(setupFTF(new JTextField(), K.item_count), c);
+		c.gridy--;
+		add(setupFTF(new JTextField(), K.item_radius), c);
 	}
 	
 	
@@ -87,5 +99,11 @@ class InformationPanel extends JPanel{
 			}
 		});
 		return ftf;
+	}
+
+
+
+	EnumMap<K, String> getValues() {
+		return values;
 	}
 }
