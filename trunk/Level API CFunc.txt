@@ -1,0 +1,22 @@
+Utökning av CFunc.
+CFunc beskrivs i LevelAPI.xml
+
+Inarg är alltid av typen float och ifall flera float skall angers.
+så anger alltid då i format "1.4;2.0;3.4;5" med ett ; i mellan, använd punkt som komma tecken.
+
+  
+* simple       Gäller alla typer, har 1 argument, ger alltid ut samma argument.
+
+* greater      Gäller alla typer, har 1 argument, ger logisk 1/0 vid test om värde är mer eller lika med inarg, 
+               Vid <gamespeed>, <growthspeed>, <levelgoal>, <item>, antal ätna äpplen,    
+			   
+* lower        Gäller alla typer, har 1 argument, ger logisk 1/0 vid test om värde är minder eller lika med inarg, 
+               Vid <gamespeed>, <growthspeed>, <levelgoal>, <item>, antal ätna äpplen, 
+			   
+* multi        Gäller alla typer, har 2 argument, där antal ätna äpplen gångras med arg1 och sedan plusat på med arg2,
+               Det vill säga äpplen*arg1+arg2, lämpligt för att göra en linjär ökning baserat på antal äpple som spelaren har ätti.
+               Vid <gamespeed>, <growthspeed>, antal ätna äpplen, 			   
+			   
+* timegoal     Gäller <levelgoal>, har 1 argument, ger logisk 1/0 vid test om det fins en tid som är minre än angivet inarg,
+               Det vill säga om inarg = 100, om använda lyckas ta ett äpple från det skapades till det togs tog minre än
+			   100 tidsenheter. ( Oklart hur många tidsenheter det går per sekund )
