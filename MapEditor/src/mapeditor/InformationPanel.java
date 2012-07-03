@@ -93,7 +93,9 @@ class InformationPanel extends JPanel{
 			private void u(){
 				if(ftf instanceof JFormattedTextField){
 					JFormattedTextField f = (JFormattedTextField) ftf;
-					values.put(k, Integer.toString(((Number) f.getValue()).intValue()));
+					Number v = (Number) f.getValue();
+					if( v!= null)
+						values.put(k, Integer.toString(v.intValue()));
 				} else
 					values.put(k, ftf.getText());
 			}

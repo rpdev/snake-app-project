@@ -198,6 +198,7 @@ class Frame extends JFrame {
 	}
 
 	void save() {
+		dots.remove(snakeData);
 		ExportXML.storeXML(info.getValues(), dots, snakeData);
 	}
 }

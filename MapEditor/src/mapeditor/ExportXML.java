@@ -23,14 +23,15 @@ class ExportXML {
 	
 	static void storeXML(EnumMap<K, String> values, ArrayList<DotData> obst, SnakeData snake){
 		try {
+			System.out.println(values.toString());
 			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 			Element root = doc.createElement("snakeappmap");
 			doc.appendChild(root);
 			Element name = doc.createElement(K.name.toString());
-			name.appendChild(doc.createTextNode(values.get(K.name)));
+			name.appendChild(doc.createTextNode(getData(values,K.name)));
 			root.appendChild(name);
 			Element description = doc.createElement(K.description.toString());
-			description.appendChild(doc.createTextNode(values.get(K.description)));
+			description.appendChild(doc.createTextNode(getData(values,K.description)));
 			root.appendChild(description);
 			Element mapSize = doc.createElement(K.map.toString());
 			mapSize.setAttribute(K.x.toString(), values.get(K.x));
@@ -38,20 +39,20 @@ class ExportXML {
 			root.appendChild(mapSize);
 			Element gameSpeed = doc.createElement(K.gamespeed.toString());
 			gameSpeed.setAttribute("type", "simple");
-			gameSpeed.appendChild(doc.createTextNode(values.get(K.gamespeed)));
+			gameSpeed.appendChild(doc.createTextNode(getData(values,K.gamespeed)));
 			root.appendChild(gameSpeed);
 			Element growthSpeed = doc.createElement(K.growthspeed.toString());
 			growthSpeed.setAttribute("type", "simple");
-			growthSpeed.appendChild(doc.createTextNode(values.get(K.growthspeed)));
+			growthSpeed.appendChild(doc.createTextNode(getData(values,K.growthspeed)));
 			root.appendChild(growthSpeed);
 			Element levelGoal = doc.createElement(K.levelgoal.toString());
 			levelGoal.setAttribute("type", "greater");
-			levelGoal.appendChild(doc.createTextNode(values.get(K.levelgoal)));
+			levelGoal.appendChild(doc.createTextNode(getData(values,K.levelgoal)));
 			root.appendChild(levelGoal);
 			Element item = doc.createElement(K.item.toString());
 			item.setAttribute("type", "simple");
 			item.setAttribute("r", values.get(K.item_radius));
-			item.appendChild(doc.createTextNode(values.get(K.item_count)));
+			item.appendChild(doc.createTextNode(getData(values,K.item_count)));
 			root.appendChild(item);
 			Element player = doc.createElement(K.player.toString());
 			player.setAttribute(K.x.toString(), Integer.toString(snake.x));
@@ -72,10 +73,14 @@ class ExportXML {
 			root.appendChild(obstacles);
 			
 			DOMSource source = new DOMSource(doc);
-			StreamResult result = new StreamResult(new File(values.get(K.name)));
+			StreamResult result = new StreamResult(new File(values.containsKey(K.name) ? values.get(K.name): "test.xml"));
 			TransformerFactory.newInstance().newTransformer().transform(source, result);
 		} catch (ParserConfigurationException | TransformerException | TransformerFactoryConfigurationError e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static String getData(EnumMap<K, String> values, K k){
+		return values.containsKey(k) ? values.get(k) : "";
 	}
 }
