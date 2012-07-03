@@ -55,7 +55,7 @@ class DrawPanel extends JPanel {
 				Color tmp = g.getColor();
 				g2.setColor(Color.RED);
 				
-				g2.drawOval(e.x, e.y, e.getDiameter(), e.getDiameter());
+				g2.drawOval(e.x-dim/2, e.y-dim/2, dim, dim);
 				g2.setColor(tmp);
 				g2.setStroke(s);
 			}
