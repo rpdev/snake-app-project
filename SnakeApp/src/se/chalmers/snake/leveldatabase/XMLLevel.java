@@ -14,7 +14,6 @@ import org.w3c.dom.NodeList;
 import se.chalmers.snake.interfaces.LevelIC;
 import se.chalmers.snake.interfaces.util.REPoint;
 import se.chalmers.snake.interfaces.util.XYPoint;
-import se.chalmers.snake.leveldatabase.LevelDatabase.LevelDatabaseData;
 
 /**
  * The XMLString file load level.
@@ -70,7 +69,6 @@ class XMLLevel implements LevelIC {
                 throw new NullPointerException("The attribute r in node is not in rang.");
             }
         }
-
     }
 
     /**
@@ -79,7 +77,7 @@ class XMLLevel implements LevelIC {
      * @param rowData
      * @throws IOException Will be throw if the file not can be read as a Level.
      */
-    public XMLLevel(LevelDatabaseData rowData) throws IOException {
+    public XMLLevel(LevelDatabaseItem rowData) throws IOException {
         InputStream ioStream = null;
         try {
             ioStream = rowData.getInputSteam();
@@ -88,13 +86,20 @@ class XMLLevel implements LevelIC {
             Element rootDoc = xmlDoc.getDocumentElement();
             if (rootDoc.getNodeName().equals(XMLString.ROOT)) { // Root Node Exist.
                 this.mapID = XMLReader.attributeInt(rootDoc, XMLString.ROOT_ID);
+
+
                 if (rowData.level > 0) {
                     this.level = rowData.level;
                 } else {
                     this.level = XMLReader.attributeInt(rootDoc, XMLString.LEVEL);
                 }
 
-                this.name = XMLReader.val(XMLReader.find(rootDoc, XMLString.NAME));
+                // Use only the xml name if no filename is given.
+                if (rowData.name.length() > 0) {
+                    this.name = rowData.name;
+                } else {
+                    this.name = XMLReader.val(XMLReader.find(rootDoc, XMLString.NAME));
+                }
 
 
                 this.description = XMLReader.val(XMLReader.find(rootDoc, XMLString.DESCRIPTION));
