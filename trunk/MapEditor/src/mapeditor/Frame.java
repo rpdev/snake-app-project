@@ -18,7 +18,7 @@ class Frame extends JFrame {
 	private DotList list = new DotList(this);
 	private OptionPanel options = new OptionPanel(this);
 	private InformationPanel info = new InformationPanel();
-	private int radius = 10, snakeSeg = 4;
+	private int diameter = 10, snakeSeg = 4;
 	private SnakeData snakeData;
 	private boolean snake = false;
 
@@ -54,16 +54,16 @@ class Frame extends JFrame {
 	}
 	
 	int getRadius(){
-		return radius;
+		return diameter;
 	}
 	
 	void addDot(Point point){
 		DotData data = null;
 		if(snake && snakeData == null){
-			snakeData = new SnakeData(point, radius, snakeSeg, snakeSeg);
+			snakeData = new SnakeData(point, diameter, snakeSeg, snakeSeg);
 			data = snakeData;
 		} else if(!snake)
-			data = new DotData(point, radius);
+			data = new DotData(point, diameter);
 		if(data != null){
 			dots.add(data);
 			list.addDot(data);
@@ -78,7 +78,7 @@ class Frame extends JFrame {
 	}
 
 	void setRadius(int value) {
-		radius = value;
+		diameter = value;
 		if(snake && snakeData != null){
 			((DotData) snakeData).diameter = value;
 			draw.repaint();
@@ -105,8 +105,8 @@ class Frame extends JFrame {
 		private boolean mark = false;
 		
 		private DotData(Point point, int diameter){
-			x = point.x + diameter/2;
-			y = point.y + diameter/2;
+			x = point.x;// + diameter/2;
+			y = point.y;// + diameter/2;
 			this.diameter = diameter;
 		}
 		
